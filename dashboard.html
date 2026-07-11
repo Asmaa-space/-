@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقريري | لوحة التحكم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        
+        <aside class="sidebar">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2>✨ تقريري</h2>
+                <button id="theme-toggle" class="theme-switch" onclick="App.toggleTheme()">🌙</button>
+            </div>
+            
+            <nav style="display:flex; flex-direction:column; gap:8px; margin-top:24px;">
+                <a href="#" onclick="App.switchView('dashboard', event)" data-target="dashboard" class="nav-item active">📊 لوحة التحكم</a>
+                <a href="#" onclick="App.switchView('drafts', event)" data-target="drafts" class="nav-item">✍️ مسودة الإنجازات</a>
+                <a href="#" onclick="App.switchView('report', event)" data-target="report" class="nav-item">📄 التقرير الشهري</a>
+                <a href="#" onclick="App.switchView('stats', event)" data-target="stats" class="nav-item">📈 إحصائيات الأداء</a>
+            </nav>
+
+            <button onclick="App.handleLogout()" class="btn-secondary" style="margin-top:auto; color:#EF4444; border-color:#EF4444;">🚪 تسجيل الخروج</button>
+        </aside>
+
+        <main style="padding:40px; height:100vh; overflow-y:auto; position: relative;">
+            
+            <div id="view-dashboard" class="app-view active">
+                <header style="margin-bottom: 40px;">
+                    <h1 style="font-size: 2rem;">مرحباً، <span id="user-name" style="color:var(--primary);"></span> 👋</h1>
+                    <p style="color:var(--text-muted); margin-top:8px;">وثقي مهامك بذكاء، ودعي الباقي علينا.</p>
+                </header>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+                    <div style="display:flex; flex-direction:column; gap:32px;">
+                        <div class="ui-card">
+                            <h3 style="margin-bottom: 24px;">✍️ تدوين نشاط جديد</h3>
+                            <form id="journal-form" onsubmit="App.saveEntry(event)">
+                                <select id="category" required>
+                                    <option value="تصميم واجهات (UI/UX)">تصميم واجهات (UI/UX)</option>
+                                    <option value="برمجة وتطوير (Front-end)">برمجة وتطوير (Front-end)</option>
+                                    <option value="أبحاث مستخدمين (HCI)">أبحاث مستخدمين (HCI)</option>
+                                    <option value="اجتماع فريق">اجتماع فريق</option>
+                                </select>
+                                <textarea id="accomplish" rows="3" required placeholder="ما الذي أنجزته تحديداً؟"></textarea>
+                                <textarea id="learn" rows="2" placeholder="هل تعلمت مهارة جديدة اليوم؟ (اختياري)"></textarea>
+                                <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">حفظ الإنجاز</button>
+                            </form>
+                        </div>
+                        <div class="ui-card">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                                <h3>🤖 التلخيص الذكي</h3>
+                                <button onclick="App.generateAISummary()" class="btn-secondary" style="padding:6px 12px; font-size:0.85rem;">توليد الآن ⚡</button>
+                            </div>
+                            <div id="ai-output" class="ai-box">اضغطي بالأعلى ليقوم الذكاء الاصطناعي بالصياغة.</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 24px;">سجل النشاطات التراكمي</h3>
+                        <div id="entries-list" style="display:flex; flex-direction:column; gap:16px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-drafts" class="app-view">
+                <header style="margin-bottom: 40px;">
+                    <h1 style="font-size: 2rem;">✍️ مسودة الإنجازات</h1>
+                    <p style="color:var(--text-muted); margin-top:8px;">راجعي وعدلي على تدويناتك السابقة قبل اعتماد التقرير.</p>
+                </header>
+                <div class="ui-card text-center" style="padding: 60px;">
+                    <span style="font-size: 3rem;">📝</span>
+                    <h3 style="margin-top: 20px;">مساحة المراجعة</h3>
+                    <p style="color: var(--text-muted); margin-top: 10px;">سيتم عرض جميع مدخلاتك هنا لتتمكني من تعديلها أو حذفها لاحقاً.</p>
+                </div>
+            </div>
+
+            <div id="view-report" class="app-view">
+                <header style="margin-bottom: 40px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <h1 style="font-size: 2rem;">📄 التقرير الشهري</h1>
+                        <p style="color:var(--text-muted); margin-top:8px;">تقريرك جاهز للطباعة والمشاركة مع المشرف.</p>
+                    </div>
+                    <button class="btn-primary" onclick="window.print()">🖨️ طباعة أو تصدير PDF</button>
+                </header>
+                <div class="ui-card printable-area" style="min-height: 500px; background: #fff; color: #000;">
+                    <div style="text-align:center; border-bottom:2px solid #eee; padding-bottom:20px; margin-bottom: 30px;">
+                        <h2>تقرير الأداء الشهري للمتدرب</h2>
+                        <p style="margin-top: 10px; color: #555;">يتم إنشاء هذا التقرير آلياً بناءً على المدخلات اليومية</p>
+                    </div>
+                    <div id="report-content" style="line-height: 1.8; font-size: 1.1rem;">
+                        <p>هنا سيتم سرد إنجازاتك بشكل منسق ورسمي لتقديمه لجهة التدريب...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-stats" class="app-view">
+                <header style="margin-bottom: 40px;">
+                    <h1 style="font-size: 2rem;">📈 إحصائيات الأداء</h1>
+                    <p style="color:var(--text-muted); margin-top:8px;">تحليل بصري لجهدك وساعات عملك خلال فترة التدريب.</p>
+                </header>
+                <div class="ui-card text-center" style="padding: 60px;">
+                    <span style="font-size: 3rem;">📊</span>
+                    <h3 style="margin-top: 20px;">الرسوم البيانية قيد التجهيز</h3>
+                    <p style="color: var(--text-muted); margin-top: 10px;">سيتم ربط مكتبة Chart.js هنا لعرض تقدمك الأسبوعي وتوزيع مهامك.</p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
