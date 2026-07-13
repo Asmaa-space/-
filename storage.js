@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة تقريري | نسخة الجوال الاحترافية</title>
+    <title>منصة تقريري | النسخة الإنتاجية المستقرة v1.0</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,384 +15,712 @@
            1. نظام تصميم المكونات الثابت والمتغيرات البصرية (SaaS Design Tokens)
            ========================================================================== */
         :root {
-            --bg-base: #090D16; --bg-surface: #1E293B; --bg-surface-hover: #2E3B4E; --bg-input: #0F172A;
-            --border-color: rgba(255, 255, 255, 0.08); --border-focus: #6366F1;
-            --primary: #6366F1; --primary-hover: #4F46E5; --primary-glow: rgba(99, 102, 241, 0.25);
-            --accent: #10B981; --danger: #EF4444; --warning: #F59E0B; --info: #3B82F6;
-            --text-main: #F8FAFC; --text-muted: #94A3B8; --text-inverse: #0F172A;
-            --font-ar: 'Cairo', system-ui, sans-serif; --font-en: 'Inter', system-ui, sans-serif;
-            --radius-sm: 6px; --radius-md: 12px; --radius-lg: 16px; --radius-circle: 50%;
+            --bg-base: #090D16;
+            --bg-surface: #1E293B;
+            --bg-surface-hover: #2E3B4E;
+            --bg-input: #0F172A;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --border-focus: #6366F1;
+            
+            --primary: #6366F1;
+            --primary-hover: #4F46E5;
+            --primary-glow: rgba(99, 102, 241, 0.25);
+            --accent: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --info: #3B82F6;
+
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --text-inverse: #0F172A;
+
+            --font-ar: 'Cairo', system-ui, sans-serif;
+            --font-en: 'Inter', system-ui, sans-serif;
+            
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-circle: 50%;
+            
             --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px; --space-6: 32px;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05); --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1); --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            
+            --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --layer-base: 1; --layer-nav: 100; --layer-overlay: 500; --layer-toast: 1000;
         }
 
         [data-theme="light"] {
-            --bg-base: #F8FAFC; --bg-surface: #FFFFFF; --bg-surface-hover: #F1F5F9; --bg-input: #FFFFFF;
-            --border-color: #E2E8F0; --text-main: #0F172A; --text-muted: #64748B;
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+            --bg-base: #F8FAFC;
+            --bg-surface: #FFFFFF;
+            --bg-surface-hover: #F1F5F9;
+            --bg-input: #FFFFFF;
+            --border-color: #E2E8F0;
+            --border-focus: #4F46E5;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.04);
         }
 
-        [dir="rtl"] { font-family: var(--font-ar); } [dir="ltr"] { font-family: var(--font-en); }
+        [dir="rtl"] { font-family: var(--font-ar); }
+        [dir="ltr"] { font-family: var(--font-en); }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
-        
-        body, html {
-            background-color: var(--bg-base); color: var(--text-main); font-family: inherit;
-            line-height: 1.5; overflow-x: hidden; width: 100%; height: 100%;
+        body {
+            background-color: var(--bg-base); color: var(--text-main);
+            font-family: inherit; line-height: 1.5; overflow: hidden;
             transition: background-color 0.25s ease, color 0.25s ease;
         }
 
-        *:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+        /* التركيز لتسهيل الوصول والملاحة عبر لوحة المفاتيح WCAG 2.2 */
+        *:focus-visible {
+            outline: 2px solid var(--border-focus);
+            outline-offset: 2px;
+        }
+
         .hidden { display: none !important; }
         .text-gradient { background: linear-gradient(135deg, var(--primary), #8B5CF6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .badge { display: inline-flex; align-items: center; padding: 4px 10px; font-size: 0.8rem; font-weight: 700; border-radius: var(--radius-sm); background-color: rgba(99, 102, 241, 0.1); color: var(--primary); border: 1px solid rgba(99, 102, 241, 0.15); }
 
         /* ==========================================================================
-           2. معالج الإعداد الترحيبي (Onboarding Wizard)
+           2. معالج الإعداد الترحيبي العابر للجامعات والمنظمات (Onboarding Wizard)
            ========================================================================== */
-        .onboarding-screen { position: fixed; inset: 0; background-color: var(--bg-base); z-index: 1500; display: flex; align-items: center; justify-content: center; padding: var(--space-4); overflow-y: auto; }
-        .wizard-container { width: 100%; max-width: 700px; background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: var(--space-5); margin: auto; }
-        .wizard-header { text-align: center; margin-bottom: var(--space-4); }
+        .onboarding-screen {
+            position: fixed; inset: 0; background-color: var(--bg-base);
+            z-index: var(--layer-overlay); display: flex; align-items: center;
+            justify-content: center; padding: var(--space-4); overflow-y: auto;
+        }
+        .wizard-container {
+            width: 100%; max-width: 700px; background-color: var(--bg-surface);
+            border: 1px solid var(--border-color); border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg); padding: var(--space-5);
+            display: flex; flex-direction: column; gap: var(--space-4);
+        }
+        .wizard-header { text-align: center; margin-bottom: var(--space-2); }
+        
         .stepper-axis { display: flex; justify-content: space-between; position: relative; margin-bottom: var(--space-5); }
         .stepper-axis::before { content: ''; position: absolute; top: 15px; left: 0; right: 0; height: 3px; background-color: var(--border-color); z-index: 1; }
         .stepper-progress-bar { position: absolute; top: 15px; right: 0; left: 100%; height: 3px; background-color: var(--primary); z-index: 2; transition: var(--transition-smooth); }
         [dir="ltr"] .stepper-progress-bar { right: 100%; left: 0; }
-        .step-node { width: 32px; height: 32px; border-radius: var(--radius-circle); background-color: var(--bg-base); border: 2px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.85rem; z-index: 3; transition: var(--transition-smooth); color: var(--text-muted); }
+        
+        .step-node {
+            width: 32px; height: 32px; border-radius: var(--radius-circle);
+            background-color: var(--bg-base); border: 2px solid var(--border-color);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 0.85rem; z-index: 3; transition: var(--transition-smooth);
+            color: var(--text-muted);
+        }
         .step-node.active { border-color: var(--primary); background-color: var(--primary); color: #fff; box-shadow: 0 0 10px var(--primary-glow); }
         .step-node.completed { border-color: var(--accent); background-color: var(--accent); color: #fff; }
-        .wizard-step-panel { display: none; animation: stepFadeIn 0.25s ease forwards; }
+
+        .wizard-step-panel { display: none; animation: stepFadeIn 0.25s ease-in-out forwards; }
         .wizard-step-panel.active { display: block; }
         @keyframes stepFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
         .form-group { display: flex; flex-direction: column; gap: var(--space-2); }
         .form-group.full-width { grid-column: span 2; }
-        .form-label { font-size: 0.9rem; font-weight: 600; }
-        .wizard-actions { display: flex; justify-content: space-between; margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--border-color); gap: var(--space-2); flex-wrap: wrap; }
+        
+        .form-label { font-size: 0.9rem; font-weight: 600; color: var(--text-main); }
+        .form-label span.required { color: var(--danger); margin-inline-start: 2px; }
+
+        .wizard-actions { display: flex; justify-content: space-between; margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--border-color); }
 
         /* ==========================================================================
-           3. الهيكل المعماري والتنقل (Layout & Navigation)
+           3. المكونات المعمارية لـ SaaS App Shell (Responsive Layout Grid)
            ========================================================================== */
-        .app-shell { display: grid; grid-template-columns: 270px 1fr; height: 100vh; width: 100%; overflow: hidden; position: relative; }
-        
-        /* تأثير التعتيم للخلفية في الجوال */
-        .mobile-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(2px); z-index: 400; opacity: 0; pointer-events: none; transition: var(--transition-smooth); }
-        .mobile-overlay.active { opacity: 1; pointer-events: auto; }
-
-        .sidebar { background-color: var(--bg-surface); border-inline-end: 1px solid var(--border-color); padding: var(--space-4) var(--space-3); display: flex; flex-direction: column; z-index: 500; }
-        .sidebar-brand { font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-5); padding: 0 var(--space-2); }
-        .close-sidebar-btn { display: none; background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
-        
+        .app-shell { display: grid; grid-template-columns: 270px 1fr; height: 100vh; width: 100vw; position: relative; }
+        .sidebar { background-color: var(--bg-surface); border-inline-end: 1px solid var(--border-color); padding: var(--space-5); display: flex; flex-direction: column; z-index: var(--layer-nav); }
+        .sidebar-brand { font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-6); }
         .sidebar-menu { display: flex; flex-direction: column; gap: var(--space-1); flex: 1; overflow-y: auto; }
-        .menu-item { display: flex; align-items: center; gap: var(--space-3); padding: 0 var(--space-3); min-height: 48px; border-radius: var(--radius-md); color: var(--text-muted); font-weight: 600; text-decoration: none; cursor: pointer; transition: var(--transition-smooth); user-select: none; }
+        .menu-item { display: flex; align-items: center; gap: var(--space-3); padding: 12px var(--space-4); border-radius: var(--radius-md); color: var(--text-muted); font-weight: 600; text-decoration: none; cursor: pointer; transition: var(--transition-smooth); user-select: none; }
         .menu-item:hover, .menu-item.active { background-color: rgba(99, 102, 241, 0.08); color: var(--primary); }
-        .menu-item.danger-link { color: var(--danger); margin-top: auto; }
-        .menu-item.danger-link:hover { background-color: rgba(239, 68, 68, 0.1); }
 
-        .main-frame { display: flex; flex-direction: column; overflow: hidden; width: 100%; position: relative; }
+        .main-frame { display: flex; flex-direction: column; overflow: hidden; position: relative; }
         .top-bar { height: 70px; background-color: var(--bg-surface); border-bottom: 1px solid var(--border-color); padding: 0 var(--space-5); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-        
-        .mobile-menu-toggle { display: none; background: transparent; border: 1px solid var(--border-color); color: var(--text-main); font-size: 1.2rem; border-radius: var(--radius-md); width: 44px; height: 44px; align-items: center; justify-content: center; cursor: pointer; }
-        
-        .breadcrumbs { font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: var(--space-2); }
-        .top-bar-actions { display: flex; align-items: center; gap: var(--space-2); }
+        .breadcrumbs { display: flex; align-items: center; gap: var(--space-2); font-size: 0.9rem; font-weight: 600; }
+        .breadcrumbs span.separator { color: var(--text-muted); }
+        .breadcrumbs span.current { color: var(--text-main); }
+        .top-bar-actions { display: flex; align-items: center; gap: var(--space-3); }
 
-        /* الأزرار والإدخالات مهيأة للمس (Touch Targets) */
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); padding: 0 var(--space-4); min-height: 44px; border-radius: var(--radius-md); font-weight: 600; font-size: 0.95rem; cursor: pointer; border: 1px solid transparent; transition: var(--transition-smooth); white-space: nowrap; }
+        /* الأزرار وعناصر الإدخال المعيارية السلسة */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); padding: 10px 20px; border-radius: var(--radius-md); font-weight: 600; font-size: 0.95rem; cursor: pointer; border: 1px solid transparent; transition: var(--transition-smooth); font-family: inherit; user-select: none; }
         .btn-primary { background-color: var(--primary); color: #fff; box-shadow: 0 4px 12px var(--primary-glow); }
         .btn-primary:hover { background-color: var(--primary-hover); }
         .btn-secondary { background-color: transparent; border-color: var(--border-color); color: var(--text-main); }
         .btn-secondary:hover { background-color: var(--bg-surface-hover); }
         .btn-danger { background-color: rgba(239, 68, 68, 0.08); color: var(--danger); border-color: rgba(239, 68, 68, 0.15); }
+        .btn-danger:hover { background-color: var(--danger); color: #fff; }
 
-        .input-element, .select-element, .textarea-element { width: 100%; min-height: 48px; padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background-color: var(--bg-input); color: var(--text-main); font-family: inherit; font-size: 1rem; outline: none; transition: var(--transition-smooth); }
-        .textarea-element { min-height: 100px; resize: vertical; }
+        .input-element, .select-element, .textarea-element { width: 100%; padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background-color: var(--bg-input); color: var(--text-main); font-family: inherit; outline: none; transition: var(--transition-smooth); font-size: 0.95rem; }
+        .input-element:focus, .select-element:focus, .textarea-element:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px var(--primary-glow); }
 
-        .view-content { flex: 1; padding: var(--space-5); overflow-y: auto; overflow-x: hidden; position: relative; width: 100%; }
-        .app-view { display: none; animation: viewFadeIn 0.3s ease forwards; }
+        .view-content { flex: 1; padding: var(--space-5); overflow-y: auto; position: relative; }
+        .app-view { display: none; animation: viewFadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         .app-view.active { display: block; }
-        @keyframes viewFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes viewFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        .ui-card { background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: var(--space-5); box-shadow: var(--shadow-md); overflow: hidden; }
+        .ui-card { background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: var(--space-5); box-shadow: var(--shadow-md); position: relative; }
 
-        /* ==========================================================================
-           4. الشبكات والمكونات (Dashboard Grids & Components)
-           ========================================================================== */
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-4); }
+        /* الأنظمة الفرعية والشبكات من المرحلة الثالثة */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-5); }
         .kpi-card { display: flex; align-items: center; justify-content: space-between; }
         .kpi-val { font-size: 2.2rem; font-weight: 800; color: var(--primary); line-height: 1.2; margin-top: var(--space-1); }
 
-        .timeline-stream { display: flex; flex-direction: column; gap: var(--space-4); margin-top: var(--space-4); }
-        .timeline-node { display: grid; grid-template-columns: auto 1fr; gap: var(--space-3); position: relative; }
+        .timeline-stream { display: flex; flex-direction: column; gap: var(--space-4); position: relative; margin-top: var(--space-4); }
+        .timeline-node { display: grid; grid-template-columns: auto 1fr; gap: var(--space-4); position: relative; }
         .timeline-axis { width: 2px; background-color: var(--border-color); position: absolute; top: 32px; bottom: -24px; left: 15px; }
         [dir="ltr"] .timeline-axis { left: auto; right: 15px; }
         .timeline-dot { width: 32px; height: 32px; border-radius: var(--radius-circle); background-color: var(--bg-input); border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; z-index: 2; }
-        .timeline-body { background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: var(--space-4); }
+        .timeline-body { background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: var(--space-4); transition: var(--transition-smooth); }
+        .timeline-body:hover { border-color: var(--primary); }
+
+        .matrix-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-4); }
+        .skill-progress-track { height: 6px; background-color: var(--bg-input); border-radius: var(--radius-sm); overflow: hidden; margin-top: var(--space-2); position: relative; }
+        .skill-progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), #8B5CF6); border-radius: var(--radius-sm); transition: width 0.4s ease; }
+
+        .vault-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-4); }
+        .vault-item { background-color: var(--bg-input); border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden; display: flex; flex-direction: column; transition: var(--transition-smooth); }
+        .vault-item:hover { transform: translateY(-2px); border-color: var(--primary); }
+        .vault-preview-box { height: 120px; background-color: #05070f; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; font-size: 2rem; }
+        .vault-preview-box img { width: 100%; height: 100%; object-fit: cover; }
+        .vault-info-box { padding: var(--space-3); flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-2); }
+
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--space-2); text-align: center; margin-top: var(--space-3); }
+        .calendar-header-cell { font-weight: 700; color: var(--text-muted); padding: var(--space-2); font-size: 0.85rem; }
+        .calendar-day-cell { background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-sm); min-height: 80px; padding: var(--space-1); display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; cursor: pointer; transition: var(--transition-smooth); }
+        .calendar-day-cell:hover { background-color: var(--bg-surface-hover); border-color: var(--primary); }
+        .calendar-day-number { font-weight: 700; font-size: 0.85rem; margin-bottom: var(--space-1); padding: 2px 6px; border-radius: 4px; }
+        .calendar-day-cell.current-day .calendar-day-number { background-color: var(--primary); color: #fff; }
+        .calendar-indicator-dot { width: 6px; height: 6px; border-radius: 50%; background-color: var(--accent); display: inline-block; align-self: center; margin-bottom: var(--space-1); }
 
         /* ==========================================================================
-           5. محرك التقارير (Reports Engine)
+           4. واجهات ومكونات محرك التقارير الأكاديمي المتقدم (Milestone 4 Engine UI)
            ========================================================================== */
-        .report-controls-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-3); margin-bottom: var(--space-4); }
-        .academic-paper-wrapper { width: 100%; overflow-x: auto; padding-bottom: 20px; }
-        .academic-paper-canvas { background-color: #ffffff; color: #1E293B; padding: 40px; box-shadow: var(--shadow-lg); border-radius: var(--radius-sm); min-width: 700px; max-width: 840px; margin: 0 auto; border: 1px solid #CBD5E1; transition: var(--transition-smooth); }
-        .report-rich-editor { outline: none; line-height: 1.8; font-size: 1.05rem; min-height: 300px; margin-top: var(--space-4); text-align: justify; }
+        .report-controls-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-3); margin-bottom: var(--space-4); }
+        
+        .academic-paper-canvas {
+            background-color: #ffffff; color: #1E293B; padding: 50px;
+            box-shadow: var(--shadow-lg); border-radius: var(--radius-sm);
+            max-width: 840px; margin: 0 auto; min-height: 1000px;
+            border: 1px solid #CBD5E1; transition: var(--transition-smooth); position: relative;
+        }
+        .report-rich-editor {
+            outline: none; line-height: 1.8; font-size: 1.05rem; color: #334155;
+            min-height: 400px; margin-top: var(--space-4); text-align: justify;
+        }
+        .report-rich-editor p { margin-bottom: 1.2rem; }
+        .report-rich-editor h3 { color: #1E293B; border-bottom: 2px solid #E2E8F0; padding-bottom: 6px; margin-top: 1.8rem; margin-bottom: 1rem; font-size: 1.3rem; }
+        
+        .canvas-template-executive { border-top: 8px solid #4F46E5; }
+        .canvas-template-reflective { border-top: 8px solid #059669; background-color: #F8FAFC; }
+
         .report-meta-table { width: 100%; border-collapse: collapse; margin: var(--space-4) 0; font-size: 0.95rem; }
-        .report-meta-table td, .report-meta-table th { border: 1px solid #E2E8F0; padding: 12px; text-align: start; }
-        .report-meta-table th { background-color: #F8FAFC; color: #1E293B; }
-        .report-signatures-area { display: flex; justify-content: space-between; margin-top: 50px; padding-top: var(--space-4); flex-wrap: wrap; gap: 20px; }
-        .signature-line { width: 200px; border-top: 1px solid #94A3B8; text-align: center; padding-top: var(--space-2); font-weight: 600; font-size: 0.9rem; }
+        .report-meta-table td, .report-meta-table th { border: 1px solid #E2E8F0; padding: 12px 14px; text-align: start; }
+        .report-meta-table th { background-color: #F8FAFC; color: #1E293B; font-weight: 700; }
+
+        .report-signatures-area { display: flex; justify-content: space-between; margin-top: 60px; padding-top: var(--space-4); }
+        .signature-line { width: 220px; border-top: 1px solid #94A3B8; text-align: center; padding-top: var(--space-2); font-weight: 600; font-size: 0.9rem; color: #475569; }
 
         /* ==========================================================================
-           6. التصميم المتجاوب العابر لجميع الشاشات والجوال (Mobile Responsiveness)
+           5. الأنظمة العامة والإشعارات الفورية (Toasts & Loading System)
+           ========================================================================== */
+        #toast-delivery { position: fixed; bottom: var(--space-5); left: var(--space-5); z-index: var(--layer-toast); display: flex; flex-direction: column; gap: var(--space-2); }
+        [dir="ltr"] #toast-delivery { left: auto; right: var(--space-5); }
+        .toast-bubble { background-color: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); padding: var(--space-3) var(--space-5); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: var(--space-3); font-weight: 600; animation: toastSlideIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes toastSlideIn { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .loading-mask { position: fixed; inset: 0; background-color: rgba(9, 13, 22, 0.82); backdrop-filter: blur(4px); z-index: var(--layer-overlay); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+        .loading-mask.visible { opacity: 1; pointer-events: auto; }
+        .spinner-ring { width: 42px; height: 42px; border: 3px solid rgba(99, 102, 241, 0.15); border-radius: 50%; border-top-color: var(--primary); animation: spinRing 0.75s linear infinite; }
+        @keyframes spinRing { to { transform: rotate(360deg); } }
+
+        /* ==========================================================================
+           6. التصميم المتجاوب العابر لجميع الشاشات والمقاسات (SaaS Responsive Grid)
            ========================================================================== */
         @media (max-width: 1024px) {
             .app-shell { grid-template-columns: 1fr; }
-            .mobile-menu-toggle { display: flex; }
-            .close-sidebar-btn { display: block; }
-            
-            /* سلوك القائمة المنسدلة الجانبية (Drawer) */
-            .sidebar { position: fixed; top: 0; bottom: 0; right: -320px; width: 280px; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: -5px 0 25px rgba(0,0,0,0.5); }
-            .sidebar.active { right: 0; }
-            [dir="ltr"] .sidebar { right: auto; left: -320px; box-shadow: 5px 0 25px rgba(0,0,0,0.5); }
-            [dir="ltr"] .sidebar.active { left: 0; }
+            .sidebar { display: none; }
+            .top-bar { padding: 0 var(--space-4); }
         }
 
         @media (max-width: 640px) {
-            /* تعديلات الهيكل والأشرطة العلوية */
-            .top-bar { height: 60px; padding: 0 var(--space-3); }
-            .breadcrumbs { font-size: 0.85rem; }
-            .top-bar-actions .btn { padding: 0 var(--space-2); min-width: 40px; }
-            #user-avatar { width: 34px !important; height: 34px !important; font-size: 0.8rem; }
-            
-            .view-content { padding: var(--space-3); }
-            
-            /* معالجة النماذج والإدخالات */
-            .form-grid { grid-template-columns: 1fr; gap: var(--space-3); }
-            .wizard-container { padding: var(--space-4) var(--space-3); margin: var(--space-2); border-radius: var(--radius-md); }
-            .wizard-actions { flex-direction: column-reverse; }
-            .wizard-actions .btn { width: 100%; }
-            
-            /* إصلاح بطاقات الإحصائيات (تأخذ العرض كاملاً لتكون واضحة) */
-            .dashboard-grid { grid-template-columns: 1fr; gap: var(--space-3); margin-bottom: var(--space-3); }
-            .ui-card { padding: var(--space-4); border-radius: var(--radius-md); }
-            
-            .kpi-card { flex-direction: row; align-items: center; justify-content: space-between; }
-            .kpi-val { font-size: 1.8rem; margin-top: 0; }
-            .kpi-card .text-muted { font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 2px; }
-            
-            /* إصلاح الرسوم البيانية */
-            #chart-dashboard-categories { height: 260px !important; width: 100% !important; }
-            
-            /* إحكام السجل والمهام */
-            .timeline-node { gap: var(--space-2); }
-            .timeline-axis { left: 11px; }
-            [dir="ltr"] .timeline-axis { right: 11px; }
-            .timeline-dot { width: 24px; height: 24px; font-size: 0.6rem; }
-            .timeline-body { padding: var(--space-3); }
-            
-            /* أزرار الإجراءات داخل الصفحات */
-            .view-content .btn-primary { width: 100%; justify-content: center; margin-bottom: var(--space-2); }
-            #view-journal > div:first-child { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
-            #view-journal > div:first-child button { width: 100%; }
-
-            /* التقارير على الجوال */
-            .academic-paper-canvas { padding: 20px; min-width: 600px; /* سيتيح التمرير الأفقي بسلاسة داخل الحاوية وليس في الشاشة */ }
-            .report-controls-panel .btn { width: 100%; margin-bottom: var(--space-2); }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: span 1; }
+            .academic-paper-canvas { padding: var(--space-4); }
+            .report-signatures-area { flex-direction: column; gap: var(--space-5); align-items: center; }
         }
 
         /* ==========================================================================
-           7. هندسة الطباعة
+           7. هندسة محرك الطباعة والـ PDF الاحترافي (Academic Print Stylesheet)
            ========================================================================== */
         @media print {
             body { background: #ffffff !important; color: #000000 !important; overflow: visible !important; }
-            .sidebar, .top-bar, .report-controls-panel, .mobile-overlay, .no-print { display: none !important; }
+            .sidebar, .top-bar, .report-controls-panel, #toast-delivery, .loading-mask, .no-print, .hidden-desktop, .mobile-overlay { display: none !important; }
             .app-shell { grid-template-columns: 1fr !important; }
+            .main-frame { overflow: visible !important; display: block !important; }
             .view-content { padding: 0 !important; overflow: visible !important; }
-            .academic-paper-wrapper { overflow: visible !important; }
-            .academic-paper-canvas { box-shadow: none !important; border: none !important; padding: 0 !important; max-width: 100% !important; min-width: 100% !important; margin: 0 !important; }
+            .academic-paper-canvas { box-shadow: none !important; border: none !important; padding: 0 !important; max-width: 100% !important; margin: 0 !important; }
+            .report-rich-editor { color: #000000 !important; }
+            .report-meta-table th { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+
+        /* ==========================================================================
+           8. تحسينات الجوال المطلوبة (Mobile Responsive Fixes - Minimal)
+           ========================================================================== */
+        .hidden-desktop { display: none !important; }
+        .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(9, 13, 22, 0.6); backdrop-filter: blur(2px); z-index: 9998; transition: opacity 0.3s; opacity: 0; }
+        .mobile-overlay.active { display: block; opacity: 1; }
+
+        @media (max-width: 1024px) {
+            .sidebar { 
+                display: flex !important; 
+                position: fixed; top: 0; bottom: 0; right: -320px; 
+                width: 280px; z-index: 9999; 
+                box-shadow: -5px 0 25px rgba(0,0,0,0.5); 
+                transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            }
+            [dir="ltr"] .sidebar { right: auto; left: -320px; box-shadow: 5px 0 25px rgba(0,0,0,0.5); transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+            .sidebar.mobile-open { right: 0; }
+            [dir="ltr"] .sidebar.mobile-open { left: 0; }
+            .hidden-desktop { display: flex !important; }
+        }
+
+        @media (max-width: 640px) {
+            .view-content { padding: var(--space-3); overflow-x: hidden; }
+            .ui-card { padding: var(--space-3); max-width: 100%; box-sizing: border-box; }
+            .wizard-container { width: calc(100% - var(--space-4)); padding: var(--space-4) var(--space-3); margin: var(--space-2) auto; }
+            
+            /* تكبير مناطق الضغط لتناسب اللمس */
+            .btn, .menu-item, .input-element, .select-element { min-height: 44px; }
+            
+            /* الإحصائيات في شبكة 2x2 */
+            .dashboard-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; margin-bottom: var(--space-3) !important; }
+            .kpi-card { flex-direction: column; align-items: flex-start; padding: var(--space-2) !important; justify-content: center; }
+            .kpi-card > div { display: flex; flex-direction: column; gap: 2px; }
+            .kpi-card .text-muted { font-size: 0.7rem !important; white-space: normal; line-height: 1.2; }
+            .kpi-val { font-size: 1.5rem !important; margin-top: 0 !important; }
+            .kpi-card > span:last-child { align-self: flex-end; font-size: 1.3rem !important; margin-top: -20px; }
+
+            /* منع الخروج عن الشاشة والـ Horizontal Scroll */
+            .academic-paper-canvas { min-width: 100% !important; padding: var(--space-3) !important; box-sizing: border-box; }
+            .report-meta-table { display: block; width: 100%; overflow-x: auto; white-space: nowrap; }
+            .report-signatures-area { flex-direction: column; align-items: center; gap: 20px; }
+            
+            /* النماذج والتنقل */
+            .form-grid { grid-template-columns: 1fr !important; }
+            .form-group.full-width { grid-column: span 1 !important; }
+            .top-bar-actions { gap: var(--space-1); }
+            .top-bar-actions .btn { padding: 4px 10px; font-size: 0.8rem; }
+            .breadcrumbs { font-size: 0.8rem; }
+            .top-bar { height: 60px; padding: 0 var(--space-3); }
+
+            /* الرسم البياني للجوال */
+            #report-canvas-charts-container, .ui-card > div[style*="height:280px"] {
+                height: 240px !important; width: 100% !important;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="mobile-overlay" id="mobile-overlay" onclick="MobileNav.close()"></div>
+    <div id="loading-overlay" class="loading-mask" role="status" aria-label="جاري تحميل النظام">
+        <div class="spinner-ring"></div>
+    </div>
+
+    <div id="toast-delivery" aria-live="polite" aria-atomic="true"></div>
+
+    <div id="mobile-overlay-bg" class="mobile-overlay hidden-desktop" onclick="document.querySelector('.sidebar').classList.remove('mobile-open'); this.classList.remove('active');"></div>
 
     <div id="onboarding-layer" class="onboarding-screen hidden">
-        <div class="wizard-container" role="dialog">
+        <div class="wizard-container" role="dialog" aria-labelledby="wizard-main-title">
             <header class="wizard-header">
-                <h2 id="wizard-main-title" class="text-gradient">تهيئة ملف التدريب</h2>
+                <h1 id="wizard-main-title" class="text-gradient">تهيئة ملف التدريب الاحترافي</h1>
+                <p class="text-muted">نظام الإعداد الذكي المتوافق مع معايير الجودة والحوسبة الإنسانية المتقدمة</p>
             </header>
-            <div class="stepper-axis">
+
+            <div class="stepper-axis" aria-hidden="true">
                 <div class="stepper-progress-bar" id="wizard-progress-bar"></div>
                 <div class="step-node active" id="step-node-1">1</div>
                 <div class="step-node" id="step-node-2">2</div>
                 <div class="step-node" id="step-node-3">3</div>
                 <div class="step-node" id="step-node-4">4</div>
             </div>
+
             <form id="onboarding-core-form" onsubmit="WizardEngine.handleSubmit(event)">
                 <div class="wizard-step-panel active" id="wizard-step-1">
                     <div class="form-grid">
-                        <div class="form-group full-width"><label class="form-label">الاسم الكامل للمتدرب</label><input type="text" id="wz-name" class="input-element" required></div>
-                        <div class="form-group"><label class="form-label">المدينة</label><input type="text" id="wz-city" class="input-element" required value="مكة المكرمة"></div>
-                        <div class="form-group"><label class="form-label">الدولة</label><input type="text" id="wz-country" class="input-element" required value="السعودية"></div>
+                        <div class="form-group full-width">
+                            <label class="form-label" for="wz-name">الاسم الكامل للمتدرب<span class="required">*</span></label>
+                            <input type="text" id="wz-name" class="input-element" required placeholder="مثال: أسماء محمد مرزوق الكبكبي">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="wz-city">مدينة التدريب الحالي<span class="required">*</span></label>
+                            <input type="text" id="wz-city" class="input-element" required placeholder="مثال: مكة المكرمة">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="wz-country">الدولة<span class="required">*</span></label>
+                            <input type="text" id="wz-country" class="input-element" required value="المملكة العربية السعودية">
+                        </div>
                     </div>
                 </div>
+
                 <div class="wizard-step-panel" id="wizard-step-2">
                     <div class="form-grid">
-                        <div class="form-group full-width"><label class="form-label">الجامعة</label><input type="text" id="wz-uni" class="input-element" required value="جامعة أم القرى"></div>
-                        <div class="form-group"><label class="form-label">الكلية</label><input type="text" id="wz-college" class="input-element" required></div>
-                        <div class="form-group"><label class="form-label">التخصص</label><input type="text" id="wz-major" class="input-element" required></div>
+                        <div class="form-group full-width">
+                            <label class="form-label" for="wz-uni">الجامعة أو المنشأة الأكاديمية<span class="required">*</span></label>
+                            <input type="text" id="wz-uni" class="input-element" required placeholder="مثال: جامعة أم القرى">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="wz-college">الكلية<span class="required">*</span></label>
+                            <input type="text" id="wz-college" class="input-element" required placeholder="مثال: كلية الحاسب الآلي ونظم المعلومات">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="wz-major">التخصص الأكاديمي الرئيسي<span class="required">*</span></label>
+                            <input type="text" id="wz-major" class="input-element" required placeholder="التفاعل بين الإنسان والحاسوب (HCI)">
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label" for="wz-track">المسار الدقيق / الفرعي (إن وجد)</label>
+                            <input type="text" id="wz-track" class="input-element" placeholder="مثال: تجربة المستخدم والوصول الرقمي UX/Accessibility">
+                        </div>
                     </div>
                 </div>
+
                 <div class="wizard-step-panel" id="wizard-step-3">
                     <div class="form-grid">
-                        <div class="form-group"><label class="form-label">جهة التدريب</label><input type="text" id="wz-comp" class="input-element" required value="سلة Salla"></div>
-                        <div class="form-group"><label class="form-label">القسم</label><input type="text" id="wz-dept" class="input-element" required></div>
-                        <div class="form-group full-width"><label class="form-label">اسم المشرف</label><input type="text" id="wz-super" class="input-element" required></div>
+                        <div class="form-group">
+                            <label class="form-label" for="wz-comp">جهة التدريب (الشركة / المنظمة)<span class="required">*</span></label>
+                            <input type="text" id="wz-comp" class="input-element" required placeholder="مثال: شركة سلة Salla">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="wz-dept">القسم / الإدارة التشغيلية<span class="required">*</span></label>
+                            <input type="text" id="wz-dept" class="input-element" required placeholder="مثال: تصميم المنتجات UX/Product Design">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="wz-super">اسم المشرف المباشر في الجهة<span class="required">*</span></label>
+                            <input type="text" id="wz-super" class="input-element" required placeholder="مثال: د. حنان حياة">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="wz-super-email">البريد الإلكتروني للمشرف<span class="required">*</span></label>
+                            <input type="email" id="wz-super-email" class="input-element" required placeholder="name@organization.com">
+                        </div>
                     </div>
                 </div>
+
                 <div class="wizard-step-panel" id="wizard-step-4">
                     <div class="form-grid">
-                        <div class="form-group"><label class="form-label">الساعات المطلوبة</label><input type="number" id="wz-hrs-target" class="input-element" required value="600"></div>
-                        <div class="form-group"><label class="form-label">تاريخ البدء</label><input type="date" id="wz-start" class="input-element" required></div>
+                        <div class="form-group">
+                            <label class="form-label" for="wz-start">تاريخ بدء التدريب الفعلي<span class="required">*</span></label>
+                            <input type="date" id="wz-start" class="input-element" required value="2026-06-28">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="wz-end">تاريخ انتهاء التدريب المتوقع<span class="required">*</span></label>
+                            <input type="date" id="wz-end" class="input-element" required value="2026-12-28">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="wz-hrs-target">إجمالي الساعات المطلوبة للبرنامج<span class="required">*</span></label>
+                            <input type="number" id="wz-hrs-target" class="input-element" required min="1" max="2000" value="600">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="wz-hrs-daily">ساعات العمل اليومية المعتمدة</label>
+                            <input type="number" id="wz-hrs-daily" class="input-element" min="1" max="12" value="8">
+                        </div>
                     </div>
                 </div>
+
                 <div class="wizard-actions">
                     <button type="button" class="btn btn-secondary hidden" id="wizard-prev-btn" onclick="WizardEngine.prevStep()">السابق</button>
-                    <button type="button" class="btn btn-primary" id="wizard-next-btn" onclick="WizardEngine.nextStep()">التالي</button>
-                    <button type="submit" class="btn btn-primary hidden" id="wizard-submit-btn">إنهاء الإعداد</button>
+                    <button type="button" class="btn btn-primary" id="wizard-next-btn" onclick="WizardEngine.nextStep()">التالي ➔</button>
+                    <button type="submit" class="btn btn-primary hidden" id="wizard-submit-btn">إنهاء وإعداد النظام 🚀</button>
                 </div>
             </form>
         </div>
     </div>
 
     <div class="app-shell" id="main-app-shell">
-        <aside class="sidebar" id="app-sidebar" role="navigation">
-            <div class="sidebar-brand">
-                <span class="text-gradient">✨ تقريري</span>
-                <button class="close-sidebar-btn" onclick="MobileNav.close()">×</button>
+        <aside class="sidebar" role="navigation" aria-label="القائمة الجانبية">
+            <div class="sidebar-brand text-gradient" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <span>✨ تقريري</span>
+                <button class="btn btn-secondary hidden-desktop" style="padding: 0 10px; font-size: 1.2rem; border: none; min-height: 36px;" onclick="document.querySelector('.sidebar').classList.remove('mobile-open'); document.getElementById('mobile-overlay-bg').classList.remove('active');">✕</button>
             </div>
             <nav class="sidebar-menu">
-                <div class="menu-item active" data-view="dashboard" onclick="Router.navigate('dashboard')"><span>📊</span><span data-i18n="nav_dashboard">الرئيسية</span></div>
-                <div class="menu-item" data-view="journal" onclick="Router.navigate('journal')"><span>✍️</span><span data-i18n="nav_journal">المهام</span></div>
-                <div class="menu-item" onclick="Router.navigate('journal'); setTimeout(()=>JournalModule.openForm(), 300); MobileNav.close();"><span>➕</span><span>إضافة إنجاز</span></div>
-                <div class="menu-item" data-view="reports" onclick="Router.navigate('reports')"><span>📄</span><span data-i18n="nav_reports">التقارير</span></div>
-                <div class="menu-item" data-view="calendar" onclick="Router.navigate('calendar')"><span>📅</span><span data-i18n="nav_calendar">التقويم</span></div>
-                <div class="menu-item" data-view="skills" onclick="Router.navigate('skills')"><span>🧠</span><span data-i18n="nav_skills">المهارات والمرفقات</span></div>
+                <div class="menu-item active" data-view="dashboard" onclick="Router.navigate('dashboard')"><span>📊</span><span data-i18n="nav_dashboard">لوحة التحكم</span></div>
+                <div class="menu-item" data-view="journal" onclick="Router.navigate('journal')"><span>✍️</span><span data-i18n="nav_journal">السجل والتوثيق</span></div>
                 
-                <div style="flex:1;"></div> <div class="menu-item" data-view="settings" onclick="Router.navigate('settings')"><span>⚙️</span><span data-i18n="nav_settings">الإعدادات والملف الشخصي</span></div>
-                <div class="menu-item danger-link" onclick="SettingsModule.logout()"><span>🚪</span><span>تسجيل الخروج</span></div>
+                <div class="menu-item" onclick="Router.navigate('journal'); setTimeout(()=>JournalModule.openForm(), 100);"><span>➕</span><span>إضافة إنجاز</span></div>
+
+                <div class="menu-item" data-view="calendar" onclick="Router.navigate('calendar')"><span>📅</span><span data-i18n="nav_calendar">عرض التقويم</span></div>
+                <div class="menu-item" data-view="skills" onclick="Router.navigate('skills')"><span>🧠</span><span data-i18n="nav_skills">مصفوفة المهارات</span></div>
+                <div class="menu-item" data-view="media" onclick="Router.navigate('media')"><span>📦</span><span data-i18n="nav_media">خزانة المرفقات</span></div>
+                <div class="menu-item" data-view="reports" onclick="Router.navigate('reports')"><span>📄</span><span data-i18n="nav_reports">محرك التقارير الذكي</span></div>
+                <div class="menu-item" data-view="settings" onclick="Router.navigate('settings')"><span>⚙️</span><span data-i18n="nav_settings">إعدادات النظام</span></div>
+                
+                <div class="menu-item" style="color: var(--danger);" onclick="if(confirm('تأكيد تسجيل الخروج ومسح بيانات الجلسة؟')) { indexedDB.deleteDatabase('TaqririSaaSDatabase'); location.reload(); }"><span>🚪</span><span>تسجيل الخروج</span></div>
             </nav>
         </aside>
 
         <div class="main-frame" role="main">
             <header class="top-bar">
-                <div class="breadcrumbs">
-                    <button class="mobile-menu-toggle" onclick="MobileNav.toggle()">☰</button>
-                    <span id="current-breadcrumb" style="margin-inline-start: 8px;">الرئيسية</span>
+                <div class="breadcrumbs" id="app-breadcrumbs">
+                    <button class="btn btn-secondary hidden-desktop" style="padding: 0 10px; margin-inline-end: 10px; font-size: 1.2rem; align-items: center; justify-content: center;" onclick="document.querySelector('.sidebar').classList.add('mobile-open'); document.getElementById('mobile-overlay-bg').classList.add('active');">☰</button>
+                    
+                    <span data-i18n="nav_root">الرئيسية</span> <span class="separator">/</span> <span class="current" id="current-breadcrumb">...</span>
                 </div>
                 <div class="top-bar-actions">
-                    <button class="btn btn-secondary" onclick="ThemeEngine.toggle()" style="padding: 0 10px;">🌓</button>
-                    <div style="width: 38px; height: 38px; border-radius: var(--radius-circle); background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff;" id="user-avatar">U</div>
+                    <button class="btn btn-secondary" onclick="ThemeEngine.toggle()" aria-label="تبديل المظهر البصري">🌓</button>
+                    <button class="btn btn-secondary" onclick="I18nEngine.toggleLanguage()" id="lang-indicator-btn">🌐 EN</button>
+                    <div style="width: 38px; height: 38px; border-radius: var(--radius-circle); background: linear-gradient(135deg, var(--primary), #8B5CF6); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff;" id="user-avatar" aria-hidden="true">U</div>
                 </div>
             </header>
 
             <main class="view-content" id="router-view-outlet">
+                
                 <div id="view-dashboard" class="app-view">
                     <div class="dashboard-grid">
                         <div class="ui-card kpi-card">
-                            <div><span class="text-muted">الساعات المنجزة</span><div class="kpi-val" id="kpi-hours-done">0</div></div>
-                            <span style="font-size:2rem;">⏱️</span>
+                            <div><span class="text-muted" style="font-size:0.85rem; font-weight:600;" data-i18n="lbl_total_hours">إجمالي الساعات المنجزة</span><div class="kpi-val" id="kpi-hours-done">0</div></div>
+                            <span style="font-size:2rem;" aria-hidden="true">⏱️</span>
                         </div>
                         <div class="ui-card kpi-card">
-                            <div><span class="text-muted">نسبة التقدم</span><div class="kpi-val" id="kpi-progress-percent">0%</div></div>
-                            <span style="font-size:2rem;">📈</span>
+                            <div><span class="text-muted" style="font-size:0.85rem; font-weight:600;" data-i18n="lbl_completion_rate">نسبة التقدم الكلي</span><div class="kpi-val" id="kpi-progress-percent">0%</div></div>
+                            <span style="font-size:2rem;" aria-hidden="true">📈</span>
                         </div>
                         <div class="ui-card kpi-card">
-                            <div><span class="text-muted">المهام الموثقة</span><div class="kpi-val" id="kpi-tasks-count">0</div></div>
-                            <span style="font-size:2rem;">📝</span>
+                            <div><span class="text-muted" style="font-size:0.85rem; font-weight:600;" data-i18n="lbl_total_tasks">المهام الموثقة</span><div class="kpi-val" id="kpi-tasks-count">0</div></div>
+                            <span style="font-size:2rem;" aria-hidden="true">📝</span>
                         </div>
                     </div>
-                    <div class="ui-card">
-                        <h3 style="margin-bottom:var(--space-3);">توزيع التصنيفات</h3>
-                        <div style="position:relative; height:280px; width:100%;"><canvas id="chart-dashboard-categories"></canvas></div>
+                    <div class="ui-card" style="margin-top: var(--space-4);">
+                        <h3 style="margin-bottom:var(--space-3);" data-i18n="lbl_chart_distribution">توزيع ساعات الجهد حسب التصنيف الفني</h3>
+                        <div style="height:280px; position:relative;"><canvas id="chart-dashboard-categories"></canvas></div>
                     </div>
                 </div>
 
                 <div id="view-journal" class="app-view">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap;">
-                        <h2>سجل المهام الميدانية</h2>
-                        <button class="btn btn-primary" onclick="JournalModule.openForm()">+ إضافة إنجاز جديد</button>
+                    <div style="margin-bottom: var(--space-4); display: flex; justify-content: space-between; align-items: center;">
+                        <div><h2>السجل والتوثيق الميداني</h2><p class="text-muted">إدارة وتتبع العمليات الميدانية، التأملات المعرفية، والمرفقات</p></div>
+                        <button class="btn btn-primary hidden-desktop" onclick="JournalModule.openForm()">+ إضافة مهمة</button>
+                        <button class="btn btn-primary" style="display: var(--display-desktop, inline-flex);" onclick="JournalModule.openForm()">+ إضافة مهمة</button>
                     </div>
 
                     <div id="journal-form-wrapper" class="ui-card hidden" style="margin-bottom: var(--space-4); border: 1px solid var(--primary);">
                         <form id="journal-core-form" onsubmit="JournalModule.handleSave(event)">
                             <input type="hidden" id="journal-entry-id">
                             <div class="form-grid">
-                                <div class="form-group"><label class="form-label">التاريخ</label><input type="date" id="j-field-date" class="input-element" required></div>
-                                <div class="form-group"><label class="form-label">الساعات</label><input type="number" id="j-field-hours" class="input-element" step="0.5" required></div>
-                                <div class="form-group full-width"><label class="form-label">التصنيف (مثال: تصميم، برمجة)</label><input type="text" id="j-field-cat" class="input-element" required></div>
-                                <div class="form-group full-width"><label class="form-label">الوصف الدقيق للمهمة</label><textarea id="j-field-task" class="textarea-element" required></textarea></div>
+                                <div class="form-group">
+                                    <label class="form-label" for="j-field-date">التاريخ الفعلي للمهمة</label>
+                                    <input type="date" id="j-field-date" class="input-element" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="j-field-week">رقم الأسبوع التدريبي</label>
+                                    <input type="number" id="j-field-week" class="input-element" min="1" max="52" required value="1">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="j-field-cat">التصنيف الفني للنشاط</label>
+                                    <input type="text" id="j-field-cat" class="input-element" required placeholder="مثال: أبحاث مستخدمين، تصميم واجهات">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="j-field-hours">الزمن المستغرق (ساعات)</label>
+                                    <input type="number" id="j-field-hours" class="input-element" min="0.5" max="24" step="0.5" required value="4">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label class="form-label" for="j-field-task">الوصف الدقيق والمهام المنجزة</label>
+                                    <textarea id="j-field-task" class="textarea-element" rows="3" required placeholder="اشرحي بالتفصيل ما تم عمله في هذه المهمة بأسلوبك المهني..."></textarea>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label class="form-label" for="j-field-skills">المهارات المكتسبة والمطبقة (افصلي بينها بفاصلة)</label>
+                                    <input type="text" id="j-field-skills" class="input-element" placeholder="Figma, أبحاث HCI, تفكير إبداعي">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label class="form-label" for="j-field-ref">التأمل الذاتي والتحديات (Reflection)</label>
+                                    <textarea id="j-field-ref" class="textarea-element" rows="2" placeholder="ما هي التحديات التي واجهتك وكيف قمتِ بحلها؟"></textarea>
+                                </div>
+                                <div class="form-group full-width" style="padding: var(--space-3); border: 1px dashed var(--border-color); border-radius: var(--radius-md);">
+                                    <label class="form-label" for="j-field-file">📁 نظام إرفاق الملفات والوسائط المدعومة</label>
+                                    <input type="file" id="j-field-file" class="input-element" accept="image/*,application/pdf" onchange="JournalModule.processAttachment(event)">
+                                    <div id="form-attachment-preview-area" class="hidden" style="margin-top:var(--space-2); display:flex; align-items:center; gap:var(--space-3);">
+                                        <span id="form-attach-meta-text" style="font-size:0.9rem; font-weight:600;"></span>
+                                        <button type="button" class="btn btn-danger" style="padding:4px var(--space-2); font-size:0.8rem;" onclick="JournalModule.removeCurrentAttachment()">حذف</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div style="display:flex; gap:var(--space-2); margin-top: var(--space-4); flex-wrap: wrap;">
-                                <button type="submit" class="btn btn-primary" style="flex:1;">حفظ الإنجاز</button>
-                                <button type="button" class="btn btn-secondary" onclick="JournalModule.closeForm()" style="flex:1;">إلغاء</button>
+                            <div style="display:flex; gap:var(--space-2); justify-content:flex-end; margin-top: var(--space-4);">
+                                <button type="button" class="btn btn-secondary" onclick="JournalModule.closeForm()">إلغاء</button>
+                                <button type="submit" class="btn btn-primary">حفظ في السجل الرقمي</button>
                             </div>
                         </form>
                     </div>
 
-                    <div class="ui-card" style="margin-bottom: var(--space-4);">
-                        <input type="text" id="search-query-input" class="input-element" placeholder="ابحث في المهام..." oninput="JournalModule.renderTimeline()">
+                    <div class="ui-card" style="margin-bottom: var(--space-4); display: grid; grid-template-columns: 2fr 1fr 1fr; gap: var(--space-3);">
+                        <input type="text" id="search-query-input" class="input-element" placeholder="البحث في تفاصيل السجل والمهام..." oninput="JournalModule.renderTimeline()">
+                        <select id="filter-week-select" class="select-element" onchange="JournalModule.renderTimeline()">
+                            <option value="all">كل الأسابيع التدريبية</option>
+                        </select>
+                        <select id="sort-order-select" class="select-element" onchange="JournalModule.renderTimeline()">
+                            <option value="desc">الأحدث تاريخياً</option>
+                            <option value="asc">الأقدم تاريخياً</option>
+                        </select>
                     </div>
 
                     <div id="timeline-outlet" class="timeline-stream"></div>
                 </div>
 
-                <div id="view-reports" class="app-view">
-                    <div class="ui-card no-print" style="margin-bottom: var(--space-4);">
-                        <h2 style="margin-bottom: var(--space-3);">محرك التقارير الذكي</h2>
-                        <div class="report-controls-panel">
-                            <button class="btn btn-secondary" onclick="ReportEngineModule.synthesizeReport()">توليد البيانات 🔄</button>
-                            <button class="btn btn-primary" onclick="window.print()">طباعة PDF 🖨️</button>
-                        </div>
-                    </div>
-
-                    <div class="academic-paper-wrapper">
-                        <div id="academic-paper-document" class="academic-paper-canvas">
-                            <h2 style="text-align: center; border-bottom: 2px solid #CBD5E1; padding-bottom: 10px; margin-bottom: 30px;">تقرير التدريب التعاوني</h2>
-                            <table class="report-meta-table">
-                                <tr><th>المتدرب</th><td id="rep-meta-student-name">...</td><th>الجهة</th><td id="rep-meta-company">...</td></tr>
-                                <tr><th>الجامعة</th><td id="rep-meta-uni">...</td><th>القسم</th><td id="rep-meta-dept">...</td></tr>
-                            </table>
-                            <div id="report-live-rich-editor" class="report-rich-editor" contenteditable="true">
-                                اضغط على "توليد البيانات" أعلاه لصياغة التقرير تلقائياً...
-                            </div>
-                            <div class="report-signatures-area">
-                                <div class="signature-line">توقيع المتدرب</div>
-                                <div class="signature-line">توقيع المشرف المباشر</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div id="view-calendar" class="app-view">
-                    <div class="ui-card text-center"><p class="text-muted" style="padding: 40px;">سيتم عرض التقويم هنا (تحت التطوير).</p></div>
+                    <div class="ui-card">
+                        <div style="display:flex; justify-content:space-between; margin-bottom: var(--space-3);">
+                            <h2 id="calendar-month-title">...</h2>
+                            <div style="display:flex; gap:var(--space-2);">
+                                <button class="btn btn-secondary" onclick="CalendarModule.prevMonth()">◀</button>
+                                <button class="btn btn-secondary" onclick="CalendarModule.nextMonth()">▶</button>
+                            </div>
+                        </div>
+                        <div class="calendar-grid" id="calendar-grid-outlet"></div>
+                    </div>
                 </div>
 
                 <div id="view-skills" class="app-view">
-                    <div class="ui-card text-center"><p class="text-muted" style="padding: 40px;">سيتم تحليل المهارات والمرفقات هنا.</p></div>
+                    <div class="ui-card" style="margin-bottom: var(--space-4);">
+                        <h2>مصفوفة رصد وتتبع نمو المهارات</h2>
+                        <p class="text-muted">تحليل تلقائي متكامل للمهارات العابرة للتخصصات بناءً على معدل تكرار استخدامها في المهام.</p>
+                    </div>
+                    <div id="skills-matrix-outlet" class="matrix-grid"></div>
+                </div>
+
+                <div id="view-media" class="app-view">
+                    <div class="ui-card" style="margin-bottom: var(--space-4);">
+                        <h2>خزانة المرفقات والوسائط الميدانية</h2>
+                        <p class="text-muted">أرشيف مركزي آمن يستعرض كافة الملفات، الصور، والتقارير المرفقة بالمهام الموثقة.</p>
+                    </div>
+                    <div id="media-vault-outlet" class="vault-grid"></div>
+                </div>
+
+                <div id="view-reports" class="app-view">
+                    <div class="ui-card no-print" style="margin-bottom: var(--space-4);">
+                        <h2 style="margin-bottom: var(--space-2);">محرك التقارير الذكي الاحترافي</h2>
+                        <p class="text-muted" style="margin-bottom: var(--space-4);">قومي بتحديد النطاق الزمني والأسلوب اللغوي لتوليد التقرير الأكاديمي مباشرة من السجلات بدون أي بيانات آليّة ركيكة.</p>
+                        
+                        <div class="report-controls-panel">
+                            <div class="form-group">
+                                <label class="form-label" for="rep-filter-type">نوع التقرير الدوري</label>
+                                <select id="rep-filter-type" class="select-element" onchange="ReportEngineModule.handleTypeChange()">
+                                    <option value="weekly">تقرير أسبوعي محدد</option>
+                                    <option value="monthly">تقرير شهري مخصص</option>
+                                    <option value="final">التقرير النهائي الشامل</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="rep-week-selector-group">
+                                <label class="form-label" for="rep-filter-week">اختر الأسبوع</label>
+                                <select id="rep-filter-week" class="select-element"></select>
+                            </div>
+                            <div class="form-group id-date-group hidden" id="rep-date-start-group">
+                                <label class="form-label" for="rep-filter-start">تاريخ البدء</label>
+                                <input type="date" id="rep-filter-start" class="input-element">
+                            </div>
+                            <div class="form-group id-date-group hidden" id="rep-date-end-group">
+                                <label class="form-label" for="rep-filter-end">تاريخ الانتهاء</label>
+                                <input type="date" id="rep-filter-end" class="input-element">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="rep-filter-template">قالب التنسيق الهيكلي</label>
+                                <select id="rep-filter-template" class="select-element">
+                                    <option value="classic">الأكاديمي الرسمي الكلاسيكي</option>
+                                    <option value="executive">الملخص التنفيذي الحديث</option>
+                                    <option value="reflective">الأسلوب التأملي التحليلي (HCI)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; gap:var(--space-2); justify-content:flex-end;">
+                            <button class="btn btn-secondary" onclick="ReportEngineModule.synthesizeReport()">توليد وصياغة التقرير 🔄</button>
+                            <button class="btn btn-primary" onclick="window.print()">طباعة / تصدير PDF 🖨️</button>
+                            <button class="btn btn-secondary" style="background-color:rgba(16,185,129,0.1); color:var(--accent); border-color:rgba(16,185,129,0.2);" onclick="ReportEngineModule.exportToWord()">تصدير كملف Word 📝</button>
+                        </div>
+                    </div>
+
+                    <div id="academic-paper-document" class="academic-paper-canvas canvas-template-classic">
+                        <div id="rep-doc-cover-page" style="text-align: center; margin-bottom: 40px; padding-bottom: var(--space-4); border-bottom: 3px double #CBD5E1;">
+                            <h1 id="rep-doc-title" style="font-size: 2.2rem; font-weight: 800; color: #1E293B;">تقرير إنجاز التدريب التعاوني الميداني</h1>
+                            <h3 id="rep-doc-subtitle" style="font-size: 1.2rem; color: #64748B; margin-top: var(--space-2); font-weight: 600;">...</h3>
+                        </div>
+
+                        <table class="report-meta-table">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 25%;">اسم المتدرب الكامل</th>
+                                    <td style="width: 25%;" id="rep-meta-student-name">...</td>
+                                    <th style="width: 25%;">المنشأة الأكاديمية</th>
+                                    <td style="width: 25%;" id="rep-meta-uni">...</td>
+                                </tr>
+                                <tr>
+                                    <th>الكلية والتخصص</th>
+                                    <td id="rep-meta-major">...</td>
+                                    <th>المسار الدقيق / الفرعي</th>
+                                    <td id="rep-meta-track">...</td>
+                                </tr>
+                                <tr>
+                                    <th>جهة التدريب الحالية</th>
+                                    <td id="rep-meta-company">...</td>
+                                    <th>القسم التشغيلي المباشر</th>
+                                    <td id="rep-meta-dept">...</td>
+                                </tr>
+                                <tr>
+                                    <th>المشرف المسؤول في الجهة</th>
+                                    <td id="rep-meta-supervisor">...</td>
+                                    <th>إجمالي الساعات المنجزة</th>
+                                    <td id="rep-meta-hours" style="font-weight: 700; color: #4F46E5;">...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div id="report-canvas-charts-container" style="margin: 30px 0; height: 220px; position: relative;">
+                            <canvas id="chart-report-internal-categories"></canvas>
+                        </div>
+
+                        <div id="report-live-rich-editor" class="report-rich-editor" contenteditable="true" spellcheck="false">
+                            الرجاء النقر على زر "توليد وصياغة التقرير" لسحب البيانات وصياغتها أكاديمياً...
+                        </div>
+
+                        <div class="report-signatures-area">
+                            <div class="signature-line">توقيع المتدرب المباشر</div>
+                            <div class="signature-line">اعتماد وتوقيع المشرف المسؤول</div>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="view-settings" class="app-view">
                     <div class="ui-card">
-                        <h2 style="margin-bottom: var(--space-3);">الإعدادات والملف الشخصي</h2>
+                        <h2 style="margin-bottom: var(--space-3);">إعدادات الخطة التدريبية والملف الشخصي</h2>
                         <form id="settings-profile-form" onsubmit="SettingsModule.save(event)">
                             <div class="form-grid">
-                                <div class="form-group full-width"><label class="form-label">الاسم</label><input type="text" id="st-name" class="input-element" required></div>
-                                <div class="form-group full-width"><label class="form-label">جهة التدريب</label><input type="text" id="st-comp" class="input-element" required></div>
+                                <div class="form-group">
+                                    <label class="form-label" for="st-name">الاسم الكامل للمتدرب</label>
+                                    <input type="text" id="st-name" class="input-element" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="st-uni">الجامعة / المنشأة التعليمية</label>
+                                    <input type="text" id="st-uni" class="input-element" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="st-comp">جهة التدريب الحالية</label>
+                                    <input type="text" id="st-comp" class="input-element" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="st-hours-target">إجمالي ساعات البرنامج التدريبي</label>
+                                    <input type="number" id="st-hours-target" class="input-element" required min="1">
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary" style="margin-top: var(--space-4); width: 100%;">حفظ التعديلات</button>
+                            <button type="submit" class="btn btn-primary" style="margin-top: var(--space-4);">تحديث وحفظ الإعدادات</button>
                         </form>
+                    </div>
+                </div>
+
+                <div id="view-404" class="app-view">
+                    <div class="ui-card text-center" style="padding: var(--space-6);">
+                        <h2>المسار المطلوب غير موجود</h2>
+                        <button class="btn btn-primary" style="margin-top: var(--space-3);" onclick="Router.navigate('dashboard')">العودة للرئيسية</button>
                     </div>
                 </div>
 
@@ -401,41 +729,71 @@
     </div>
 
     <script>
-        // 1. نظام القائمة الجانبية للجوال (Hamburger Navigation Logic)
-        const MobileNav = {
-            toggle() {
-                const isAct = document.getElementById('app-sidebar').classList.contains('active');
-                if(isAct) this.close(); else this.open();
+        const SystemTranslations = {
+            ar: {
+                nav_dashboard: "لوحة التحكم", nav_journal: "السجل والتوثيق", nav_calendar: "عرض التقويم",
+                nav_skills: "مصفوفة المهارات", nav_media: "خزانة المرفقات", nav_reports: "محرك التقارير الذكي",
+                nav_settings: "إعدادات النظام", nav_root: "الرئيسية", lbl_total_hours: "إجمالي الساعات المنجزة",
+                lbl_completion_rate: "نسبة التقدم الكلي", lbl_total_tasks: "المهام الموثقة", lbl_chart_distribution: "توزيع ساعات الجهد حسب التصنيف الفني"
             },
-            open() {
-                document.getElementById('app-sidebar').classList.add('active');
-                document.getElementById('mobile-overlay').classList.add('active');
-            },
-            close() {
-                document.getElementById('app-sidebar').classList.remove('active');
-                document.getElementById('mobile-overlay').classList.remove('active');
+            en: {
+                nav_dashboard: "Dashboard", nav_journal: "Field Journal", nav_calendar: "Calendar View",
+                nav_skills: "Skills Matrix", nav_media: "Media Vault", nav_reports: "Smart Reporting Engine",
+                nav_settings: "System Configuration", nav_root: "Home", lbl_total_hours: "Total Hours Done",
+                lbl_completion_rate: "Overall Progress", lbl_total_tasks: "Documented Tasks", lbl_chart_distribution: "Effort Hours Distribution by Category"
             }
         };
 
-        // 2. قاعدة البيانات البسيطة (IndexedDB)
         const DBEngine = {
             dbName: "TaqririSaaSDatabase", version: 1, db: null,
-            init() { return new Promise((resolve, reject) => { const req = indexedDB.open(this.dbName, this.version); req.onupgradeneeded = e => { const db = e.target.result; if (!db.objectStoreNames.contains("users")) db.createObjectStore("users", { keyPath: "id" }); if (!db.objectStoreNames.contains("journal")) db.createObjectStore("journal", { keyPath: "id" }); }; req.onsuccess = e => { this.db = e.target.result; resolve(this.db); }; req.onerror = e => reject(e.target.error); }); },
-            get(store, key) { return new Promise(res => { const tx = this.db.transaction(store, "readonly"); const req = tx.objectStore(store).get(key); req.onsuccess = () => res(req.result); }); },
-            set(store, val) { return new Promise(res => { const tx = this.db.transaction(store, "readwrite"); const req = tx.objectStore(store).put(val); req.onsuccess = () => res(req.result); }); },
-            getAll(store) { return new Promise(res => { const tx = this.db.transaction(store, "readonly"); const req = tx.objectStore(store).getAll(); req.onsuccess = () => res(req.result); }); },
-            delete(store, key) { return new Promise(res => { const tx = this.db.transaction(store, "readwrite"); const req = tx.objectStore(store).delete(key); req.onsuccess = () => res(req.result); }); },
-            clearStore(store) { return new Promise(res => { const tx = this.db.transaction(store, "readwrite"); tx.objectStore(store).clear().onsuccess = res; }); }
+            init() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(this.dbName, this.version);
+                    request.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains("users")) db.createObjectStore("users", { keyPath: "id" });
+                        if (!db.objectStoreNames.contains("journal")) db.createObjectStore("journal", { keyPath: "id" });
+                    };
+                    request.onsuccess = (e) => { this.db = e.target.result; resolve(this.db); };
+                    request.onerror = (e) => reject(e.target.error);
+                });
+            },
+            get(store, key) {
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction(store, "readonly");
+                    const request = tx.objectStore(store).get(key);
+                    request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error);
+                });
+            },
+            set(store, val) {
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction(store, "readwrite");
+                    const request = tx.objectStore(store).put(val);
+                    request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error);
+                });
+            },
+            getAll(store) {
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction(store, "readonly");
+                    const request = tx.objectStore(store).getAll();
+                    request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error);
+                });
+            },
+            delete(store, key) {
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction(store, "readwrite");
+                    const request = tx.objectStore(store).delete(key);
+                    request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error);
+                });
+            }
         };
 
-        // 3. الموجه للتنقل بين الصفحات (Router)
         const Router = {
-            routes: ['dashboard', 'journal', 'calendar', 'skills', 'reports', 'settings'],
-            titles: { 'dashboard': 'الرئيسية', 'journal': 'المهام', 'reports': 'التقارير', 'calendar': 'التقويم', 'skills': 'المهارات', 'settings': 'الإعدادات' },
+            routes: ['dashboard', 'journal', 'calendar', 'skills', 'media', 'reports', 'settings', '404'],
             init() { window.addEventListener('hashchange', () => this.handleRouting()); this.handleRouting(); },
             async handleRouting() {
                 let hash = window.location.hash.replace('#/', '').trim() || 'dashboard';
-                if (!this.routes.includes(hash)) hash = 'dashboard';
+                if (!this.routes.includes(hash)) hash = '404';
                 const profile = await DBEngine.get('users', 'current_profile');
                 if (!profile) {
                     document.getElementById('onboarding-layer').classList.remove('hidden');
@@ -445,54 +803,77 @@
                 document.getElementById('onboarding-layer').classList.add('hidden');
                 document.getElementById('main-app-shell').classList.remove('hidden');
                 this.renderView(hash, profile);
-                MobileNav.close(); // إغلاق القائمة الجانبية بعد اختيار الصفحة في الجوال
             },
             renderView(viewId, profile) {
                 document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
-                document.getElementById(`view-${viewId}`).classList.add('active');
+                const target = document.getElementById(`view-${viewId}`);
+                if (target) target.classList.add('active');
                 document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
                 const item = document.querySelector(`.menu-item[data-view="${viewId}"]`);
                 if (item) item.classList.add('active');
-                document.getElementById('current-breadcrumb').textContent = this.titles[viewId] || viewId;
+                const lang = localStorage.getItem('taq_lang') || 'ar';
+                document.getElementById('current-breadcrumb').textContent = SystemTranslations[lang][`nav_${viewId}`] || viewId;
+                
+                // إغلاق القائمة الجانبية في الجوال بعد اختيار الصفحة
+                const sidebar = document.querySelector('.sidebar');
+                const overlay = document.getElementById('mobile-overlay-bg');
+                if(sidebar) sidebar.classList.remove('mobile-open');
+                if(overlay) overlay.classList.remove('active');
                 
                 if (viewId === 'dashboard') DashModule.render(profile);
                 if (viewId === 'journal') JournalModule.initView();
+                if (viewId === 'calendar') CalendarModule.render();
+                if (viewId === 'skills') SkillsModule.render();
+                if (viewId === 'media') MediaVaultModule.render();
                 if (viewId === 'reports') ReportEngineModule.initView(profile);
                 if (viewId === 'settings') SettingsModule.initView(profile);
             },
             navigate(id) { window.location.hash = `#/${id}`; }
         };
 
-        // 4. معالج الإعداد (Wizard)
         const WizardEngine = {
             currentStep: 1, totalSteps: 4,
-            init() { this.updateUI(); },
-            updateUI() {
+            init() { this.updateStepUI(); },
+            updateStepUI() {
                 document.querySelectorAll('.wizard-step-panel').forEach(p => p.classList.remove('active'));
                 document.getElementById(`wizard-step-${this.currentStep}`).classList.add('active');
-                for (let i = 1; i <= 4; i++) {
-                    const n = document.getElementById(`step-node-${i}`);
-                    if(i < this.currentStep) n.className = 'step-node completed'; else if(i === this.currentStep) n.className = 'step-node active'; else n.className = 'step-node';
+                for (let i = 1; i <= this.totalSteps; i++) {
+                    const node = document.getElementById(`step-node-${i}`);
+                    if (node) {
+                        if (i < this.currentStep) { node.className = 'step-node completed'; node.innerHTML = '✓'; }
+                        else if (i === this.currentStep) { node.className = 'step-node active'; node.innerHTML = i; }
+                        else { node.className = 'step-node'; node.innerHTML = i; }
+                    }
                 }
-                document.getElementById('wizard-progress-bar').style.left = document.documentElement.dir === 'rtl' ? `${100 - ((this.currentStep-1)/3)*100}%` : '0%';
+                const bar = document.getElementById('wizard-progress-bar');
+                if (bar) bar.style.left = document.documentElement.dir === 'rtl' ? `${100 - ((this.currentStep-1)/3)*100}%` : '0%';
                 document.getElementById('wizard-prev-btn').classList.toggle('hidden', this.currentStep === 1);
-                document.getElementById('wizard-next-btn').classList.toggle('hidden', this.currentStep === 4);
-                document.getElementById('wizard-submit-btn').classList.toggle('hidden', this.currentStep !== 4);
+                document.getElementById('wizard-next-btn').classList.toggle('hidden', this.currentStep === this.totalSteps);
+                document.getElementById('wizard-submit-btn').classList.toggle('hidden', this.currentStep !== this.totalSteps);
             },
-            nextStep() { if(this.currentStep < 4) { this.currentStep++; this.updateUI(); } },
-            prevStep() { if(this.currentStep > 1) { this.currentStep--; this.updateUI(); } },
+            nextStep() { if (this.validate()) { this.currentStep++; this.updateStepUI(); } },
+            prevStep() { if (this.currentStep > 1) { this.currentStep--; this.updateStepUI(); } },
+            validate() {
+                const fields = document.getElementById(`wizard-step-${this.currentStep}`).querySelectorAll('input[required]');
+                for (let f of fields) { if (!f.value.trim()) { ToastEngine.show("يرجى إكمال الحقول المطلوبة", "error"); return false; } }
+                return true;
+            },
             async handleSubmit(e) {
-                e.preventDefault();
+                e.preventDefault(); if (!this.validate()) return;
                 const p = {
-                    id: "current_profile", name: document.getElementById('wz-name').value,
-                    uni: document.getElementById('wz-uni').value, company: document.getElementById('wz-comp').value,
-                    dept: document.getElementById('wz-dept').value, hoursTarget: parseInt(document.getElementById('wz-hrs-target').value)||600
+                    id: "current_profile", name: document.getElementById('wz-name').value.trim(),
+                    city: document.getElementById('wz-city').value.trim(), country: document.getElementById('wz-country').value.trim(),
+                    uni: document.getElementById('wz-uni').value.trim(), college: document.getElementById('wz-college').value.trim(),
+                    major: document.getElementById('wz-major').value.trim(), track: document.getElementById('wz-track').value.trim(),
+                    company: document.getElementById('wz-comp').value.trim(), dept: document.getElementById('wz-dept').value.trim(),
+                    supervisor: document.getElementById('wz-super').value.trim(), supervisorEmail: document.getElementById('wz-super-email').value.trim(),
+                    startDate: document.getElementById('wz-start').value, endDate: document.getElementById('wz-end').value,
+                    hoursTarget: parseInt(document.getElementById('wz-hrs-target').value) || 600, hoursDaily: parseInt(document.getElementById('wz-hrs-daily').value) || 8
                 };
                 await DBEngine.set('users', p); Router.handleRouting();
             }
         };
 
-        // 5. لوحة التحكم (Dashboard)
         const DashModule = {
             chart: null,
             async render(profile) {
@@ -501,81 +882,199 @@
                 const hours = entries.reduce((a, c) => a + c.hours, 0);
                 document.getElementById('kpi-hours-done').textContent = hours;
                 document.getElementById('kpi-tasks-count').textContent = entries.length;
-                document.getElementById('kpi-progress-percent').textContent = `${Math.min(Math.round((hours/(profile.hoursTarget||1))*100),100)}%`;
-                
+                document.getElementById('kpi-progress-percent').textContent = `${Math.min(Math.round((hours/profile.hoursTarget)*100),100)}%`;
                 const map = {}; entries.forEach(e => map[e.category] = (map[e.category]||0)+e.hours);
                 const ctx = document.getElementById('chart-dashboard-categories').getContext('2d');
                 if (this.chart) this.chart.destroy();
                 this.chart = new Chart(ctx, {
                     type: 'doughnut',
                     data: { labels: Object.keys(map).length ? Object.keys(map) : ['لا يوجد'], datasets: [{ data: Object.values(map).length ? Object.values(map) : [1], backgroundColor: ['#6366F1','#10B981','#F59E0B','#3B82F6'] }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: localStorage.getItem('taq_theme')==='light'?'#0F172A':'#F8FAFC' } } } }
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: localStorage.getItem('taq_theme')==='light'?'#0F172A':'#F8FAFC' } } } }
                 });
             }
         };
 
-        // 6. السجل والمهام (Journal)
         const JournalModule = {
-            async initView() { this.closeForm(); await this.renderTimeline(); },
-            openForm() { document.getElementById('journal-form-wrapper').classList.remove('hidden'); window.scrollTo({top:0, behavior:'smooth'}); },
-            closeForm() { document.getElementById('journal-core-form').reset(); document.getElementById('journal-entry-id').value=''; document.getElementById('journal-form-wrapper').classList.add('hidden'); },
+            attach: null,
+            async initView() { this.reset(); await this.renderTimeline(); },
+            openForm() { document.getElementById('journal-form-wrapper').classList.remove('hidden'); },
+            closeForm() { this.reset(); document.getElementById('journal-form-wrapper').classList.add('hidden'); },
+            reset() { document.getElementById('journal-core-form').reset(); document.getElementById('journal-entry-id').value=''; this.attach=null; document.getElementById('form-attachment-preview-area').classList.add('hidden'); },
+            processAttachment(e) {
+                const f = e.target.files[0]; if(!f) return;
+                const r = new FileReader(); r.onload = (ev) => {
+                    this.attach = { name: f.name, type: f.type, blobData: ev.target.result };
+                    document.getElementById('form-attach-meta-text').textContent = f.name;
+                    document.getElementById('form-attachment-preview-area').classList.remove('hidden');
+                }; r.readAsDataURL(f);
+            },
+            removeCurrentAttachment() { this.attach=null; document.getElementById('j-field-file').value=''; document.getElementById('form-attachment-preview-area').classList.add('hidden'); },
             async handleSave(e) {
                 e.preventDefault();
                 const entry = {
                     id: document.getElementById('journal-entry-id').value || 'ent_' + Date.now(),
-                    date: document.getElementById('j-field-date').value, category: document.getElementById('j-field-cat').value,
-                    hours: parseFloat(document.getElementById('j-field-hours').value)||1, task: document.getElementById('j-field-task').value
+                    date: document.getElementById('j-field-date').value, week: parseInt(document.getElementById('j-field-week').value)||1,
+                    category: document.getElementById('j-field-cat').value.trim(), hours: parseFloat(document.getElementById('j-field-hours').value)||4,
+                    task: document.getElementById('j-field-task').value.trim(), skills: document.getElementById('j-field-skills').value.trim(),
+                    reflection: document.getElementById('j-field-ref').value.trim(), attachment: this.attach
                 };
-                await DBEngine.set('journal', entry); this.initView();
+                await DBEngine.set('journal', entry); ToastEngine.show("تم الحفظ بنجاح"); this.closeForm(); this.initView();
             },
-            async delete(id) { if(confirm("تأكيد الحذف؟")) { await DBEngine.delete('journal', id); this.renderTimeline(); } },
+            async edit(id) {
+                const e = await DBEngine.get('journal', id); if (!e) return; this.openForm();
+                document.getElementById('journal-entry-id').value = e.id; document.getElementById('j-field-date').value = e.date;
+                document.getElementById('j-field-week').value = e.week; document.getElementById('j-field-cat').value = e.category;
+                document.getElementById('j-field-hours').value = e.hours; document.getElementById('j-field-task').value = e.task;
+                document.getElementById('j-field-skills').value = e.skills; document.getElementById('j-field-ref').value = e.reflection;
+                if (e.attachment) { this.attach=e.attachment; document.getElementById('form-attach-meta-text').textContent=e.attachment.name; document.getElementById('form-attachment-preview-area').classList.remove('hidden'); }
+            },
+            async delete(id) { if(confirm("حذف المهمة؟")) { await DBEngine.delete('journal', id); this.initView(); } },
             async renderTimeline() {
                 const q = document.getElementById('search-query-input').value.toLowerCase();
+                const week = document.getElementById('filter-week-select').value;
+                const order = document.getElementById('sort-order-select').value;
                 let entries = await DBEngine.getAll('journal');
                 if(q) entries = entries.filter(e => e.task.toLowerCase().includes(q) || e.category.toLowerCase().includes(q));
-                entries.sort((a,b) => new Date(b.date) - new Date(a.date));
+                if(week !== 'all') entries = entries.filter(e => e.week === parseInt(week));
+                entries.sort((a,b) => order==='desc'? new Date(b.date)-new Date(a.date) : new Date(a.date)-new Date(b.date));
+                
+                const weeks = [...new Set(entries.map(e => e.week))].sort((a,b)=>a-b);
+                const select = document.getElementById('filter-week-select');
+                const currVal = select.value;
+                select.innerHTML = '<option value="all">كل الأسابيع</option>' + weeks.map(w => `<option value="${w}">الأسبوع ${w}</option>`).join('');
+                select.value = currVal || 'all';
 
                 document.getElementById('timeline-outlet').innerHTML = entries.map(e => `
                     <div class="timeline-node">
-                        <div class="timeline-axis"></div><div class="timeline-dot">📝</div>
+                        <div class="timeline-axis"></div>
+                        <div class="timeline-dot">📝</div>
                         <div class="timeline-body">
                             <div style="display:flex; justify-content:space-between; margin-bottom:var(--space-2);">
-                                <span class="badge">${e.category}</span>
-                                <span style="font-weight:700; color:var(--primary); font-size:0.85rem;">${e.date} (${e.hours}س)</span>
+                                <div><span class="badge">${e.category}</span></div>
+                                <span style="font-weight:700; color:var(--primary);">${e.date} (${e.hours}س)</span>
                             </div>
-                            <p style="font-size:0.95rem;">${e.task}</p>
-                            <div style="text-align:end; margin-top:10px;"><button class="btn btn-danger" style="min-height:30px; padding:4px 10px; font-size:0.8rem;" onclick="JournalModule.delete('${e.id}')">حذف</button></div>
+                            <p><strong>المهمة:</strong> ${e.task}</p>
+                            ${e.skills ? `<p style="color:var(--accent); font-size:0.9rem;">🧠 المهارات: ${e.skills}</p>`:''}
+                            <div style="display:flex; gap:var(--space-2); margin-top:var(--space-2); justify-content:flex-end;">
+                                <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.8rem;" onclick="JournalModule.edit('${e.id}')">تعديل</button>
+                                <button class="btn btn-danger" style="padding:4px 10px; font-size:0.8rem;" onclick="JournalModule.delete('${e.id}')">حذف</button>
+                            </div>
                         </div>
                     </div>
                 `).join('');
             }
         };
 
-        // 7. محرك التقارير والإعدادات
-        const ReportEngineModule = {
-            async initView(p) { document.getElementById('rep-meta-student-name').textContent=p.name; document.getElementById('rep-meta-company').textContent=p.company; document.getElementById('rep-meta-uni').textContent=p.uni; document.getElementById('rep-meta-dept').textContent=p.dept; },
-            async synthesizeReport() {
+        const CalendarModule = {
+            date: new Date(),
+            async render() {
+                const y = this.date.getFullYear(), m = this.date.getMonth();
+                const months = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+                document.getElementById('calendar-month-title').textContent = `${months[m]} ${y}`;
+                const first = new Date(y, m, 1).getDay(), total = new Date(y, m + 1, 0).getDate();
                 const entries = await DBEngine.getAll('journal');
-                let html = `<p>يمثل هذا التقرير مستنداً لتوثيق المهام المنجزة. إجمالي المهام: ${entries.length}.</p><ul>`;
-                entries.forEach(e => html+= `<li style="margin-bottom:8px;"><strong>${e.date}:</strong> ${e.task} (${e.hours} ساعات)</li>`);
-                html += `</ul>`;
+                const dates = entries.map(e => e.date);
+                let html = ["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"].map(w => `<div class="calendar-header-cell">${w}</div>`).join('');
+                for (let i = 0; i < first; i++) html += `<div></div>`;
+                for (let d = 1; d <= total; d++) {
+                    const str = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                    html += `<div class="calendar-day-cell ${new Date().toDateString()===new Date(y,m,d).toDateString()?'current-day':''}"><span>${d}</span>${dates.includes(str)?'<span class="calendar-indicator-dot"></span>':''}</div>`;
+                }
+                document.getElementById('calendar-grid-outlet').innerHTML = html;
+            },
+            prevMonth() { this.date.setMonth(this.date.getMonth()-1); this.render(); },
+            nextMonth() { this.date.setMonth(this.date.getMonth()+1); this.render(); }
+        };
+
+        const SkillsModule = {
+            async render() {
+                const entries = await DBEngine.getAll('journal'); const freq = {};
+                entries.forEach(e => { if(e.skills) e.skills.split(',').forEach(s => { const t = s.trim(); if(t) freq[t]=(freq[t]||0)+1; }); });
+                const max = Math.max(...Object.values(freq), 1);
+                document.getElementById('skills-matrix-outlet').innerHTML = Object.keys(freq).length ? Object.entries(freq).map(([s, c]) => `
+                    <div class="ui-card">
+                        <div style="display:flex; justify-content:space-between; font-weight:700;"><span>${s}</span><span style="color:var(--primary);">${c} تكرار</span></div>
+                        <div class="skill-progress-track"><div class="skill-progress-bar" style="width: ${(c/max)*100}%;"></div></div>
+                    </div>
+                `).join('') : '<p class="text-muted">لا توجد مهارات مسجلة.</p>';
+            }
+        };
+
+        const MediaVaultModule = {
+            async render() {
+                const entries = await DBEngine.getAll('journal'); const filtered = entries.filter(e => e.attachment);
+                document.getElementById('media-vault-outlet').innerHTML = filtered.length ? filtered.map(e => `
+                    <div class="vault-item">
+                        <div class="vault-preview-box">📎</div>
+                        <div class="vault-info-box"><span>${e.attachment.name}</span><small class="text-muted">${e.date}</small><a href="${e.attachment.blobData}" download="${e.attachment.name}" class="btn btn-secondary" style="padding:4px; width:100%;">تحميل 📥</a></div>
+                    </div>
+                `).join('') : '<p class="text-muted">خزانة المرفقات فارغة.</p>';
+            }
+        };
+
+        const ReportEngineModule = {
+            chart: null, profile: null,
+            initView(p) { this.profile = p; this.populate(); this.handleTypeChange(); },
+            async populate() {
+                const entries = await DBEngine.getAll('journal');
+                const weeks = [...new Set(entries.map(e => e.week))].sort((a,b)=>a-b);
+                document.getElementById('rep-filter-week').innerHTML = weeks.map(w => `<option value="${w}">الأسبوع ${w}</option>`).join('') || '<option value="1">لا يوجد</option>';
+            },
+            handleTypeChange() {
+                const type = document.getElementById('rep-filter-type').value;
+                document.getElementById('rep-week-selector-group').classList.toggle('hidden', type !== 'weekly');
+                document.getElementById('rep-date-start-group').classList.toggle('hidden', type !== 'monthly');
+                document.getElementById('rep-date-end-group').classList.toggle('hidden', type !== 'monthly');
+            },
+            async synthesizeReport() {
+                document.getElementById('loading-overlay').classList.add('visible');
+                const type = document.getElementById('rep-filter-type').value, template = document.getElementById('rep-filter-template').value;
+                let entries = await DBEngine.getAll('journal');
+                if (type === 'weekly') { const w = parseInt(document.getElementById('rep-filter-week').value)||1; entries = entries.filter(e => e.week === w); document.getElementById('rep-doc-subtitle').textContent = `تقرير الأسبوع التدريبي رقم (${w})`; }
+                else if (type === 'monthly') {
+                    const s = new Date(document.getElementById('rep-filter-start').value), end = new Date(document.getElementById('rep-filter-end').value);
+                    entries = entries.filter(e => { const d = new Date(e.date); return d >= s && d <= end; });
+                    document.getElementById('rep-doc-subtitle').textContent = `تقرير الفترة التدريبية المخصصة`;
+                } else { document.getElementById('rep-doc-subtitle').textContent = `التقرير الختامي الشامل لبرنامج التدريب التعاوني`; }
+                
+                document.getElementById('academic-paper-document').className = 'academic-paper-canvas canvas-template-' + template;
+                
+                document.getElementById('rep-meta-student-name').textContent = this.profile.name;
+                document.getElementById('rep-meta-uni').textContent = this.profile.uni;
+                document.getElementById('rep-meta-major').textContent = `${this.profile.college} - ${this.profile.major}`;
+                document.getElementById('rep-meta-track').textContent = this.profile.track || 'عام';
+                document.getElementById('rep-meta-company').textContent = this.profile.company;
+                document.getElementById('rep-meta-dept').textContent = this.profile.dept;
+                document.getElementById('rep-meta-supervisor').textContent = this.profile.supervisor;
+                const hours = entries.reduce((a,c)=>a+c.hours,0);
+                document.getElementById('rep-meta-hours').textContent = `${hours} ساعة عمل فعلية`;
+
+                const map = {}; entries.forEach(e => map[e.category] = (map[e.category]||0)+e.hours);
+                const ctx = document.getElementById('chart-report-internal-categories').getContext('2d');
+                if (this.chart) this.chart.destroy();
+                this.chart = new Chart(ctx, { type: 'bar', data: { labels: Object.keys(map), datasets: [{ data: Object.values(map), backgroundColor: '#6366F1' }] }, options: { responsive: true, maintainAspectRatio: false } });
+
+                let html = `<h3>1. المقدمة والأهداف العامة للفترة</h3><p>يمثل هذا التقرير مستنداً توثيقياً معيارياً للفترة العملية المنقضية في <strong>${this.profile.company}</strong> قسم <strong>${this.profile.dept}</strong>.</p><h3>2. المهام والأنشطة التشغيلية المنجزة</h3><p>` + entries.map(e => e.task).join('، بالإضافة إلى ') + `.</p>`;
                 document.getElementById('report-live-rich-editor').innerHTML = html;
+                document.getElementById('loading-overlay').classList.remove('visible');
+            },
+            exportToWord() {
+                const html = document.getElementById('academic-paper-document').innerHTML;
+                const blob = new Blob(['\ufeff' + "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><style>body{font-family:'Cairo';direction:rtl;text-align:right;}</style></head><body>" + html + "</body></html>"], { type: 'application/msword;charset=utf-8' });
+                const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `Academic_Report_${Date.now()}.doc`; a.click(); URL.revokeObjectURL(url);
             }
         };
 
         const SettingsModule = {
-            initView(p) { document.getElementById('st-name').value=p.name; document.getElementById('st-comp').value=p.company; },
-            async save(e) { e.preventDefault(); const p = await DBEngine.get('users', 'current_profile'); p.name=document.getElementById('st-name').value; p.company=document.getElementById('st-comp').value; await DBEngine.set('users', p); Router.navigate('dashboard'); },
-            async logout() { if(confirm("هل أنت متأكد من تسجيل الخروج؟ سيتم مسح بياناتك.")) { await DBEngine.clearStore('users'); await DBEngine.clearStore('journal'); location.reload(); } }
+            initView(p) { document.getElementById('st-name').value=p.name; document.getElementById('st-uni').value=p.uni; document.getElementById('st-comp').value=p.company; document.getElementById('st-hours-target').value=p.hoursTarget; },
+            async save(e) { e.preventDefault(); const p = await DBEngine.get('users', 'current_profile'); p.name=document.getElementById('st-name').value.trim(); p.uni=document.getElementById('st-uni').value.trim(); p.company=document.getElementById('st-comp').value.trim(); p.hoursTarget=parseInt(document.getElementById('st-hours-target').value)||600; await DBEngine.set('users', p); Router.navigate('dashboard'); }
         };
 
-        const ThemeEngine = { toggle() { const c = document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'; document.documentElement.setAttribute('data-theme', c); localStorage.setItem('taq_theme', c); Router.handleRouting(); } };
+        const ThemeEngine = { current: 'dark', init() { this.current=localStorage.getItem('taq_theme')||'dark'; document.documentElement.setAttribute('data-theme',this.current); }, toggle() { this.current=this.current==='dark'?'light':'dark'; localStorage.setItem('taq_theme',this.current); document.documentElement.setAttribute('data-theme',this.current); Router.handleRouting(); } };
+        const I18nEngine = { lang: 'ar', init() { this.lang=localStorage.getItem('taq_lang')||'ar'; this.apply(); }, toggleLanguage() { this.lang=this.lang==='ar'?'en':'ar'; localStorage.setItem('taq_lang',this.lang); this.apply(); Router.handleRouting(); }, apply() { document.documentElement.lang=this.lang; document.documentElement.dir=this.lang==='ar'?'rtl':'ltr'; document.getElementById('lang-indicator-btn').textContent=this.lang==='ar'?'🌐 EN':'🌐 AR'; document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.getAttribute('data-i18n'); if(SystemTranslations[this.lang][k]) el.textContent=SystemTranslations[this.lang][k]; }); } };
+        const ToastEngine = { show(m) { const c=document.getElementById('toast-delivery'), b=document.createElement('div'); b.className='toast-bubble'; b.textContent=m; c.appendChild(b); setTimeout(()=>b.remove(),3000); } };
 
-        document.addEventListener('DOMContentLoaded', async () => { 
-            const savedTheme = localStorage.getItem('taq_theme');
-            if(savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
-            await DBEngine.init(); WizardEngine.init(); Router.init(); 
-        });
+        document.addEventListener('DOMContentLoaded', async () => { await DBEngine.init(); ThemeEngine.init(); I18nEngine.init(); WizardEngine.init(); Router.init(); });
     </script>
 </body>
 </html>
