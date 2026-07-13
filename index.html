@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>
     <meta charset="UTF-8">
@@ -198,7 +198,7 @@
         .calendar-indicator-dot { width: 6px; height: 6px; border-radius: 50%; background-color: var(--accent); display: inline-block; align-self: center; margin-bottom: var(--space-1); }
 
         /* ==========================================================================
-           4. واجهات ومكونات محرك التقارير الأكاديمي المتقدم (Milestone 4 Engine UI)
+           4. واجهات ومكونات محرك التقارير الأكاديمي المتقدم
            ========================================================================== */
         .report-controls-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-3); margin-bottom: var(--space-4); }
         
@@ -252,6 +252,62 @@
             .form-group.full-width { grid-column: span 1; }
             .academic-paper-canvas { padding: var(--space-4); }
             .report-signatures-area { flex-direction: column; gap: var(--space-5); align-items: center; }
+
+            /* --- تحسينات الجوال للوحة التحكم (Mobile Responsive Enhancements) --- */
+            
+            /* 1. إحكام الشريط العلوي */
+            .top-bar { height: 60px; padding: 0 var(--space-3); }
+            .breadcrumbs { font-size: 0.75rem; }
+            .top-bar-actions { gap: var(--space-1); }
+            .top-bar-actions .btn { padding: 6px 10px; font-size: 0.8rem; }
+            #user-avatar { width: 30px !important; height: 30px !important; font-size: 0.8rem; }
+
+            /* 2. تقليل المساحات الجانبية لمنع التمرير الأفقي */
+            .view-content { padding: var(--space-3); }
+
+            /* 3. الإحصائيات: شبكة 2x2 وتقليل الفراغات */
+            .dashboard-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 10px; 
+                margin-bottom: var(--space-3); 
+            }
+            .ui-card { padding: var(--space-3); } /* تصغير الحواف الداخلية للبطاقات */
+            
+            .kpi-card { 
+                padding: 12px; 
+                align-items: flex-start; /* محاذاة للأعلى لترتيب أفضل */
+            }
+            .kpi-card > div { 
+                display: flex; 
+                flex-direction: column; 
+                gap: 2px; /* تقريب العنوان من الرقم */
+            }
+            .kpi-card .text-muted { 
+                font-size: 0.65rem !important; 
+                line-height: 1.3; 
+                white-space: normal; /* السماح بالتفاف النص */
+            }
+            .kpi-val { 
+                font-size: 1.3rem !important; 
+                margin-top: 0 !important; 
+            }
+            .kpi-card > span:last-child { 
+                font-size: 1.2rem !important; 
+                margin-top: 4px;
+            }
+
+            /* 4. الرسم البياني: العرض والارتفاع */
+            .dashboard-grid + .ui-card {
+                margin-top: 0 !important; /* تقليل المسافة العمودية بين الإحصائيات والرسم البياني */
+            }
+            .dashboard-grid + .ui-card h3 {
+                font-size: 0.85rem;
+                margin-bottom: var(--space-2) !important;
+            }
+            .dashboard-grid + .ui-card > div {
+                height: 240px !important; 
+                width: 100% !important;
+            }
         }
 
         /* ==========================================================================
@@ -259,69 +315,13 @@
            ========================================================================== */
         @media print {
             body { background: #ffffff !important; color: #000000 !important; overflow: visible !important; }
-            .sidebar, .top-bar, .report-controls-panel, #toast-delivery, .loading-mask, .no-print, .hidden-desktop, .mobile-overlay { display: none !important; }
+            .sidebar, .top-bar, .report-controls-panel, #toast-delivery, .loading-mask, .no-print { display: none !important; }
             .app-shell { grid-template-columns: 1fr !important; }
             .main-frame { overflow: visible !important; display: block !important; }
             .view-content { padding: 0 !important; overflow: visible !important; }
             .academic-paper-canvas { box-shadow: none !important; border: none !important; padding: 0 !important; max-width: 100% !important; margin: 0 !important; }
             .report-rich-editor { color: #000000 !important; }
             .report-meta-table th { background-color: #f1f5f9 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        }
-
-        /* ==========================================================================
-           8. تحسينات الجوال المطلوبة (Mobile Responsive Fixes - Minimal)
-           ========================================================================== */
-        .hidden-desktop { display: none !important; }
-        .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(9, 13, 22, 0.6); backdrop-filter: blur(2px); z-index: 9998; transition: opacity 0.3s; opacity: 0; }
-        .mobile-overlay.active { display: block; opacity: 1; }
-
-        @media (max-width: 1024px) {
-            .sidebar { 
-                display: flex !important; 
-                position: fixed; top: 0; bottom: 0; right: -320px; 
-                width: 280px; z-index: 9999; 
-                box-shadow: -5px 0 25px rgba(0,0,0,0.5); 
-                transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            }
-            [dir="ltr"] .sidebar { right: auto; left: -320px; box-shadow: 5px 0 25px rgba(0,0,0,0.5); transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-            .sidebar.mobile-open { right: 0; }
-            [dir="ltr"] .sidebar.mobile-open { left: 0; }
-            .hidden-desktop { display: flex !important; }
-        }
-
-        @media (max-width: 640px) {
-            .view-content { padding: var(--space-3); overflow-x: hidden; }
-            .ui-card { padding: var(--space-3); max-width: 100%; box-sizing: border-box; }
-            .wizard-container { width: calc(100% - var(--space-4)); padding: var(--space-4) var(--space-3); margin: var(--space-2) auto; }
-            
-            /* تكبير مناطق الضغط لتناسب اللمس */
-            .btn, .menu-item, .input-element, .select-element { min-height: 44px; }
-            
-            /* الإحصائيات في شبكة 2x2 */
-            .dashboard-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; margin-bottom: var(--space-3) !important; }
-            .kpi-card { flex-direction: column; align-items: flex-start; padding: var(--space-2) !important; justify-content: center; }
-            .kpi-card > div { display: flex; flex-direction: column; gap: 2px; }
-            .kpi-card .text-muted { font-size: 0.7rem !important; white-space: normal; line-height: 1.2; }
-            .kpi-val { font-size: 1.5rem !important; margin-top: 0 !important; }
-            .kpi-card > span:last-child { align-self: flex-end; font-size: 1.3rem !important; margin-top: -20px; }
-
-            /* منع الخروج عن الشاشة والـ Horizontal Scroll */
-            .academic-paper-canvas { min-width: 100% !important; padding: var(--space-3) !important; box-sizing: border-box; }
-            .report-meta-table { display: block; width: 100%; overflow-x: auto; white-space: nowrap; }
-            .report-signatures-area { flex-direction: column; align-items: center; gap: 20px; }
-            
-            /* النماذج والتنقل */
-            .form-grid { grid-template-columns: 1fr !important; }
-            .form-group.full-width { grid-column: span 1 !important; }
-            .top-bar-actions { gap: var(--space-1); }
-            .top-bar-actions .btn { padding: 4px 10px; font-size: 0.8rem; }
-            .breadcrumbs { font-size: 0.8rem; }
-            .top-bar { height: 60px; padding: 0 var(--space-3); }
-
-            /* الرسم البياني للجوال */
-            #report-canvas-charts-container, .ui-card > div[style*="height:280px"] {
-                height: 240px !important; width: 100% !important;
-            }
         }
     </style>
 </head>
@@ -332,8 +332,6 @@
     </div>
 
     <div id="toast-delivery" aria-live="polite" aria-atomic="true"></div>
-
-    <div id="mobile-overlay-bg" class="mobile-overlay hidden-desktop" onclick="document.querySelector('.sidebar').classList.remove('mobile-open'); this.classList.remove('active');"></div>
 
     <div id="onboarding-layer" class="onboarding-screen hidden">
         <div class="wizard-container" role="dialog" aria-labelledby="wizard-main-title">
@@ -442,31 +440,21 @@
 
     <div class="app-shell" id="main-app-shell">
         <aside class="sidebar" role="navigation" aria-label="القائمة الجانبية">
-            <div class="sidebar-brand text-gradient" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <span>✨ تقريري</span>
-                <button class="btn btn-secondary hidden-desktop" style="padding: 0 10px; font-size: 1.2rem; border: none; min-height: 36px;" onclick="document.querySelector('.sidebar').classList.remove('mobile-open'); document.getElementById('mobile-overlay-bg').classList.remove('active');">✕</button>
-            </div>
+            <div class="sidebar-brand text-gradient">✨ تقريري</div>
             <nav class="sidebar-menu">
                 <div class="menu-item active" data-view="dashboard" onclick="Router.navigate('dashboard')"><span>📊</span><span data-i18n="nav_dashboard">لوحة التحكم</span></div>
                 <div class="menu-item" data-view="journal" onclick="Router.navigate('journal')"><span>✍️</span><span data-i18n="nav_journal">السجل والتوثيق</span></div>
-                
-                <div class="menu-item" onclick="Router.navigate('journal'); setTimeout(()=>JournalModule.openForm(), 100);"><span>➕</span><span>إضافة إنجاز</span></div>
-
                 <div class="menu-item" data-view="calendar" onclick="Router.navigate('calendar')"><span>📅</span><span data-i18n="nav_calendar">عرض التقويم</span></div>
                 <div class="menu-item" data-view="skills" onclick="Router.navigate('skills')"><span>🧠</span><span data-i18n="nav_skills">مصفوفة المهارات</span></div>
                 <div class="menu-item" data-view="media" onclick="Router.navigate('media')"><span>📦</span><span data-i18n="nav_media">خزانة المرفقات</span></div>
                 <div class="menu-item" data-view="reports" onclick="Router.navigate('reports')"><span>📄</span><span data-i18n="nav_reports">محرك التقارير الذكي</span></div>
                 <div class="menu-item" data-view="settings" onclick="Router.navigate('settings')"><span>⚙️</span><span data-i18n="nav_settings">إعدادات النظام</span></div>
-                
-                <div class="menu-item" style="color: var(--danger);" onclick="if(confirm('تأكيد تسجيل الخروج ومسح بيانات الجلسة؟')) { indexedDB.deleteDatabase('TaqririSaaSDatabase'); location.reload(); }"><span>🚪</span><span>تسجيل الخروج</span></div>
             </nav>
         </aside>
 
         <div class="main-frame" role="main">
             <header class="top-bar">
                 <div class="breadcrumbs" id="app-breadcrumbs">
-                    <button class="btn btn-secondary hidden-desktop" style="padding: 0 10px; margin-inline-end: 10px; font-size: 1.2rem; align-items: center; justify-content: center;" onclick="document.querySelector('.sidebar').classList.add('mobile-open'); document.getElementById('mobile-overlay-bg').classList.add('active');">☰</button>
-                    
                     <span data-i18n="nav_root">الرئيسية</span> <span class="separator">/</span> <span class="current" id="current-breadcrumb">...</span>
                 </div>
                 <div class="top-bar-actions">
@@ -502,8 +490,7 @@
                 <div id="view-journal" class="app-view">
                     <div style="margin-bottom: var(--space-4); display: flex; justify-content: space-between; align-items: center;">
                         <div><h2>السجل والتوثيق الميداني</h2><p class="text-muted">إدارة وتتبع العمليات الميدانية، التأملات المعرفية، والمرفقات</p></div>
-                        <button class="btn btn-primary hidden-desktop" onclick="JournalModule.openForm()">+ إضافة مهمة</button>
-                        <button class="btn btn-primary" style="display: var(--display-desktop, inline-flex);" onclick="JournalModule.openForm()">+ إضافة مهمة</button>
+                        <button class="btn btn-primary" onclick="JournalModule.openForm()">+ إضافة مهمة</button>
                     </div>
 
                     <div id="journal-form-wrapper" class="ui-card hidden" style="margin-bottom: var(--space-4); border: 1px solid var(--primary);">
@@ -813,12 +800,6 @@
                 if (item) item.classList.add('active');
                 const lang = localStorage.getItem('taq_lang') || 'ar';
                 document.getElementById('current-breadcrumb').textContent = SystemTranslations[lang][`nav_${viewId}`] || viewId;
-                
-                // إغلاق القائمة الجانبية في الجوال بعد اختيار الصفحة
-                const sidebar = document.querySelector('.sidebar');
-                const overlay = document.getElementById('mobile-overlay-bg');
-                if(sidebar) sidebar.classList.remove('mobile-open');
-                if(overlay) overlay.classList.remove('active');
                 
                 if (viewId === 'dashboard') DashModule.render(profile);
                 if (viewId === 'journal') JournalModule.initView();
