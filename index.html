@@ -24,17 +24,17 @@
 
             <nav class="main-nav">
                 <ul class="nav-list">
-                    <li><a href="#hero" data-i18n="nav.home">الرئيسية</a></li>
-                    <li><a href="#journey" data-i18n="nav.journey">رحلة المريض</a></li>
-                    <li><a href="#treatment" data-i18n="nav.treatment">العلاج</a></li>
-                    <li><a href="#caregiver" data-i18n="nav.caregiver">المرافق</a></li>
-                    <li><a href="#education" data-i18n="nav.education">التثقيف</a></li>
-                    <li><a href="#breathing" data-i18n="nav.breathing">التنفس</a></li>
-                    <li><a href="#guide" data-i18n="nav.guide">المساعد</a></li>
+                    <li><a href="#hero" class="scroll-link" data-i18n="nav.home">الرئيسية</a></li>
+                    <li><a href="#journey" class="scroll-link" data-i18n="nav.journey">رحلة المريض</a></li>
+                    <li><a href="#treatment" class="scroll-link" data-i18n="nav.treatment">العلاج</a></li>
+                    <li><a href="#caregiver" class="scroll-link" data-i18n="nav.caregiver">المرافق</a></li>
+                    <li><a href="#education" class="scroll-link" data-i18n="nav.education">التثقيف</a></li>
+                    <li><a href="#breathing" class="scroll-link" data-i18n="nav.breathing">التنفس</a></li>
+                    <li><a href="#guide" class="scroll-link" data-i18n="nav.guide">المساعد</a></li>
                 </ul>
                 <div class="nav-actions">
                     <button id="langSwitcher" class="btn btn-outline">English</button>
-                    <button id="loginBtn" class="btn btn-primary" data-i18n="nav.login">دخول تجريبي</button>
+                    <button id="loginBtn" class="btn btn-primary" data-i18n="nav.login">تسجيل الدخول</button>
                 </div>
             </nav>
         </div>
@@ -48,8 +48,8 @@
                     <h1 class="hero-title" data-i18n="hero.title">رحلتك مع علاج الأورام تبدأ بالمعرفة والدعم</h1>
                     <p class="hero-desc" data-i18n="hero.desc">منصة رقمية تساعد مرضى الأورام والمرافقين على فهم رحلة العلاج والاستعداد لكل خطوة بسهولة وثقة.</p>
                     <div class="hero-ctas">
-                        <a href="#journey" class="btn btn-primary btn-large" data-i18n="hero.ctaPrimary">ابدأ رحلة المريض</a>
-                        <a href="#guide" class="btn btn-secondary btn-large" data-i18n="hero.ctaSecondary">اسأل KAMC Guide</a>
+                        <a href="#journey" class="btn btn-primary btn-large scroll-link" data-i18n="hero.ctaPrimary">ابدأ رحلة المريض</a>
+                        <a href="#guide" class="btn btn-secondary btn-large scroll-link" data-i18n="hero.ctaSecondary">اسأل KAMC Guide</a>
                     </div>
                 </div>
                 <div class="hero-visual" aria-hidden="true">
@@ -68,13 +68,13 @@
             <div class="container">
                 <h2 class="section-title text-center" data-i18n="path.title">كيف يمكننا مساعدتك؟</h2>
                 <div class="path-grid">
-                    <button class="path-card organic-shape" data-target="patient">
+                    <button class="path-card organic-shape" data-target="#journey">
                         <h3 data-i18n="path.patient">المريض</h3>
                     </button>
-                    <button class="path-card organic-shape alt-1" data-target="caregiver">
+                    <button class="path-card organic-shape alt-1" data-target="#caregiver">
                         <h3 data-i18n="path.caregiver">المرافق</h3>
                     </button>
-                    <button class="path-card organic-shape alt-2" data-target="education">
+                    <button class="path-card organic-shape alt-2" data-target="#education">
                         <h3 data-i18n="path.education">التثقيف</h3>
                     </button>
                 </div>
@@ -95,7 +95,7 @@
                         <button class="step-btn" data-step="4">5</button>
                     </div>
                 </div>
-                <div class="journey-content-card card-elevated">
+                <div class="journey-content-card card-elevated fade-content" id="journeyContentWrapper">
                     <h3 id="stepTitle" class="step-title">التشخيص</h3>
                     <p id="stepDesc" class="step-desc">مرحلة الفهم والتقييم المبدئي لتحديد الخطة المناسبة.</p>
                     <div class="step-controls">
@@ -116,14 +116,8 @@
                         <button class="tab-btn" data-tab="chemo" data-i18n="treatment.chemo">العلاج الكيميائي</button>
                         <button class="tab-btn" data-tab="nuclear" data-i18n="treatment.nuclear">الطب النووي</button>
                     </div>
-                    <div class="treatment-details card-elevated" id="treatmentContent">
-                        <h3 data-i18n="treatment.radioTitle">العلاج الإشعاعي</h3>
-                        <p data-i18n="treatment.radioDesc">استخدام أشعة عالية الطاقة لتدمير الخلايا السرطانية وتقليص الأورام بدقة عالية.</p>
-                        <ul class="feature-list" id="treatmentList">
-                            <li data-i18n="treatment.radioL1">جلسات يومية قصيرة</li>
-                            <li data-i18n="treatment.radioL2">بدون ألم أثناء الجلسة</li>
-                            <li data-i18n="treatment.radioL3">قد يسبب إرهاق مؤقت</li>
-                        </ul>
+                    <div class="treatment-details card-elevated fade-content" id="treatmentContent">
+                        <!-- المحتوى يتولد برمجياً -->
                     </div>
                 </div>
             </div>
@@ -171,7 +165,7 @@
                 <h2 class="section-title text-center" data-i18n="education.title">المعرفة تمنحك ثقة أكبر</h2>
                 
                 <div class="video-grid">
-                    <div class="video-card" tabindex="0" role="button" aria-label="Play video">
+                    <div class="video-card card-elevated" tabindex="0" role="button" aria-label="Play video" data-video="https://www.youtube.com/embed/J7M_oJz7s_Q?autoplay=1&mute=1">
                         <div class="video-thumb">
                             <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg>
                         </div>
@@ -179,7 +173,7 @@
                             <h4 data-i18n="video.v1">فهم العلاج الإشعاعي</h4>
                         </div>
                     </div>
-                    <div class="video-card" tabindex="0" role="button" aria-label="Play video">
+                    <div class="video-card card-elevated" tabindex="0" role="button" aria-label="Play video" data-video="https://www.youtube.com/embed/J7M_oJz7s_Q?autoplay=1&mute=1">
                         <div class="video-thumb alt-thumb">
                             <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg>
                         </div>
@@ -187,7 +181,7 @@
                             <h4 data-i18n="video.v2">الاستعداد للعلاج الكيميائي</h4>
                         </div>
                     </div>
-                    <div class="video-card" tabindex="0" role="button" aria-label="Play video">
+                    <div class="video-card card-elevated" tabindex="0" role="button" aria-label="Play video" data-video="https://www.youtube.com/embed/J7M_oJz7s_Q?autoplay=1&mute=1">
                         <div class="video-thumb alt-thumb2">
                             <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#fff"/></svg>
                         </div>
@@ -239,7 +233,9 @@
                         <button class="chip" data-i18n="guide.s2">كيف أستعد للجلسة؟</button>
                     </div>
                     <div class="chat-footer">
-                        <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." data-i18n="guide.input" aria-label="Chat input">
+                        <div class="input-wrapper" id="chatInputWrapper">
+                            <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." data-i18n="guide.input" aria-label="Chat input">
+                        </div>
                         <button id="chatSend" class="btn btn-primary" data-i18n="guide.send">إرسال</button>
                     </div>
                     <p class="chat-disclaimer" data-i18n="guide.disclaimer">هذه الخدمة للتثقيف العام ولا تغني عن استشارة الفريق الطبي.</p>
@@ -257,23 +253,41 @@
             </div>
             <div class="footer-disclaimer">
                 <p data-i18n="footer.disclaimer">جميع المعلومات المقدمة هنا هي لأغراض تثقيفية وتوضيحية فقط. يُرجى دائماً استشارة طبيبك المعالج للحصول على قرارات طبية مخصصة.</p>
-                <p class="demo-badge" data-i18n="footer.demo">نسخة تجريبية (Demo)</p>
+                <p class="demo-badge">KAMC 2026</p>
             </div>
         </div>
     </footer>
 
-    <!-- Modals -->
-    <dialog id="demoModal" class="custom-modal">
-        <div class="modal-content">
-            <h3 id="modalTitle" data-i18n="modal.demoTitle">إشعار النسخة التجريبية</h3>
-            <p id="modalText" data-i18n="modal.demoText">هذه الخاصية غير مفعلة في هذه النسخة التجريبية. لا يتم طلب أو تخزين أي بيانات حقيقية.</p>
-            <button id="closeModal" class="btn btn-primary" data-i18n="modal.close">إغلاق</button>
+    <!-- REALISTIC LOGIN MODAL -->
+    <dialog id="loginModal" class="custom-modal">
+        <div class="modal-content text-center">
+            <h3 data-i18n="login.title">بوابة المرضى</h3>
+            <p data-i18n="login.desc">قم بتسجيل الدخول للوصول لملفك الطبي</p>
+            <div class="form-group">
+                <input type="text" id="loginUsername" class="custom-input" placeholder="رقم الملف الطبي" data-i18n="login.user">
+                <input type="password" id="loginPassword" class="custom-input" placeholder="كلمة المرور" data-i18n="login.pass">
+            </div>
+            <div class="modal-actions">
+                <button id="submitLoginBtn" class="btn btn-primary w-100" data-i18n="login.submit">تسجيل الدخول</button>
+                <button id="closeLoginModal" class="btn btn-text w-100" data-i18n="login.cancel">إلغاء</button>
+            </div>
         </div>
     </dialog>
 
-    <!-- Heuristic Feedback: Toast Notifications -->
+    <!-- VIDEO PLAYER MODAL -->
+    <dialog id="videoModal" class="custom-modal video-modal">
+        <div class="modal-content video-content">
+            <button id="closeVideoModal" class="close-btn">&times;</button>
+            <div class="video-wrapper">
+                <iframe id="videoIframe" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- TOAST NOTIFICATIONS -->
     <div id="toastContainer" class="toast-container" aria-live="polite"></div>
 
-    <script src="app.js"></script>
+    <!-- SCRIPT (DEFER TO ENSURE DOM IS READY) -->
+    <script src="app.js" defer></script>
 </body>
 </html>
