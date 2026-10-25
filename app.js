@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- State Variables ---
+    // --- متغيرات الحالة ---
     let currentTrack = null; 
     let currentStepIndex = 0;
     let trackViews = []; 
 
-    // --- DOM Elements ---
+    // --- عناصر الـ DOM ---
     const UI = {
         homeView: document.getElementById('view-home'),
-        headerInfo: document.getElementById('headerInfo'),
+        mainHeader: document.getElementById('mainHeader'),
         userBadge: document.getElementById('userTypeBadge'),
         stepTitle: document.getElementById('headerStepTitle'),
         btnHome: document.getElementById('btnHome'),
@@ -18,45 +18,45 @@ document.addEventListener('DOMContentLoaded', () => {
         progress: document.getElementById('progressIndicator')
     };
 
-    // Arrays defining the pages for each track
+    // مصفوفات تحمل معرفات (IDs) الصفحات لكل مسار
     const patientViews = ['view-p-1', 'view-p-2', 'view-p-3', 'view-p-4'];
     const companionViews = ['view-c-1', 'view-c-2', 'view-c-3'];
 
-    // --- Main Navigation Functions ---
+    // --- دوال التنقل الأساسية ---
 
+    // 1. الدخول למسار معين
     window.startJourney = function(role) {
         currentTrack = role;
         currentStepIndex = 0;
         trackViews = role === 'patient' ? patientViews : companionViews;
 
-        // Update Header
+        // تحديث الشريط العلوي
         UI.userBadge.textContent = role === 'patient' ? 'مسار المريض' : 'مسار المرافق';
-        UI.headerInfo.style.display = 'flex';
-        UI.btnHome.style.display = 'block';
-        UI.bottomNav.style.display = 'flex';
+        UI.mainHeader.style.display = 'block'; // إظهار الشريط العلوي الذي يحوي الشعار الصغير
+        UI.bottomNav.style.display = 'flex';   // إظهار أزرار التنقل
 
         renderView();
     };
 
+    // 2. العودة للرئيسية
     window.goHome = function() {
-        // Hide all track views
+        // إخفاء جميع صفحات المسار
         trackViews.forEach(id => {
             const el = document.getElementById(id);
             if(el) el.classList.remove('active');
         });
         
-        // Reset state
+        // إعادة تعيين المتغيرات
         currentTrack = null;
         currentStepIndex = 0;
         trackViews = [];
 
-        // Update UI
+        // إرجاع واجهة المستخدم لحالتها الأولى
         UI.homeView.classList.add('active');
-        UI.headerInfo.style.display = 'none';
-        UI.btnHome.style.display = 'none';
+        UI.mainHeader.style.display = 'none';
         UI.bottomNav.style.display = 'none';
         
-        // Stop breathing tool if active
+        // إيقاف أداة التنفس إذا كانت تعمل
         if(document.getElementById('stopTrainBtn')) {
             document.getElementById('stopTrainBtn').click();
         }
@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(UI.btnHome) UI.btnHome.addEventListener('click', goHome);
 
+    // 3. زر التالي
     if(UI.btnNext) {
         UI.btnNext.addEventListener('click', () => {
             if (currentStepIndex < trackViews.length - 1) {
@@ -73,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 4. زر السابق
     if(UI.btnPrev) {
         UI.btnPrev.addEventListener('click', () => {
             if (currentStepIndex > 0) {
@@ -82,35 +84,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 5. دالة تحديث الشاشة (إخفاء وإظهار)
     function renderView() {
-        // 1. Hide Home
+        // إخفاء الصفحة الرئيسية
         UI.homeView.classList.remove('active');
 
-        // 2. Hide all views in the current track
+        // إخفاء كل صفحات المسار الحالي
         trackViews.forEach(id => {
             const el = document.getElementById(id);
             if(el) el.classList.remove('active');
         });
 
-        // 3. Show current step view
+        // إظهار الصفحة المطلوبة فقط
         const currentViewId = trackViews[currentStepIndex];
         const currentViewEl = document.getElementById(currentViewId);
+        
         if(currentViewEl) {
             currentViewEl.classList.add('active');
-            // 4. Update Header Title based on the data-title attribute of the view
+            // تحديث عنوان الشريط العلوي بناءً على الصفحة
             UI.stepTitle.textContent = currentViewEl.getAttribute('data-title');
         }
 
-        // 5. Update Progress Bar & Buttons
+        // تحديث شريط التقدم وأزرار التنقل
         UI.progress.textContent = `الصفحة ${currentStepIndex + 1} من ${trackViews.length}`;
         UI.btnPrev.disabled = currentStepIndex === 0;
         UI.btnNext.disabled = currentStepIndex === trackViews.length - 1;
 
-        // Scroll to top of the content
+        // الصعود لأعلى الصفحة بسلاسة
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // --- Breathing Tool Logic (Only in Patient Track - view-p-3) ---
+    // --- برمجة أداة التنفس التفاعلية (تعمل فقط في مسار المريض صفحة 3) ---
     
     let breathTimerInt, phaseTimeout;
     let bPhase = 'ready', bTime = 0;
@@ -133,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
             bPhase = 'hold';
             breathUI.inst.textContent = "احبسي نفسك";
             breathUI.circle.className = 'breath-circle hold';
-            phaseTimeout = setTimeout(startCycle, 15000); // 15 sec hold
+            phaseTimeout = setTimeout(startCycle, 15000); // 15 ثانية كهدف لحبس النفس
         } else if (bPhase === 'hold') {
             bPhase = 'exhale';
             breathUI.inst.textContent = "زفير ببطء";
