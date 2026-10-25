@@ -3,163 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة تثقيف المرضى | KAMC</title>
+    <title>قسم فيزياء العلاج الإشعاعي | DIBH</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- الشريط العلوي الدائم (Top Navigation) -->
-    <header class="clinical-header">
-        <div class="container nav-container">
+    <!-- الشريط العلوي (يظهر بعد اختيار المسار) -->
+    <header class="main-header" id="mainHeader" style="display: none;">
+        <div class="header-container">
             <div class="brand">
-                <svg class="medical-icon" viewBox="0 0 24 24" width="28" height="28">
-                    <path fill="currentColor" d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M13,11.5H16V13.5H13V16.5H11V13.5H8V11.5H11V8.5H13V11.5Z"/>
-                </svg>
-                <span>KAMC <strong>Oncology</strong></span>
+                <img src="logo.jpg" alt="الشعار" class="nav-logo">
             </div>
-            
-            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">☰</button>
-
-            <nav class="main-nav" id="mainNav">
-                <a href="#education" class="nav-link active" data-target="education">التثقيف والمساندة</a>
-                <a href="#dibh" class="nav-link" data-target="dibh">تقنية DIBH</a>
-                <a href="#practice" class="nav-link" data-target="practice">تدرّب</a>
-            </nav>
+            <div class="header-info" id="headerInfo">
+                <span class="user-badge" id="userTypeBadge">المريض</span>
+                <span class="step-title" id="headerStepTitle">نظرة عامة</span>
+            </div>
+            <button class="btn-home" id="btnHome">الرئيسية ⌂</button>
         </div>
     </header>
 
-    <main class="main-content container">
-
+    <!-- منطقة المحتوى الرئيسية -->
+    <main class="content-area">
+        
         <!-- ==========================================
-             الصفحة الأولى: التثقيف (Education)
+             الصفحة الأولى: اختيار المسار (الرئيسية)
              ========================================== -->
-        <section id="education" class="page-section active">
-            <div class="section-header">
-                <h1 class="section-title">التثقيف والمساندة</h1>
-                <p class="section-subtitle">معلومات شاملة لدعم المريض والمرافق خلال رحلة العلاج.</p>
-            </div>
-
-            <div class="content-grid">
-                <!-- قسم المريض -->
-                <div class="clinical-card">
-                    <div class="card-icon">🩺</div>
-                    <h2 class="card-title">نظرة عامة للمريض</h2>
-                    <p class="card-text">أهلاً بك في مسارك التثقيفي. نهدف هنا إلى تزويدك بالمعلومات اللازمة للشعور بالراحة والثقة أثناء جلسات العلاج الإشعاعي.</p>
-                    <h3 class="sub-heading mt-3">أسئلة قد تخطر في بالك:</h3>
-                    <div class="faq-item">
-                        <strong>هل سأكون وحدي أثناء العلاج؟</strong>
-                        <p>لا، سيكون فريق العلاج الإشعاعي معك، وسيرشدك متى تأخذين النفس ومتى تحبسينه ومتى تعودين إلى التنفس الطبيعي.</p>
-                    </div>
-                    <div class="faq-item">
-                        <strong>ماذا لو لم أستطع حبس نفسي لمدة كافية؟</strong>
-                        <p>لا تقلقي، ليس عليك القيام بذلك بشكل مثالي من البداية. أخبري الفريق وسيساعدك على التدريب وتحديد الطريقة الأنسب لك.</p>
-                    </div>
-                </div>
-
-                <!-- قسم المرافق -->
-                <div class="clinical-card">
-                    <div class="card-icon">🤝</div>
-                    <h2 class="card-title">دليل المرافق</h2>
-                    <p class="card-text">دورك كمرافق مهم جداً في دعم المريضة. وجودك بجانب المريضة يساعدها على الشعور بالاطمئنان.</p>
-                    <ul class="clinical-list mt-3">
-                        <li><strong>طمئنها:</strong> أخبرها أن الفريق سيشرح لها الخطوات خطوة بخطوة.</li>
-                        <li><strong>شجعها دون ضغط:</strong> ذكّرها بأن إتقان التقنية لا يُشترط من المحاولة الأولى.</li>
-                        <li><strong>ساعدها على الاستعداد:</strong> وفر لها مكاناً هادئاً ومريحاً للتدرب في المنزل.</li>
-                        <li><strong>ملاحظة هامة:</strong> لا يُسمح للمرافق بالدخول إلى غرفة العلاج الإشعاعي أثناء الجلسة للمحافظة على سلامته من الإشعاع. أحباؤكم في أيدي أمينة.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==========================================
-             الصفحة الثانية: تقنية DIBH
-             ========================================== -->
-        <section id="dibh" class="page-section hidden">
-            <div class="section-header">
-                <h1 class="section-title">تقنية حبس النفس العميق (DIBH)</h1>
-                <p class="section-subtitle">تعرف على آلية عمل التقنية وأهميتها في حماية القلب.</p>
-            </div>
-
-            <div class="clinical-card full-width mb-4">
-                <h2 class="card-title text-primary">ما هو حبس النفس العميق؟</h2>
-                <p class="card-text">تقنية حبس النفس العميق هي طريقة نستخدمها أثناء العلاج الإشعاعي، للمساعدة في حماية القلب من الإشعاع.</p>
+        <div id="view-home" class="step-view active">
+            <div class="role-selection">
+                <!-- شعار المستشفى الكبير -->
+                <img src="logo.jpg" alt="مدينة الملك عبدالله الطبية" class="hero-logo">
                 
-                <h3 class="sub-heading mt-4">كيف تساعد هذه التقنية في حماية القلب؟</h3>
-                <p class="card-text">عند أخذ نفس عميق، تمتلئ الرئتان بالهواء بشكل كامل وهذا يساعد على إبعاد القلب عن مسار الإشعاع. وبذلك تقل كمية الإشعاع التي تصل إلى القلب أثناء الجلسة.</p>
-            </div>
-
-            <div class="content-grid">
-                <div class="clinical-card">
-                    <h3 class="sub-heading">كيف أطبقها أثناء العلاج؟</h3>
-                    <p class="card-text">خلال <strong>جلسة التخطيط</strong> ما قبل العلاج، سيقوم الفريق باختيار الوضعية المناسبة، وبتعليمك طريقة أخذ نفس عميق وحبسه لفترة قد تصل إلى 20 ثانية.<br><br>
-                    أثناء <strong>جلسة العلاج</strong>، يتم تشغيل الإشعاع تلقائياً أثناء حبس النفس حسب تعليمات الفريق. بعد ذلك يطلب منك الفريق أن تتنفسي بشكل طبيعي ويتوقف الإشعاع.</p>
-                </div>
+                <h1 class="academic-title mt-4">المنصة التثقيفية لتقنية (DIBH)</h1>
+                <p class="academic-subtitle">تقنية حبس النفس العميق للحماية الإشعاعية</p>
                 
-                <div class="clinical-card">
-                    <h3 class="sub-heading">هل هذه التقنية مناسبة للجميع؟</h3>
-                    <p class="card-text">قد تُستخدم هذه التقنية لعلاج:</p>
-                    <ul class="clinical-list">
-                        <li>سرطان الثدي في الجهة اليسرى.</li>
-                        <li>سرطان الغدد اللمفاوية في منطقة الصدر.</li>
-                        <li>الأورام الموجودة في جهة الصدر أو البطن العلوي.</li>
-                    </ul>
-                    <p class="card-text mt-3">ملاءمتها تختلف من شخص إلى آخر، لذلك سيحدد الطبيب وفريق العلاج ما إذا كانت مناسبة لحالتك.</p>
+                <div class="divider"></div>
+
+                <h2 class="ask-role">من أنت؟</h2>
+                <div class="role-cards mt-3">
+                    <button class="role-card" onclick="startJourney('patient')">
+                        <div class="role-icon">🩺</div>
+                        <h3>مريض (Patient)</h3>
+                        <p>الدخول للمسار التثقيفي والتدريب العملي</p>
+                    </button>
+                    <button class="role-card" onclick="startJourney('companion')">
+                        <div class="role-icon">🤝</div>
+                        <h3>مرافق (Companion)</h3>
+                        <p>الدخول لمسار المساندة والدعم النفسي</p>
+                    </button>
                 </div>
             </div>
-        </section>
+        </div>
 
         <!-- ==========================================
-             الصفحة الثالثة: تدرّب (Practice)
+             مسار المريض (Patient Track)
              ========================================== -->
-        <section id="practice" class="page-section hidden">
-            <div class="section-header">
-                <h1 class="section-title">التدرب على التنفس</h1>
-                <p class="section-subtitle">أداة تفاعلية لمساعدتك على التدرب في المنزل بأمان وراحة.</p>
+        
+        <div id="view-p-1" class="step-view" data-title="خريطة المسار">
+            <h2 class="step-heading">خريطة المسار التثقيفي</h2>
+            <p class="step-text">أهلاً بك في مسارك التثقيفي الخاص بتقنية حبس النفس العميق (DIBH). ستمر خلال هذا المسار بالمراحل التالية:</p>
+            <div class="roadmap">
+                <div class="roadmap-item"><span>1</span> فهم التقنية وأهميتها لحماية القلب.</div>
+                <div class="roadmap-item"><span>2</span> التعرف على آلية التطبيق أثناء العلاج.</div>
+                <div class="roadmap-item"><span>3</span> التدريب العملي والتفاعلي على التنفس.</div>
+                <div class="roadmap-item"><span>4</span> أسئلة شائعة ومراجعة ختامية.</div>
             </div>
+            <p class="step-text mt-3 fw-bold">اضغط على "التالي" بالأسفل للبدء في رحلتك التثقيفية.</p>
+        </div>
 
-            <div class="content-grid align-start">
-                <!-- خطوات التدريب -->
-                <div class="clinical-card">
-                    <h2 class="card-title">خطوات التدريب</h2>
-                    <p class="card-text mb-3">إذا أوصى فريق العلاج الإشعاعي بالتدرب في المنزل، يمكنك اتباع الخطوات التالية:</p>
-                    <ol class="clinical-list numbered">
-                        <li>استلقي على ظهرك على السرير، وضعي وسادة تحت رأسك وركبتيك إذا احتجتِ.</li>
+        <div id="view-p-2" class="step-view" data-title="المحتوى التثقيفي">
+            <h2 class="step-heading text-primary">ما هو حبس النفس العميق؟</h2>
+            <p class="step-text">تقنية حبس النفس العميق هي طريقة نستخدمها أثناء العلاج الإشعاعي، للمساعدة في حماية القلب من الإشعاع.</p>
+            
+            <h3 class="sub-heading mt-4">كيف تساعد هذه التقنية في حماية القلب؟</h3>
+            <p class="step-text">عند أخذ نفس عميق، تمتلئ الرئتان بالهواء بشكل كامل وهذا يساعد على إبعاد القلب عن مسار الإشعاع. وبذلك تقل كمية الإشعاع التي تصل إلى القلب أثناء الجلسة.</p>
+
+            <h3 class="sub-heading mt-4">كيف أطبقها أثناء العلاج؟</h3>
+            <p class="step-text">خلال <strong>جلسة التخطيط</strong> ما قبل العلاج، سيقوم الفريق باختيار الوضعية المناسبة، وبتعليمك طريقة أخذ نفس عميق وحبسه لفترة قصيرة قد تصل إلى 20 ثانية.<br><br>
+            أما أثناء <strong>جلسة العلاج</strong>، يتم تشغيل الإشعاع تلقائياً أثناء حبس النفس حسب تعليمات الفريق. بعد ذلك يطلب منك الفريق العودة للتنفس الطبيعي ويتوقف الإشعاع.</p>
+
+            <h3 class="sub-heading mt-4">هل هذه التقنية مناسبة للجميع؟</h3>
+            <ul class="academic-list">
+                <li>سرطان الثدي في الجهة اليسرى.</li>
+                <li>سرطان الغدد اللمفاوية في منطقة الصدر.</li>
+                <li>الأورام الموجودة في جهة الصدر أو البطن العلوي.</li>
+            </ul>
+        </div>
+
+        <div id="view-p-3" class="step-view" data-title="التدريب والتطبيق">
+            <h2 class="step-heading text-primary">التدرب على التنفس</h2>
+            <p class="step-text mb-3">التدرب على أخذ النفس العميق قد يساعدك على الشعور بالراحة والثقة. يرجى اتباع الخطوات:</p>
+            
+            <div class="grid-layout">
+                <div class="instruction-side">
+                    <ol class="academic-list numbered">
+                        <li>استلقي على ظهرك وضعي وسادة تحت رأسك وركبتيك.</li>
                         <li>ضعي ذراعيك فوق رأسك (كما هو الوضع في التخطيط).</li>
-                        <li><strong>خذي نفساً عميقاً وببطء من الصدر والرئتين، وليس من البطن.</strong> حاولي توسيع صدرك مع إبقاء ظهرك ملامساً للسرير.</li>
-                        <li>احبسي نفسك لبضع ثوان، ثم زيدي المدة تدريجياً حسب قدرتك.</li>
-                        <li>أخرجي الهواء ببطء، ثم عودي للتنفس الطبيعي.</li>
+                        <li><strong>خذي نفساً عميقاً من الصدر والرئتين، وليس من البطن.</strong></li>
+                        <li>احبسي نفسك لبضع ثوان، ثم زيدي المدة تدريجياً.</li>
+                        <li>أخرجي الهواء ببطء، وعودي للتنفس الطبيعي للراحة.</li>
                     </ol>
-                    <div class="alert-box mt-4">
-                        <strong>تذكري:</strong> ليس من الضروري أن تتمكني من حبس نفسك لمدة 20 ثانية من أول محاولة. التدريب يكون تدريجياً. توقفي فوراً إذا شعرتِ بالدوار أو ضيق التنفس.
-                    </div>
+                    <div class="alert-box mt-3">تذكري: ليس من الضروري حبس النفس 20 ثانية من أول محاولة. توقفي إن شعرتِ بالدوار.</div>
                 </div>
-
-                <!-- الأداة التفاعلية -->
-                <div class="clinical-card text-center">
-                    <h2 class="card-title mb-4">أداة التنفس التفاعلية</h2>
-                    
-                    <div class="breathing-tool-container">
+                
+                <div class="tool-side text-center">
+                    <div class="breathing-app">
                         <div class="breath-circle" id="breathCircle">
-                            <span id="breath-inst" class="breath-text">جاهز؟</span>
-                            <span id="breath-timer" class="breath-time">00:00</span>
+                            <span id="breath-inst">جاهز؟</span>
+                            <span id="breath-timer">00:00</span>
+                        </div>
+                        <div class="mt-4">
+                            <button id="startTrainBtn" class="btn-primary-large">ابدأ التدريب</button>
+                            <button id="stopTrainBtn" class="btn-outline-danger" style="display: none;">إنهاء التدريب</button>
                         </div>
                     </div>
-                    
-                    <div class="tool-controls mt-5">
-                        <button id="startTrainBtn" class="btn-primary-large">ابدأ التدريب</button>
-                        <button id="stopTrainBtn" class="btn-outline-danger hidden">إنهاء التدريب</button>
-                    </div>
-
-                    <div class="progress-stats mt-4">
-                        <span class="text-muted">إجمالي الجلسات المكتملة:</span>
-                        <strong id="completedSessions" class="text-primary">0</strong>
-                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+
+        <div id="view-p-4" class="step-view" data-title="مراجعة ختامية">
+            <h2 class="step-heading text-primary">أسئلة قد تخطر في بالك</h2>
+            
+            <div class="qna-box mt-4">
+                <h4>هل هذه التقنية مناسبة لجميع المريضات؟</h4>
+                <p>قد لا تكون مناسبة للجميع؛ سيقيم فريق العلاج الإشعاعي حالتك ويحددون ما إذا كانت مناسبة لك.</p>
+            </div>
+            
+            <div class="qna-box">
+                <h4>ماذا لو لم أستطع حبس نفسي لمدة كافية؟</h4>
+                <p>لا تقلقي، أخبري فريق العلاج وسيساعدك على التدريب وتحديد الطريقة الأنسب لك. لا تجبري نفسك على حبس النفس مدة أطول من استطاعتك.</p>
+            </div>
+
+            <div class="qna-box">
+                <h4>هل سأكون وحدي أثناء العلاج؟</h4>
+                <p>لا، سيكون الفريق الطبي معك، وسيرشدك متى تأخذين النفس ومتى تحبسينه ومتى تعودين للتنفس الطبيعي.</p>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             مسار المرافق (Companion Track)
+             ========================================== -->
+        
+        <div id="view-c-1" class="step-view" data-title="خريطة المسار">
+            <h2 class="step-heading">خريطة مسار المساندة</h2>
+            <p class="step-text">أهلاً بك في مسار المساندة للمرافقين. دورك مهم جداً في دعم المريضة خلال رحلة العلاج بتقنية DIBH. ستتعرف هنا على:</p>
+            <div class="roadmap">
+                <div class="roadmap-item"><span>1</span> فهم التقنية لحماية قلب المريضة.</div>
+                <div class="roadmap-item"><span>2</span> معرفة دورك قبل وأثناء جلسات العلاج.</div>
+                <div class="roadmap-item"><span>3</span> خطوات مساعدة المريضة على التدريب في المنزل.</div>
+            </div>
+            <p class="step-text mt-3 fw-bold">اضغط على "التالي" بالأسفل للبدء.</p>
+        </div>
+
+        <div id="view-c-2" class="step-view" data-title="فهم التقنية ودورك">
+            <h2 class="step-heading text-primary">ما هو حبس النفس العميق؟</h2>
+            <p class="step-text">طريقة نستخدمها أثناء العلاج الإشعاعي، لحماية قلب المريضة. عندما تأخذ المريضة نفساً عميقاً، تمتلئ الرئتان بالهواء وهذا يُبعد القلب عن مسار الإشعاع.</p>
+            
+            <h3 class="sub-heading mt-4">دورك كمرافق</h3>
+            <p class="step-text">دورك هو مساعدة المريضة على الاستعداد والتدرب بهدوء في المنزل، مع توضيح تعليمات فريق العلاج الإشعاعي لها.</p>
+
+            <h3 class="sub-heading mt-4">ما الذي تحتاج إلى معرفته؟</h3>
+            <ul class="academic-list">
+                <li>سيشرح الفريق للمريضة متى تأخذ النفس ومتى تحبسه. احرص على طمأنتها وتذكيرها باتباع التعليمات.</li>
+                <li>لا يُسمح للمرافق بالدخول إلى غرفة العلاج الإشعاعي أثناء الجلسة للمحافظة على سلامته من الإشعاع، يمكنك الانتظار في المكان المخصص.</li>
+            </ul>
+        </div>
+
+        <div id="view-c-3" class="step-view" data-title="المساعدة في التدريب">
+            <h2 class="step-heading text-primary">مساعدة المريضة في التدريب</h2>
+            <p class="step-text mb-3">التدرب في المنزل يقلل التوتر. اتبع الخطوات التالية لمساعدتها:</p>
+            
+            <ol class="academic-list numbered">
+                <li><strong>وضعية مريحة:</strong> ساعدها على الاستلقاء بوضعية العلاج (الذراعين فوق الرأس).</li>
+                <li><strong>طريقة التنفس:</strong> ذكرها بأخذ نفس عميق من الصدر وليس البطن، دون إجهاد.</li>
+                <li><strong>التدرج:</strong> شجعها على حبس النفس لبضع ثوانٍ ثم الزيادة التدريجية، لا تطلب منها 20 ثانية بالقوة.</li>
+            </ol>
+
+            <div class="summary-box mt-4">
+                <h4>كيف تدعمها نفسياً؟</h4>
+                <ul class="academic-list">
+                    <li><strong>طمئنها:</strong> أخبرها أن الفريق سيشرح لها كل شيء ولن تكون وحدها.</li>
+                    <li><strong>شجعها دون ضغط:</strong> إتقان التقنية لا يُشترط من المحاولة الأولى.</li>
+                    <li><strong>راقب راحتها:</strong> إذا شعرت بالتعب أو الدوخة ساعدها على التوقف فوراً للراحة.</li>
+                </ul>
+            </div>
+        </div>
 
     </main>
+
+    <!-- شريط التنقل السفلي (يظهر داخل المسارات فقط) -->
+    <footer class="bottom-nav" id="bottomNav" style="display: none;">
+        <button id="btnPrev" class="nav-btn btn-secondary">السابق</button>
+        <div id="progressIndicator" class="progress-text">الصفحة 1 من 4</div>
+        <button id="btnNext" class="nav-btn btn-primary">التالي</button>
+    </footer>
 
     <script src="app.js"></script>
 </body>
