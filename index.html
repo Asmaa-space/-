@@ -22,6 +22,8 @@
                 <ul class="nav-links">
                     <li><a href="#journey" data-i18n="navJourney">رحلة العلاج</a></li>
                     <li><a href="#treatments" data-i18n="navTreatments">أنواع العلاج</a></li>
+                    <li><a href="#caregiver" data-i18n="navCaregiver">دليل المرافق</a></li>
+                    <li><a href="#education" data-i18n="navEducation">المكتبة</a></li>
                     <li><a href="#breathing" data-i18n="navBreathing">الاسترخاء</a></li>
                 </ul>
             </nav>
@@ -69,6 +71,8 @@
                     <button class="step-btn active" data-step="0" role="tab" aria-selected="true" data-i18n="step1">التشخيص</button>
                     <button class="step-btn" data-step="1" role="tab" aria-selected="false" data-i18n="step2">الخطة</button>
                     <button class="step-btn" data-step="2" role="tab" aria-selected="false" data-i18n="step3">الاستعداد</button>
+                    <button class="step-btn" data-step="3" role="tab" aria-selected="false" data-i18n="step4">الجلسات</button>
+                    <button class="step-btn" data-step="4" role="tab" aria-selected="false" data-i18n="step5">المتابعة</button>
                 </div>
                 <div class="step-content card" aria-live="polite">
                     <h3 id="step-title">التشخيص</h3>
@@ -81,8 +85,54 @@
             </div>
         </section>
 
-        <!-- Breathing Tool (Fully Functional) -->
-        <section id="breathing" class="container section-padding">
+        <!-- Treatments Section (Restored) -->
+        <section id="treatments" class="container section-padding">
+            <h2 class="section-title text-center" data-i18n="treatmentsTitle">استكشاف أنواع العلاج</h2>
+            <div class="treatments-container">
+                <div class="treatment-tabs" role="tablist">
+                    <button class="tab-btn active" data-target="radio" data-i18n="radioTherapy">العلاج الإشعاعي</button>
+                    <button class="tab-btn" data-target="chemo" data-i18n="chemoTherapy">العلاج الكيميائي</button>
+                    <button class="tab-btn" data-target="nuclear" data-i18n="nuclearTherapy">الطب النووي</button>
+                </div>
+                <div class="treatment-content card" id="treatment-content">
+                    <h3 data-i18n="radioTherapyTitle">العلاج الإشعاعي</h3>
+                    <p data-i18n="radioTherapyDesc">استخدام أشعة عالية الطاقة لتدمير الخلايا السرطانية موضعياً بأمان.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Caregiver Section (Restored) -->
+        <section id="caregiver" class="container section-padding bg-soft">
+            <h2 class="section-title text-center" data-i18n="caregiverTitle">دليل المرافق والمساندة</h2>
+            <div class="accordion">
+                <div class="accordion-item card">
+                    <button class="accordion-header" data-i18n="caregiverQ1">كيف أدعم المريض نفسياً؟</button>
+                    <div class="accordion-body hidden" data-i18n="caregiverA1">الاستماع بتعاطف، المساعدة في المهام اليومية، وتجنب النصائح الطبية غير المتخصصة.</div>
+                </div>
+                <div class="accordion-item card mt-2">
+                    <button class="accordion-header text-danger" data-i18n="caregiverQ2">متى يجب الاتصال بالطبيب فوراً؟</button>
+                    <div class="accordion-body hidden" data-i18n="caregiverA2">عند ارتفاع الحرارة فوق 38 مئوية، أو النزيف، أو صعوبة التنفس المفاجئة.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education (Video Library) (Restored) -->
+        <section id="education" class="container section-padding">
+            <h2 class="section-title text-center" data-i18n="educationTitle">المكتبة التثقيفية المرئية</h2>
+            <div class="video-grid">
+                <div class="video-card card">
+                    <div class="video-thumb" style="background: var(--teal); height: 150px; display: flex; align-items: center; justify-content: center; color: white;">▶</div>
+                    <h3 class="mt-2" data-i18n="video1Title">ما هو العلاج الإشعاعي؟</h3>
+                </div>
+                <div class="video-card card">
+                    <div class="video-thumb" style="background: var(--rose); height: 150px; display: flex; align-items: center; justify-content: center; color: white;">▶</div>
+                    <h3 class="mt-2" data-i18n="video2Title">التغذية أثناء الجلسات</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Breathing Tool -->
+        <section id="breathing" class="container section-padding bg-soft">
             <h2 class="section-title text-center" data-i18n="breathTitle">أداة الاسترخاء الذهني</h2>
             <p class="text-center" data-i18n="breathWarning">تمرين للاسترخاء العام. توقف إذا شعرت بدوار.</p>
             <div class="breathing-app">
@@ -98,8 +148,8 @@
             </div>
         </section>
 
-        <!-- AI Assistant (Production Ready Structure) -->
-        <section id="ai-chat" class="container section-padding bg-soft">
+        <!-- AI Assistant -->
+        <section id="ai-chat" class="container section-padding">
             <h2 class="section-title" data-i18n="aiTitle">المساعد التثقيفي الذكي</h2>
             <div class="chat-container card">
                 <div class="chat-disclaimer" data-i18n="aiDisclaimer">
@@ -139,6 +189,7 @@
     <!-- Toast Notifications -->
     <div id="toastContainer" aria-live="assertive"></div>
 
+    <!-- تم التعديل هنا: اسم الملف الصحيح -->
     <script src="app.js"></script>
 </body>
 </html>
