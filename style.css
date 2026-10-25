@@ -1,201 +1,329 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+
 /* ==========================================================================
-   PREMIUM HEALTHCARE UI (Inspired by References)
+   PREMIUM DESIGN SYSTEM & VARIABLES (Futuristic Healthcare)
    ========================================================================== */
 :root {
-    --bg-dark: #07172A;
-    --bg-light-blue: #0E294B;
-    --cyan: #00F2FE;
-    --cyan-dim: rgba(0, 242, 254, 0.2);
-    --white: #FFFFFF;
-    --text-muted: #94A3B8;
+    /* Premium Deep Blue & Cyan Palette */
+    --bg-deep: #050B14;
+    --bg-gradient: radial-gradient(circle at top right, #0A1C3A 0%, #050B14 100%);
+    --nav-glass: rgba(5, 11, 20, 0.7);
     
-    --glass-bg: rgba(255, 255, 255, 0.03);
+    --primary: #00F0FF;        /* Glowing Cyan */
+    --primary-dim: rgba(0, 240, 255, 0.15);
+    --secondary: #3A506B;
+    --accent: #48CAE4;
+    
+    /* Text Colors for Dark Theme */
+    --text-main: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    
+    /* Glassmorphism Tokens */
+    --glass-bg: rgba(13, 27, 42, 0.5);
     --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+    --glass-border-glow: rgba(0, 240, 255, 0.3);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
     
-    --font-main: 'Tajawal', sans-serif;
-    --trans-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --danger: #FF4D4D;
+    --radius-sm: 8px; 
+    --radius-md: 16px; 
+    --radius-lg: 24px; 
+    --radius-full: 9999px;
+    --trans-fast: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --trans-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ==========================================================================
+   RESET, BASE & ATMOSPHERIC BACKGROUND
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
 
-body {
-    font-family: var(--font-main);
-    background-color: var(--bg-dark);
-    color: var(--white);
-    line-height: 1.6;
-    overflow-x: hidden;
+body { 
+    font-family: 'IBM Plex Sans Arabic', sans-serif; 
+    background: var(--bg-deep);
+    background-image: var(--bg-gradient);
+    background-attachment: fixed;
+    color: var(--text-main); 
+    line-height: 1.6; 
+    overflow-x: hidden; 
     position: relative;
-    min-height: 100vh;
+    z-index: 0;
 }
 
-/* 1. Atmospheric Backgrounds (The Grid & Glow) */
-.bg-grid {
+/* Animated Ambient Glows */
+body::before, body::after {
+    content: '';
     position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background-size: 50px 50px;
-    background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    z-index: -2;
-    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-    -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-}
-
-.bg-glow {
-    position: fixed;
-    top: -20%; right: -10%;
-    width: 70vw; height: 70vw;
-    background: radial-gradient(circle, rgba(14, 41, 75, 0.8) 0%, rgba(7, 23, 42, 0) 70%);
+    border-radius: 50%;
+    filter: blur(120px);
     z-index: -1;
-    filter: blur(80px);
+    opacity: 0.4;
+    animation: floatAmbient 15s infinite alternate ease-in-out;
+}
+body::before {
+    top: -10%; right: -10%;
+    width: 50vw; height: 50vw;
+    background: radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, transparent 70%);
+}
+body::after {
+    bottom: -10%; left: -10%;
+    width: 40vw; height: 40vw;
+    background: radial-gradient(circle, rgba(72, 202, 228, 0.1) 0%, transparent 70%);
+    animation-delay: -5s;
 }
 
-/* 2. Premium Glass Navigation */
-.glass-nav {
-    position: fixed;
-    top: 0; width: 100%;
-    background: rgba(7, 23, 42, 0.5);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-bottom: 1px solid var(--glass-border);
-    z-index: 100;
+@keyframes floatAmbient {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-30px, 30px) scale(1.1); }
 }
 
-.nav-content {
-    display: flex; justify-content: space-between; align-items: center;
-    height: 80px; max-width: 1300px; margin: 0 auto; padding: 0 30px;
+ul, ol, li { list-style: none !important; }
+a { text-decoration: none !important; color: inherit; }
+button { background: none; border: none; cursor: pointer; font: inherit; outline: none; }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+/* Utilities */
+.container { width: 100%; max-width: 1200px; margin: 0 auto; padding-inline: 24px; }
+.text-center { text-align: center; }
+.text-danger { color: var(--danger); }
+.hidden { display: none !important; }
+.mt-2 { margin-top: 16px; }
+.mt-4 { margin-top: 32px; }
+
+/* Typography */
+h1, h2, h3 { color: #FFF; line-height: 1.3; font-weight: 600; letter-spacing: -0.02em; }
+.section-padding { padding-block: 100px; }
+.section-title { font-size: clamp(2rem, 4vw, 2.5rem); margin-bottom: 40px; text-align: center; background: linear-gradient(to right, #FFF, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* ==========================================================================
+   GLASSMORPHISM CARDS & COMPONENTS
+   ========================================================================== */
+.card { 
+    background: var(--glass-bg); 
+    backdrop-filter: blur(16px); 
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border); 
+    border-radius: var(--radius-lg); 
+    box-shadow: var(--glass-shadow); 
+    padding: 32px; 
+    transition: all var(--trans-slow);
 }
 
-.brand {
-    font-size: 1.5rem; font-weight: 800; letter-spacing: 2px;
-    display: flex; align-items: center; gap: 12px;
+/* Premium Buttons */
+.btn { 
+    display: inline-flex; align-items: center; justify-content: center; 
+    padding: 14px 28px; border-radius: var(--radius-full); 
+    font-weight: 500; font-size: 1rem; letter-spacing: 0.5px;
+    transition: all var(--trans-fast); min-height: 48px; 
+    position: relative; overflow: hidden;
 }
-.brand span { color: var(--text-muted); font-weight: 400; }
-.brand-dot { width: 12px; height: 12px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 15px var(--cyan); }
-
-.nav-links { display: flex; gap: 40px; }
-.nav-links a { color: var(--white); font-weight: 500; font-size: 1rem; opacity: 0.8; transition: var(--trans-smooth); }
-.nav-links a:hover { opacity: 1; color: var(--cyan); text-shadow: 0 0 10px var(--cyan-dim); }
-
-/* Buttons */
-.nav-actions { display: flex; gap: 20px; align-items: center; }
-.btn-text { background: none; border: none; color: var(--white); font-family: inherit; font-weight: 700; cursor: pointer; }
-.btn-glass { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 10px 24px; border-radius: 30px; color: var(--white); font-weight: 500; cursor: pointer; backdrop-filter: blur(10px); transition: var(--trans-smooth); }
-.btn-glass:hover { background: rgba(255,255,255,0.1); border-color: var(--cyan); }
-
-/* 3. Hero Section */
-.hero-premium {
-    position: relative;
-    padding-top: 150px;
-    min-height: 90vh;
-    display: flex;
-    align-items: center;
-    max-width: 1300px; margin: 0 auto; padding-inline: 30px;
+.btn-primary { 
+    background: linear-gradient(135deg, #007A8F, var(--primary)); 
+    color: #000; font-weight: 700;
+    box-shadow: 0 4px 20px rgba(0, 240, 255, 0.2); border: 1px solid rgba(255,255,255,0.2);
 }
-
-/* Giant Background Text */
-.hero-background-text {
-    position: absolute;
-    top: 20%; left: 50%; transform: translateX(-50%);
-    font-size: 15vw; font-weight: 800;
-    color: rgba(255, 255, 255, 0.02);
-    z-index: -1;
-    pointer-events: none;
-    letter-spacing: 20px;
+.btn-primary:hover:not(:disabled) { 
+    box-shadow: 0 6px 25px rgba(0, 240, 255, 0.4); 
+    transform: translateY(-2px);
 }
-
-.hero-content {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; width: 100%; align-items: center;
+.btn-outline { 
+    background: rgba(0, 240, 255, 0.05);
+    border: 1px solid var(--primary); color: var(--primary); 
+    backdrop-filter: blur(4px);
 }
-
-.badge-glass {
-    display: inline-block; padding: 8px 20px;
-    background: var(--cyan-dim); border: 1px solid rgba(0, 242, 254, 0.3);
-    border-radius: 30px; color: var(--cyan); font-weight: 700; font-size: 0.9rem;
-    margin-bottom: 24px;
+.btn-outline:hover:not(:disabled) { 
+    background: var(--primary-dim); color: #FFF; 
+    box-shadow: 0 0 15px var(--primary-dim);
 }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(100%); }
 
-.hero-text-side h1 {
-    font-size: 4.5rem; line-height: 1.1; margin-bottom: 24px; font-weight: 800;
+/* ==========================================================================
+   HEADER & NAVIGATION
+   ========================================================================== */
+.main-header { 
+    position: sticky; top: 0; z-index: 100; 
+    background: var(--nav-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+    border-bottom: 1px solid var(--glass-border); padding-block: 16px;
+    transition: all var(--trans-fast);
 }
-.hero-text-side h1 span { color: transparent; -webkit-text-stroke: 1px var(--cyan); }
-.hero-text-side p {
-    font-size: 1.25rem; color: var(--text-muted); max-width: 90%; margin-bottom: 40px; line-height: 1.8;
+.header-content { display: flex; justify-content: space-between; align-items: center; }
+.brand { display: flex; align-items: center; gap: 12px; font-weight: 700; color: #FFF; font-size: 1.25rem; letter-spacing: 1px; text-transform: uppercase; }
+.brand svg circle { stroke: var(--primary); }
+.brand svg circle:last-child { fill: var(--accent); }
+.nav-links { display: flex; gap: 32px; }
+.nav-links a { 
+    color: var(--text-secondary); font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;
+    transition: color var(--trans-fast); padding: 8px 0; position: relative;
 }
-
-.hero-buttons { display: flex; gap: 20px; }
-.btn-solid { background: var(--cyan); color: #000; border: none; padding: 16px 32px; border-radius: 40px; font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: var(--trans-smooth); box-shadow: 0 10px 20px rgba(0, 242, 254, 0.2); }
-.btn-solid:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 242, 254, 0.4); }
-.btn-glass-outline { background: transparent; border: 1px solid var(--cyan); color: var(--cyan); padding: 16px 32px; border-radius: 40px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: var(--trans-smooth); }
-.btn-glass-outline:hover { background: var(--cyan-dim); }
-
-/* 4. The 3D Glass Object & Floating Cards (Like Reference Image) */
-.hero-visual-side { position: relative; display: flex; justify-content: center; align-items: center; height: 500px; }
-
-/* Placeholder for the 3D Heart/Object */
-.glass-sphere-container { position: relative; animation: float 6s ease-in-out infinite; }
-.glass-sphere {
-    width: 350px; height: 350px; border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: inset 20px 20px 40px rgba(255,255,255,0.2), inset -20px -20px 40px rgba(0,0,0,0.5), 0 30px 60px rgba(0,0,0,0.5);
-    position: relative;
-    overflow: hidden;
+.nav-links a::after {
+    content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 2px;
+    background: var(--primary); transition: width var(--trans-fast);
+    box-shadow: 0 0 8px var(--primary);
 }
-.glass-sphere::after {
-    content: ''; position: absolute; top: 40px; left: 40px; width: 60px; height: 60px;
-    background: rgba(255,255,255,0.8); border-radius: 50%; filter: blur(20px);
+.nav-links a:hover { color: #FFF; }
+.nav-links a:hover::after { width: 100%; }
+.header-actions { display: flex; gap: 16px; align-items: center; }
+
+/* ==========================================================================
+   HERO SECTION
+   ========================================================================== */
+.hero { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; min-height: 85vh; padding-top: 40px; }
+.badge { 
+    display: inline-flex; align-items: center; gap: 8px; 
+    background: var(--primary-dim); border: 1px solid var(--glass-border-glow);
+    color: var(--primary); padding: 6px 20px; border-radius: var(--radius-full); 
+    font-size: 0.85rem; font-weight: 600; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px;
 }
+.heroTitle { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 24px; font-weight: 700; line-height: 1.2; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+.heroDesc { font-size: 1.15rem; margin-bottom: 40px; color: var(--text-secondary); max-width: 90%; line-height: 1.8; font-weight: 300; }
+.hero-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; perspective: 1000px; }
 
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-
-/* Floating UI Elements */
-.floating-card {
-    position: absolute; background: rgba(14, 41, 75, 0.7); backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px;
-    box-shadow: var(--glass-shadow);
+/* Floating Cards Animation */
+.hero-cards .card { 
+    display: flex; flex-direction: column; align-items: flex-start; text-align: start; gap: 16px; 
+    padding: 32px 24px; cursor: pointer; transform-style: preserve-3d;
+    background: linear-gradient(145deg, rgba(13, 27, 42, 0.6), rgba(5, 11, 20, 0.8));
 }
-.card-1 { top: 10%; right: -20px; animation: float 7s ease-in-out infinite 1s; }
-.card-2 { bottom: 10%; left: -20px; animation: float 8s ease-in-out infinite 2s; display: flex; gap: 16px; align-items: center; }
-
-.stat-value { font-size: 2.5rem; font-weight: 800; color: var(--cyan); }
-.stat-label { font-size: 0.9rem; color: var(--text-muted); }
-.user-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(45deg, var(--cyan), #0066FF); }
-.user-name { font-weight: 700; }
-.user-role { font-size: 0.85rem; color: var(--text-muted); }
-
-/* 5. Glass Cards Section */
-.features-section { padding-block: 100px; max-width: 1300px; margin: 0 auto; padding-inline: 30px; }
-.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-
-.glass-card {
-    background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-    border: 1px solid var(--glass-border); border-radius: 24px; padding: 40px 30px;
-    transition: var(--trans-smooth); position: relative; overflow: hidden;
+.hero-cards .icon { 
+    width: 56px; height: 56px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; 
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+    transition: var(--trans-slow); color: var(--text-secondary);
 }
-.glass-card::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at top right, rgba(0, 242, 254, 0.1), transparent 50%); opacity: 0; transition: var(--trans-smooth);
+.hero-cards .card h3 { font-size: 1.125rem; margin: 0; color: var(--text-main); font-weight: 500; transition: color var(--trans-fast); }
+.hero-cards .card:hover { 
+    border-color: var(--glass-border-glow); 
+    transform: translateY(-10px) rotateX(5deg) rotateY(-5deg); 
+    box-shadow: 0 15px 35px rgba(0, 240, 255, 0.1); 
 }
-.glass-card:hover { transform: translateY(-10px); border-color: rgba(0, 242, 254, 0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
-.glass-card:hover::before { opacity: 1; }
+.hero-cards .card:hover .icon { background: var(--primary-dim); color: var(--primary); box-shadow: 0 0 20px var(--primary-dim); }
 
-.card-icon { font-size: 3rem; margin-bottom: 24px; }
-.glass-card h3 { font-size: 1.5rem; margin-bottom: 16px; font-weight: 700; }
-.glass-card p { color: var(--text-muted); margin-bottom: 30px; font-size: 1rem; }
+/* ==========================================================================
+   JOURNEY STEPPER
+   ========================================================================== */
+.stepper { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+.step-buttons { display: flex; justify-content: space-between; position: relative; }
+.step-buttons::before { content: ''; position: absolute; top: 50%; left: 20px; right: 20px; height: 2px; background: var(--glass-border); transform: translateY(-50%); z-index: 1; }
+.step-btn { 
+    position: relative; z-index: 2; background: var(--bg-deep); border: 2px solid var(--glass-border); 
+    padding: 10px 20px; border-radius: var(--radius-full); font-weight: 500; color: var(--text-muted); 
+    transition: all var(--trans-fast); cursor: pointer;
+}
+.step-btn.active { 
+    background: var(--primary-dim); border-color: var(--primary); color: #FFF; 
+    box-shadow: 0 0 20px var(--primary-dim); transform: scale(1.05); 
+}
+.step-content { text-align: center; padding: 56px 40px; min-height: 220px; display: flex; flex-direction: column; justify-content: center; }
+.step-content h3 { color: var(--primary); font-size: 1.8rem; margin-bottom: 16px; }
+.step-controls { display: flex; justify-content: center; gap: 24px; }
 
-.btn-arrow { background: none; border: none; color: var(--cyan); font-family: inherit; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: var(--trans-smooth); }
-.glass-card:hover .btn-arrow { transform: translateX(-10px); }
+/* ==========================================================================
+   TREATMENT TABS
+   ========================================================================== */
+.treatments-container { display: grid; grid-template-columns: 280px 1fr; gap: 40px; align-items: start; max-width: 1000px; margin: 0 auto; }
+.treatment-tabs { display: flex; flex-direction: column; gap: 12px; }
+.tab-btn { 
+    padding: 20px; text-align: start; border-radius: var(--radius-md); font-weight: 500; color: var(--text-secondary); 
+    background: rgba(255,255,255,0.02); border: 1px solid transparent; transition: all var(--trans-fast); 
+}
+.tab-btn:hover { background: rgba(255,255,255,0.05); color: #FFF; border-color: var(--glass-border); }
+.tab-btn.active { 
+    background: var(--primary-dim); color: #FFF; border-color: var(--glass-border-glow); 
+    box-shadow: inset 4px 0 0 var(--primary); 
+}
+[dir="ltr"] .tab-btn.active { box-shadow: inset -4px 0 0 var(--primary); }
 
-/* Responsive */
-@media (max-width: 1024px) {
-    .hero-content { grid-template-columns: 1fr; text-align: center; }
-    .hero-text-side h1 { font-size: 3.5rem; }
-    .hero-text-side p { margin: 0 auto 40px; }
-    .hero-buttons { justify-content: center; }
-    .hero-visual-side { margin-top: 60px; }
-    .features-grid { grid-template-columns: 1fr; }
-    .nav-links { display: none; }
+/* ==========================================================================
+   CAREGIVER ACCORDION
+   ========================================================================== */
+.accordion { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+.accordion-item { padding: 0; background: rgba(255,255,255,0.02); }
+.accordion-item:hover { border-color: var(--glass-border-glow); }
+.accordion-header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 28px; font-weight: 500; font-size: 1.15rem; color: #FFF; text-align: start; }
+.accordion-body { padding: 0 28px 28px 28px; color: var(--text-secondary); border-top: 1px solid var(--glass-border); margin-top: 8px; padding-top: 20px; line-height: 1.8; }
+
+/* ==========================================================================
+   BREATHING EXERCISE (HUD Style)
+   ========================================================================== */
+.breathing-app { display: flex; flex-direction: column; align-items: center; max-width: 600px; margin: 0 auto; }
+.breath-circle { 
+    width: 280px; height: 280px; border-radius: 50%; 
+    background: radial-gradient(circle, rgba(0,240,255,0.1) 0%, rgba(5,11,20,0.8) 100%);
+    border: 2px solid var(--glass-border-glow); 
+    box-shadow: 0 0 40px rgba(0, 240, 255, 0.15), inset 0 0 40px rgba(0, 240, 255, 0.1);
+    display: flex; flex-direction: column; justify-content: center; align-items: center; 
+    transition: transform 0.5s linear; margin-block: 48px; position: relative;
+}
+/* Outer Glow Ring */
+.breath-circle::before {
+    content: ''; position: absolute; top: -15px; left: -15px; right: -15px; bottom: -15px;
+    border-radius: 50%; border: 1px dashed rgba(0,240,255,0.3); animation: spin 20s linear infinite;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+.breath-circle.inhale { transform: scale(1.35); transition-duration: 4s; box-shadow: 0 0 60px rgba(0, 240, 255, 0.4), inset 0 0 60px rgba(0, 240, 255, 0.2); border-color: var(--primary); }
+.breath-circle.hold { transform: scale(1.35); transition-duration: 0s; border-color: #FFF; box-shadow: 0 0 60px rgba(255, 255, 255, 0.3); }
+.breath-circle.exhale { transform: scale(0.85); transition-duration: 6s; }
+#breath-instruction { font-size: 1.75rem; font-weight: 300; color: #FFF; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; }
+#breath-timer { font-size: 1.25rem; font-weight: 600; color: var(--primary); font-family: monospace; }
+.breath-controls { display: flex; justify-content: center; gap: 20px; }
+
+/* ==========================================================================
+   CHATBOT (AI Interface)
+   ========================================================================== */
+.chat-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; height: 550px; padding: 0; border: 1px solid var(--glass-border-glow); }
+.chat-disclaimer { background: rgba(255, 77, 77, 0.1); color: #FFA3A3; padding: 12px 24px; font-size: 0.85rem; text-align: center; font-weight: 500; border-bottom: 1px solid rgba(255, 77, 77, 0.2); }
+.chat-window { flex: 1; padding: 32px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; background: rgba(0,0,0,0.2); scrollbar-width: thin; scrollbar-color: var(--primary) transparent; }
+.msg { max-width: 80%; padding: 16px 20px; font-size: 1rem; line-height: 1.6; border-radius: var(--radius-lg); font-weight: 300; }
+.msg.user { background: var(--primary-dim); border: 1px solid var(--glass-border-glow); color: #FFF; align-self: flex-end; border-bottom-right-radius: 4px; }
+[dir="ltr"] .msg.user { border-bottom-right-radius: var(--radius-lg); border-bottom-left-radius: 4px; }
+.msg.ai { background: rgba(255,255,255,0.03); color: var(--text-main); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid var(--glass-border); }
+[dir="ltr"] .msg.ai { border-bottom-left-radius: var(--radius-lg); border-bottom-right-radius: 4px; }
+.chat-input-area { display: flex; padding: 20px 32px; border-top: 1px solid var(--glass-border); gap: 16px; background: rgba(0,0,0,0.4); align-items: center; }
+.chat-input-area input { flex: 1; padding: 16px 24px; background: rgba(255,255,255,0.05); color: #FFF; border: 1px solid var(--glass-border); border-radius: var(--radius-full); font-size: 1rem; transition: all var(--trans-fast); }
+.chat-input-area input::placeholder { color: var(--text-muted); }
+.chat-input-area input:focus { outline: none; border-color: var(--primary); background: rgba(0,240,255,0.05); box-shadow: 0 0 15px rgba(0,240,255,0.1); }
+
+/* ==========================================================================
+   MODALS & TOASTS
+   ========================================================================== */
+.modal { margin: auto; padding: 0; border: none; border-radius: var(--radius-lg); width: 90vw; max-width: 420px; background: transparent; }
+.modal::backdrop { background: rgba(5, 11, 20, 0.85); backdrop-filter: blur(10px); }
+.modal-content { padding: 40px; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border-glow); border-radius: var(--radius-lg); position: relative; box-shadow: var(--glass-shadow); color: #FFF; }
+.close-btn { position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,0.05); color: var(--text-secondary); transition: all var(--trans-fast); }
+[dir="rtl"] .close-btn { right: auto; left: 20px; }
+.close-btn:hover { background: var(--danger); color: white; transform: rotate(90deg); }
+.form-group { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+.form-group label { font-size: 0.9rem; color: var(--text-secondary); font-weight: 500; }
+.form-group input { padding: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: var(--radius-md); color: #FFF; transition: border-color var(--trans-fast); }
+.form-group input:focus { outline: none; border-color: var(--primary); }
+
+#toastContainer { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 12px; pointer-events: none; }
+.toast { background: rgba(0, 240, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid var(--primary); color: #FFF; padding: 14px 28px; border-radius: var(--radius-full); font-size: 0.95rem; font-weight: 500; box-shadow: 0 10px 30px rgba(0,240,255,0.2); opacity: 0; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 992px) {
+    .hero, .treatments-container { grid-template-columns: 1fr; gap: 48px; }
+    .hero { text-align: center; padding-top: 60px; }
+    .heroDesc { margin: 0 auto 40px; }
+    .hero-cards .card { align-items: center; text-align: center; }
+    .treatment-tabs { flex-direction: row; overflow-x: auto; padding-bottom: 16px; scrollbar-width: none; }
+    .tab-btn { white-space: nowrap; flex: 0 0 auto; }
+    .tab-btn.active { box-shadow: inset 0 -4px 0 var(--primary); }
+    [dir="ltr"] .tab-btn.active { box-shadow: inset 0 -4px 0 var(--primary); }
+}
+@media (max-width: 768px) {
+    .nav-links { display: none; } /* Requires a mobile menu implementation in HTML/JS later */
+    .hero-cards { grid-template-columns: 1fr; }
+    .step-buttons { flex-direction: column; gap: 16px; }
+    .step-buttons::before { display: none; }
+    .step-btn { width: 100%; text-align: center; }
+    .step-content { padding: 32px 24px; min-height: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
