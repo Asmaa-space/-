@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
 
 :root {
-    /* ألوان هوية مدينة الملك عبدالله الطبية */
+    /* ألوان هوية مدينة الملك عبدالله الطبية (مستوحى من الشعار) */
     --primary: #c2185b;      /* وردي داكن/ماجنتا */
     --primary-dark: #880e4f;
     --primary-light: #fce4ec;
     
-    --header-bg: #000000;    /* أسود */
-    --bg-main: #f4f7f6;      /* رمادي فاتح جداً */
+    --header-bg: #000000;    /* أسود ليتماشى مع خلفية الشعار */
+    --bg-main: #f4f7f6;      /* رمادي فاتح جداً لخلفية الموقع */
     --bg-white: #ffffff;
     
     --text-main: #1f2937;
@@ -27,7 +27,6 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    overflow-x: hidden; /* لمنع ظهور شريط التمرير الأفقي في الجوال */
 }
 
 /* ==========================================
@@ -47,25 +46,23 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; /* للسماح بالعناصر بالنزول سطر جديد في الجوال */
-    gap: 10px;
 }
-.nav-logo { height: 45px; object-fit: contain; }
+.nav-logo { height: 50px; object-fit: contain; } /* شعار الشريط العلوي */
 
 .header-info { display: flex; align-items: center; gap: 15px; }
-.user-badge { background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; white-space: nowrap; }
-.step-title { font-weight: 700; color: white; font-size: 1.1rem; border-right: 2px solid var(--primary); padding-right: 15px; white-space: nowrap; }
+.user-badge { background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; }
+.step-title { font-weight: 700; color: white; font-size: 1.1rem; border-right: 2px solid var(--primary); padding-right: 15px; }
 
-.btn-home { background: transparent; border: 1px solid white; padding: 6px 15px; border-radius: 6px; cursor: pointer; font-family: inherit; font-weight: 600; color: white; transition: 0.3s; white-space: nowrap; }
+.btn-home { background: transparent; border: 1px solid white; padding: 6px 15px; border-radius: 6px; cursor: pointer; font-family: inherit; font-weight: 600; color: white; transition: 0.3s; }
 .btn-home:hover { background: var(--primary); border-color: var(--primary); }
 
 /* ==========================================
-   Views & Layout
+   Views & Layout (نظام إخفاء الصفحات)
    ========================================== */
 .content-area { flex: 1; display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px; }
 
 .step-view {
-    display: none; 
+    display: none; /* يتم إخفاء كل شيء افتراضياً */
     width: 100%;
     max-width: 900px;
     background: var(--bg-white);
@@ -75,7 +72,7 @@ body {
     border: 1px solid var(--border-color);
     animation: fadeIn 0.4s ease-in-out;
 }
-.step-view.active { display: block; }
+.step-view.active { display: block; } /* يظهر فقط القسم النشط */
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -83,8 +80,8 @@ body {
    Home Page (صفحة البداية)
    ========================================== */
 .role-selection { text-align: center; }
-.hero-logo { width: 100%; max-width: 300px; margin: 0 auto; display: block; border-radius: 8px; }
-.academic-title { font-size: 2rem; color: var(--primary-dark); font-weight: 800; margin-bottom: 5px; line-height: 1.3; }
+.hero-logo { width: 300px; max-width: 100%; margin: 0 auto; display: block; border-radius: 8px; }
+.academic-title { font-size: 2rem; color: var(--primary-dark); font-weight: 800; margin-bottom: 5px; }
 .academic-subtitle { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 30px; }
 .divider { height: 2px; background: var(--primary-light); width: 50%; margin: 0 auto 30px; }
 
@@ -99,8 +96,8 @@ body {
 /* ==========================================
    Content Styling
    ========================================== */
-.step-heading { font-size: 1.8rem; color: var(--primary-dark); border-bottom: 2px solid var(--primary-light); padding-bottom: 10px; margin-bottom: 20px; line-height: 1.4; }
-.sub-heading { font-size: 1.3rem; color: var(--primary); margin-bottom: 10px; line-height: 1.4; }
+.step-heading { font-size: 1.8rem; color: var(--primary-dark); border-bottom: 2px solid var(--primary-light); padding-bottom: 10px; margin-bottom: 20px; }
+.sub-heading { font-size: 1.3rem; color: var(--primary); margin-bottom: 10px; }
 .step-text { font-size: 1.15rem; margin-bottom: 15px; }
 .text-primary { color: var(--primary); }
 .fw-bold { font-weight: 700; }
@@ -111,7 +108,7 @@ body {
 
 .roadmap { display: flex; flex-direction: column; gap: 15px; margin: 30px 0; }
 .roadmap-item { display: flex; align-items: center; gap: 15px; background: var(--bg-main); padding: 15px 20px; border-radius: 8px; font-weight: 600; font-size: 1.1rem; border: 1px solid var(--border-color); }
-.roadmap-item span { background: var(--primary); color: white; min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; }
+.roadmap-item span { background: var(--primary); color: white; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; }
 
 .grid-layout { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; }
 .qna-box { background: var(--bg-main); border-right: 4px solid var(--primary); padding: 20px; margin-bottom: 15px; border-radius: 4px; }
@@ -123,12 +120,12 @@ body {
 /* ==========================================
    Breathing Tool (أداة التنفس)
    ========================================== */
-.breathing-app { display: flex; flex-direction: column; align-items: center; padding: 30px 20px; background: var(--bg-main); border-radius: 12px; border: 1px solid var(--border-color); width: 100%; }
-.breath-circle { width: 220px; height: 220px; border-radius: 50%; border: 5px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center; background: white; transition: all 0.5s linear; margin: 0 auto; }
+.breathing-app { display: flex; flex-direction: column; align-items: center; padding: 30px; background: var(--bg-main); border-radius: 12px; border: 1px solid var(--border-color); }
+.breath-circle { width: 220px; height: 220px; border-radius: 50%; border: 5px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center; background: white; transition: all 0.5s linear; }
 .breath-circle.inhale { transform: scale(1.3); border-color: var(--primary); transition-duration: 4s; }
 .breath-circle.hold { transform: scale(1.3); border-color: var(--primary-dark); background: var(--primary-light); transition-duration: 0s; }
 .breath-circle.exhale { transform: scale(0.9); transition-duration: 6s; }
-#breath-inst { font-weight: bold; color: var(--primary-dark); font-size: 1.2rem; margin-bottom: 5px; text-align: center; }
+#breath-inst { font-weight: bold; color: var(--primary-dark); font-size: 1.2rem; margin-bottom: 5px; }
 #breath-timer { font-family: monospace; font-size: 1.5rem; color: var(--text-muted); font-weight: bold; }
 
 /* ==========================================
@@ -142,54 +139,16 @@ body {
 .btn-secondary { background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); }
 .btn-secondary:hover { background: #e5e7eb; }
 .btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
-.progress-text { font-weight: 700; color: var(--text-muted); font-size: 1.1rem; text-align: center; }
+.progress-text { font-weight: 700; color: var(--text-muted); font-size: 1.1rem; }
 
-.btn-primary-large { background: var(--primary); color: white; border: none; padding: 12px 35px; border-radius: 50px; font-weight: 700; font-size: 1.1rem; cursor: pointer; font-family: inherit; transition: 0.3s; width: 100%; max-width: 250px; }
+.btn-primary-large { background: var(--primary); color: white; border: none; padding: 12px 35px; border-radius: 50px; font-weight: 700; font-size: 1.1rem; cursor: pointer; font-family: inherit; transition: 0.3s; }
 .btn-primary-large:hover { background: var(--primary-dark); }
-.btn-outline-danger { background: transparent; border: 2px solid #dc2626; color: #dc2626; padding: 10px 30px; border-radius: 50px; font-weight: 700; font-size: 1.1rem; cursor: pointer; font-family: inherit; width: 100%; max-width: 250px; }
-
-/* ==========================================
-   الميديا كويري لتجاوب الجوال والأجهزة اللوحية
-   ========================================== */
-@media (max-width: 992px) {
-    .grid-layout { grid-template-columns: 1fr; gap: 30px; }
-    .step-view { padding: 40px 30px; }
-}
+.btn-outline-danger { background: transparent; border: 2px solid #dc2626; color: #dc2626; padding: 10px 30px; border-radius: 50px; font-weight: 700; font-size: 1.1rem; cursor: pointer; font-family: inherit; }
 
 @media (max-width: 768px) {
-    /* تعديل الشريط العلوي للجوال */
-    .header-container { justify-content: center; text-align: center; padding-bottom: 5px; }
-    .brand { width: 100%; display: flex; justify-content: center; margin-bottom: 10px; }
-    .nav-logo { height: 40px; }
-    .header-info { width: 100%; justify-content: center; margin-bottom: 10px; }
-    .step-title { border-right: none; padding-right: 0; font-size: 1rem; }
-    .btn-home { width: 100%; max-width: 200px; padding: 8px; }
-
-    /* هوامش ومسافات الصفحات */
-    .content-area { padding: 20px 15px; }
-    .step-view { padding: 30px 20px; border-radius: 10px; }
-    
-    /* البطاقات الرئيسية */
+    .step-view { padding: 30px 20px; }
+    .grid-layout { grid-template-columns: 1fr; }
     .role-cards { flex-direction: column; align-items: center; }
-    .role-card { width: 100%; max-width: 100%; }
-
-    /* العناوين والنصوص */
-    .academic-title { font-size: 1.6rem; }
-    .step-heading { font-size: 1.5rem; }
-    .step-text { font-size: 1.05rem; }
-    
-    /* أداة التنفس تصغر قليلاً في الجوال */
-    .breath-circle { width: 170px; height: 170px; }
-    
-    /* الشريط السفلي (التالي والسابق) */
-    .bottom-nav { flex-wrap: wrap; justify-content: center; gap: 15px; padding: 15px 20px; }
-    .progress-text { width: 100%; order: -1; margin-bottom: 5px; } /* رفع النص فوق الأزرار */
-    .nav-btn { flex: 1; min-width: 120px; padding: 10px 20px; text-align: center; }
-}
-
-@media (max-width: 480px) {
-    .roadmap-item { flex-direction: column; text-align: center; justify-content: center; }
-    .roadmap-item span { margin-bottom: 5px; }
-    .breath-circle { width: 150px; height: 150px; }
-    #breath-inst { font-size: 1rem; }
+    .bottom-nav { padding: 15px; }
+    .nav-btn { padding: 10px 20px; }
 }
