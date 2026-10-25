@@ -4,98 +4,355 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KAMC Oncology | Premium Care</title>
+    <!-- استدعاء خط تجوال الفاخر -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Background Grid -->
+    <!-- 1. الخلفيات والأعماق (Atmospheric Backgrounds) -->
     <div class="bg-grid"></div>
     <div class="bg-glow"></div>
 
-    <!-- Premium Navigation -->
+    <!-- 2. شريط التنقل الزجاجي الفاخر (Premium Navigation) -->
     <header class="glass-nav">
         <div class="container nav-content">
             <div class="brand">
                 <div class="brand-dot"></div>
-                KAMC <span>ONCOLOGY</span>
+                <span data-i18n="brandName">KAMC ONCOLOGY</span>
             </div>
-            <nav class="nav-links">
-                <a href="#journey">رحلة العلاج</a>
-                <a href="#treatments">الخدمات</a>
-                <a href="#breathing">الاسترخاء</a>
-                <a href="#education">المكتبة</a>
+            
+            <!-- زر القائمة للجوال -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="#hero" data-i18n="navHome">الرئيسية</a>
+                <a href="#journey" data-i18n="navJourney">رحلة العلاج</a>
+                <a href="#treatments" data-i18n="navTreatments">الخدمات العلاجية</a>
+                <a href="#breathing" data-i18n="navBreathing">تقنية DIBH والتنفس</a>
+                <a href="#caregiver" data-i18n="navCaregiver">دليل المرافق</a>
+                <a href="#education" data-i18n="navEducation">المكتبة</a>
             </nav>
             <div class="nav-actions">
                 <button id="langToggle" class="btn-text">EN</button>
-                <button class="btn-glass">تسجيل الدخول</button>
+                <button id="authBtnToggle" class="btn-glass" data-i18n="login">تسجيل الدخول</button>
+                <!-- يظهر بعد تسجيل الدخول -->
+                <button id="profileBtn" class="btn-glass hidden" data-i18n="profile">الملف الشخصي</button>
             </div>
         </div>
     </header>
 
     <main>
-        <!-- Premium Hero Section -->
-        <section class="hero-premium">
+        <!-- ==========================================
+             3. القسم الرئيسي (Hero Section) 
+             ========================================== -->
+        <section id="hero" class="hero-premium">
             <div class="hero-background-text">ONCOLOGY</div>
             
-            <div class="hero-content">
+            <div class="hero-content container">
                 <div class="hero-text-side">
-                    <span class="badge-glass">◆ رعاية طبية متقدمة</span>
-                    <h1>رعاية <span>استثنائية</span><br>تثق بها</h1>
-                    <p>منصة رقمية فاخرة لمساندة مرضى الأورام ومرافقيهم بأحدث المعايير الطبية والتثقيفية المعتمدة.</p>
+                    <span class="badge-glass" data-i18n="heroBadge">◆ رعاية طبية متقدمة</span>
+                    <h1 id="heroTitle">رعاية <span>استثنائية</span><br>تثق بها</h1>
+                    <p data-i18n="heroDesc">منصة رقمية فاخرة لمساندة مرضى الأورام ومرافقيهم بأحدث المعايير الطبية والتثقيفية المعتمدة.</p>
                     <div class="hero-buttons">
-                        <button class="btn-solid">ابدأ رحلتك</button>
-                        <button class="btn-glass-outline">تحدث للمساعد الذكي</button>
+                        <button id="startJourneyBtn" class="btn-solid" data-i18n="btnStart">ابدأ رحلتك</button>
+                        <button id="scrollAiBtn" class="btn-glass-outline" data-i18n="btnAI">تحدث للمساعد الذكي</button>
                     </div>
                 </div>
 
-                <!-- 3D Centerpiece Placeholder (Matches the reference) -->
                 <div class="hero-visual-side">
                     <div class="glass-sphere-container">
                         <div class="glass-sphere"></div>
                         <div class="sphere-shadow"></div>
                     </div>
                     
-                    <!-- Floating Glass Stats (Like the reference) -->
                     <div class="floating-card stat-card card-1">
                         <div class="stat-value">98%</div>
-                        <div class="stat-label">نسبة الرضا عن الرعاية</div>
+                        <div class="stat-label" data-i18n="statLabel">نسبة الرضا عن الرعاية</div>
                     </div>
                     <div class="floating-card user-card card-2">
                         <div class="user-avatar"></div>
                         <div>
-                            <div class="user-name">د. سارة أحمد</div>
-                            <div class="user-role">استشاري أورام</div>
+                            <div class="user-name" data-i18n="drName">د. سارة أحمد</div>
+                            <div class="user-role" data-i18n="drTitle">استشاري أورام</div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Premium Cards Section -->
-        <section id="journey" class="container features-section">
+        <!-- ==========================================
+             4. بطاقات الوصول السريع 
+             ========================================== -->
+        <section id="quick-access" class="container features-section">
             <div class="features-grid">
                 <div class="glass-card interactive-card">
                     <div class="card-icon">📋</div>
-                    <h3>تم تشخيصي حديثاً</h3>
-                    <p>دليلك الشامل لفهم التشخيص والخطوات الأولى نحو التعافي.</p>
-                    <button class="btn-arrow">استكشف ←</button>
+                    <h3 data-i18n="card1Title">تم تشخيصي حديثاً</h3>
+                    <p data-i18n="card1Desc">دليلك الشامل لفهم التشخيص والخطوات الأولى نحو التعافي بثقة وطمأنينة.</p>
+                    <button class="btn-arrow" data-i18n="btnExplore">استكشف ←</button>
                 </div>
                 <div class="glass-card interactive-card">
                     <div class="card-icon">🏥</div>
-                    <h3>لدي جلسة علاج</h3>
-                    <p>كل ما تحتاج معرفته للاستعداد النفسي والجسدي لجلساتك.</p>
-                    <button class="btn-arrow">استكشف ←</button>
+                    <h3 data-i18n="card2Title">لدي جلسة علاج</h3>
+                    <p data-i18n="card2Desc">كل ما تحتاج معرفته للاستعداد النفسي والجسدي لجلساتك العلاجية القادمة.</p>
+                    <button class="btn-arrow" data-i18n="btnExplore">استكشف ←</button>
                 </div>
                 <div class="glass-card interactive-card">
                     <div class="card-icon">🤝</div>
-                    <h3>أنا مرافق لمريض</h3>
-                    <p>إرشادات متخصصة لمساعدتك في تقديم أفضل دعم لمن تحب.</p>
-                    <button class="btn-arrow">استكشف ←</button>
+                    <h3 data-i18n="card3Title">أنا مرافق لمريض</h3>
+                    <p data-i18n="card3Desc">إرشادات متخصصة لمساعدتك في تقديم أفضل دعم نفسي وجسدي لمن تحب.</p>
+                    <button class="btn-arrow" data-i18n="btnExplore">استكشف ←</button>
                 </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             5. الدليل الإرشادي لرحلة العلاج (Stepper)
+             ========================================== -->
+        <section id="journey" class="container section-padding">
+            <h2 class="section-title" data-i18n="journeyTitle">الدليل الإرشادي لرحلة العلاج</h2>
+            <div class="stepper-container glass-card">
+                <div class="step-buttons" role="tablist">
+                    <button class="step-btn active" data-step="0" role="tab" aria-selected="true" data-i18n="step1">التشخيص</button>
+                    <button class="step-btn" data-step="1" role="tab" aria-selected="false" data-i18n="step2">الخطة العلاجية</button>
+                    <button class="step-btn" data-step="2" role="tab" aria-selected="false" data-i18n="step3">الاستعداد</button>
+                    <button class="step-btn" data-step="3" role="tab" aria-selected="false" data-i18n="step4">الجلسات</button>
+                    <button class="step-btn" data-step="4" role="tab" aria-selected="false" data-i18n="step5">المتابعة</button>
+                </div>
+                
+                <div class="step-content" aria-live="polite">
+                    <div class="step-icon">🔬</div>
+                    <h3 id="step-title">التشخيص</h3>
+                    <p id="step-desc">مرحلة الفهم والتقييم المبدئي لتحديد الخطة المناسبة بالتشاور مع طبيبك المختص.</p>
+                </div>
+                
+                <div class="step-controls">
+                    <button id="prevStep" class="btn-glass-outline" disabled data-i18n="prev">السابق</button>
+                    <button id="nextStep" class="btn-solid" data-i18n="next">التالي</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             6. أنواع العلاج (Tabs)
+             ========================================== -->
+        <section id="treatments" class="container section-padding">
+            <h2 class="section-title" data-i18n="treatmentsTitle">أنواع العلاج المتوفرة</h2>
+            <div class="treatments-layout">
+                <div class="treatment-tabs glass-card" role="tablist">
+                    <button class="tab-btn active" data-target="radio" data-i18n="tabRadio">العلاج الإشعاعي</button>
+                    <button class="tab-btn" data-target="chemo" data-i18n="tabChemo">العلاج الكيميائي</button>
+                    <button class="tab-btn" data-target="nuclear" data-i18n="tabNuclear">الطب النووي</button>
+                </div>
+                <div class="treatment-content glass-card" id="treatment-content">
+                    <h3 data-i18n="radioTitle">العلاج الإشعاعي</h3>
+                    <p data-i18n="radioDesc">استخدام أشعة عالية الطاقة لتدمير الخلايا السرطانية موضعياً بأمان ودقة عالية باستخدام أحدث الأجهزة.</p>
+                    <ul class="treatment-list">
+                        <li data-i18n="radioPoint1">✓ دقة عالية في استهداف الورم</li>
+                        <li data-i18n="radioPoint2">✓ حماية الأنسجة السليمة المحيطة</li>
+                        <li data-i18n="radioPoint3">✓ جلسات غير مؤلمة تستغرق دقائق</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             7. تقنية DIBH وأداة التنفس (HUD Design)
+             ========================================== -->
+        <section id="breathing" class="container section-padding">
+            <h2 class="section-title" data-i18n="dibhTitle">تقنية حبس النفس العميق (DIBH)</h2>
+            <div class="dibh-grid">
+                <!-- معلومات التقنية -->
+                <div class="dibh-info glass-card">
+                    <h3 data-i18n="dibhWhat">ما هي تقنية DIBH؟</h3>
+                    <p data-i18n="dibhDesc">تقنية تُستخدم أثناء العلاج الإشعاعي لمنطقة الصدر. عند أخذ نفس عميق وحبسه، يتمدد الصدر ويبتعد القلب عن منطقة الإشعاع، مما يحميه من أي أضرار جانبية.</p>
+                    
+                    <!-- نظام المستويات والإنجازات -->
+                    <div class="achievements-box mt-4">
+                        <h4 data-i18n="levelsTitle">مستويات التدريب الخاصة بك</h4>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: 20%;"></div>
+                        </div>
+                        <p class="level-text" data-i18n="levelCurrent">المستوى الحالي: مبتدئ (المستوى 1)</p>
+                    </div>
+                </div>
+
+                <!-- أداة التنفس التفاعلية -->
+                <div class="dibh-tool glass-card text-center">
+                    <p data-i18n="breathWarning" class="text-muted">تمرين تثقيفي للاسترخاء والتدريب. توقف إذا شعرت بالدوار.</p>
+                    <div class="breathing-app">
+                        <div class="breath-circle" id="breathCircle">
+                            <span id="breath-instruction" data-i18n="breathReady">جاهز؟</span>
+                            <span id="breath-timer">00:00</span>
+                        </div>
+                        <div class="breath-controls mt-4">
+                            <button id="startBreath" class="btn-solid" data-i18n="start">بدء التدريب</button>
+                            <button id="pauseBreath" class="btn-glass-outline hidden" data-i18n="pause">إيقاف مؤقت</button>
+                            <button id="stopBreath" class="btn-text text-danger hidden" data-i18n="stop">إنهاء</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             8. دليل المرافق (Accordion)
+             ========================================== -->
+        <section id="caregiver" class="container section-padding">
+            <h2 class="section-title" data-i18n="caregiverTitle">دليل المرافق والمساندة</h2>
+            <div class="accordion glass-card">
+                <div class="accordion-item">
+                    <button class="accordion-header" data-i18n="cgQ1">كيف أدعم المريض نفسياً خلال فترة العلاج؟ <span class="icon">+</span></button>
+                    <div class="accordion-body hidden" data-i18n="cgA1">الاستماع الفعال والتعاطف هما الأساس. تجنب إعطاء نصائح طبية غير متخصصة، وكن متواجداً لتقديم الدعم المعنوي والمساعدة في المهام اليومية لتقليل التوتر.</div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header" data-i18n="cgQ2">ما هو دوري أثناء جلسات العلاج الإشعاعي؟ <span class="icon">+</span></button>
+                    <div class="accordion-body hidden" data-i18n="cgA2">مساعدة المريض في الوصول للموعد، تدوين ملاحظات الطبيب، وتذكير المريض بتعليمات التدريب مثل تقنية DIBH إذا لزم الأمر.</div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header text-danger" data-i18n="cgQ3">متى يجب طلب المساعدة الطبية العاجلة؟ <span class="icon">+</span></button>
+                    <div class="accordion-body hidden" data-i18n="cgA3">إذا ارتفعت درجة حرارة المريض فوق 38 مئوية، أو واجه صعوبة مفاجئة في التنفس، أو نزيف غير مبرر، يجب التوجه للطوارئ فوراً.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             9. المكتبة التثقيفية المرئية (Video Grid)
+             ========================================== -->
+        <section id="education" class="container section-padding">
+            <h2 class="section-title" data-i18n="eduTitle">المكتبة التثقيفية المرئية</h2>
+            <div class="video-grid">
+                <div class="video-card glass-card">
+                    <div class="video-thumb">
+                        <div class="play-btn">▶</div>
+                    </div>
+                    <h3 data-i18n="vid1">رحلة المريض في قسم الأورام</h3>
+                </div>
+                <div class="video-card glass-card">
+                    <div class="video-thumb">
+                        <div class="play-btn">▶</div>
+                    </div>
+                    <h3 data-i18n="vid2">التغذية السليمة أثناء فترة العلاج</h3>
+                </div>
+                <div class="video-card glass-card">
+                    <div class="video-thumb">
+                        <div class="play-btn">▶</div>
+                    </div>
+                    <h3 data-i18n="vid3">كيفية الاسترخاء وتقليل التوتر</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             10. المساعد الذكي (AI Chatbot)
+             ========================================== -->
+        <section id="ai-chat" class="container section-padding">
+            <h2 class="section-title" data-i18n="aiTitle">المساعد التثقيفي الذكي</h2>
+            <div class="chat-container glass-card">
+                <div class="chat-disclaimer" data-i18n="aiDisclaimer">
+                    ⚠️ هذا المساعد مصمم لتقديم معلومات تثقيفية عامة فقط ولا يحل محل الاستشارة الطبية المباشرة من طبيبك المعالج.
+                </div>
+                <div id="chat-window" class="chat-window" aria-live="polite">
+                    <!-- رسالة ترحيبية -->
+                    <div class="msg ai">مرحباً! أنا المساعد التثقيفي لمنصة KAMC Oncology. كيف يمكنني مساعدتك اليوم؟</div>
+                </div>
+                <form id="chat-form" class="chat-input-area">
+                    <input type="text" id="chat-input" required placeholder="اكتب سؤالك التثقيفي هنا..." data-i18n-placeholder="chatPlaceholder">
+                    <button type="submit" class="btn-solid" id="chat-submit" data-i18n="send">إرسال</button>
+                </form>
             </div>
         </section>
     </main>
 
+    <!-- ==========================================
+         11. الفوتر (Footer)
+         ========================================== -->
+    <footer class="glass-footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <div class="brand">
+                    <div class="brand-dot"></div>
+                    KAMC <span>ONCOLOGY</span>
+                </div>
+                <p data-i18n="footerDesc" class="mt-2 text-muted">منصة رعاية طبية وتثقيفية معتمدة لخدمة مرضى الأورام ومرافقيهم.</p>
+            </div>
+            <div class="footer-links">
+                <h4 data-i18n="quickLinks">روابط سريعة</h4>
+                <a href="#journey" data-i18n="navJourney">رحلة العلاج</a>
+                <a href="#treatments" data-i18n="navTreatments">الخدمات العلاجية</a>
+                <a href="#breathing" data-i18n="navBreathing">تقنية DIBH</a>
+            </div>
+            <div class="footer-contact">
+                <h4 data-i18n="contactUs">تواصل معنا</h4>
+                <p>Email: support@kamc-oncology.com</p>
+                <p>Emergency: 997</p>
+            </div>
+        </div>
+        <div class="footer-bottom text-center">
+            <p>&copy; 2026 KAMC Oncology. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         12. النوافذ المنبثقة (Modals) للتسجيل والدخول
+         ========================================== -->
+    <!-- نافذة تسجيل الدخول -->
+    <dialog id="authModal" class="modal glass-modal">
+        <div class="modal-content">
+            <button id="closeAuth" class="close-btn">&times;</button>
+            <h2 data-i18n="loginTitle">تسجيل الدخول</h2>
+            <form id="authForm">
+                <div class="form-group">
+                    <label data-i18n="email">البريد الإلكتروني</label>
+                    <input type="email" id="emailInput" required placeholder="example@mail.com">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="password">كلمة المرور</label>
+                    <input type="password" id="passwordInput" required placeholder="••••••••">
+                </div>
+                <div id="authError" class="text-danger hidden mt-2 text-center"></div>
+                <button type="submit" class="btn-solid w-100 mt-4" id="submitAuth" data-i18n="login">دخول</button>
+            </form>
+            <div class="text-center mt-4">
+                <a href="#" id="openRegister" class="text-muted" data-i18n="noAccount">ليس لديك حساب؟ إنشاء حساب جديد</a>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- نافذة إنشاء حساب (مخفية مبدئياً) -->
+    <dialog id="registerModal" class="modal glass-modal">
+        <div class="modal-content">
+            <button id="closeRegister" class="close-btn">&times;</button>
+            <h2 data-i18n="registerTitle">إنشاء حساب جديد</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label data-i18n="fullName">الاسم الكامل</label>
+                    <input type="text" id="regName" required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="accountType">نوع الحساب</label>
+                    <select id="regType" class="glass-select" required>
+                        <option value="patient" data-i18n="typePatient">مريض</option>
+                        <option value="caregiver" data-i18n="typeCaregiver">مرافق</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="email">البريد الإلكتروني</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="password">كلمة المرور</label>
+                    <input type="password" id="regPassword" required>
+                </div>
+                <button type="submit" class="btn-solid w-100 mt-4" data-i18n="createAccount">تسجيل</button>
+            </form>
+        </div>
+    </dialog>
+
+    <!-- حاوية التنبيهات (Toasts) -->
+    <div id="toastContainer" aria-live="assertive"></div>
+
+    <!-- ربط ملف الجافاسكريبت -->
     <script src="app.js"></script>
 </body>
 </html>
