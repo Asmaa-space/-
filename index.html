@@ -20,12 +20,21 @@
                 </svg>
                 <span>KAMC Oncology</span>
             </div>
-            <div class="header-info">
+            
+            <!-- روابط التنقل المباشرة -->
+            <nav class="top-nav" id="topNav">
+                <a href="#patient-education" class="nav-link">التثقيف</a>
+                <a href="#patient-treatment" class="nav-link">العلاج</a>
+                <a href="#patient-dibh" class="nav-link">تدرّب (DIBH)</a>
+            </nav>
+
+            <div class="header-info hidden-mobile">
                 <span id="headerUserType" class="badge"></span>
                 <span id="headerStepName" class="step-name"></span>
             </div>
+            
             <div class="header-actions">
-                <span id="headerProgressText" class="progress-text"></span>
+                <span id="headerProgressText" class="progress-text hidden-mobile"></span>
                 <button id="btnGoHome" class="btn btn-outline btn-sm">الرئيسية</button>
             </div>
         </div>
@@ -35,10 +44,10 @@
     </header>
 
     <main id="appMain">
-        <!-- ================= الشاشة 0: الصفحة الرئيسية (اختيار المستخدم) ================= -->
+        <!-- ================= الشاشة 0: الصفحة الرئيسية ================= -->
         <section id="screen-home" class="screen active">
-            <div class="home-container">
-                <div class="text-center mb-4">
+            <div class="home-container text-center">
+                <div class="mb-4">
                     <h1 class="hero-title">مرحباً بك في المنصة التثقيفية التفاعلية</h1>
                     <p class="hero-desc">نحن هنا لنساندك في كل خطوة. يرجى اختيار مسارك للبدء:</p>
                 </div>
@@ -63,7 +72,7 @@
 
         <!-- ================= مسار المريض ================= -->
         
-        <!-- الشاشة 1: نظرة عامة (خريطة الرحلة) -->
+        <!-- الشاشة 1: التثقيف -->
         <section id="screen-patient-journey" class="screen">
             <div class="container content-container">
                 <h2 class="section-title">نظرة عامة على التثقيف: رحلة العلاج</h2>
@@ -83,7 +92,7 @@
             </div>
         </section>
 
-        <!-- الشاشة 2: المحتوى التثقيفي (أنواع العلاج) -->
+        <!-- الشاشة 2: العلاج -->
         <section id="screen-patient-treatment" class="screen">
             <div class="container content-container">
                 <h2 class="section-title">المحتوى التثقيفي: استكشاف أنواع العلاج</h2>
@@ -100,7 +109,7 @@
             </div>
         </section>
 
-        <!-- الشاشة 3: التدريب (الاسترخاء الذهني) -->
+        <!-- الشاشة 3: DIBH -->
         <section id="screen-patient-breathing" class="screen bg-dark">
             <div class="container content-container text-center text-light">
                 <h2 class="section-title title-light">التدريب والتطبيق: أداة الاسترخاء الذهني</h2>
@@ -136,7 +145,7 @@
 
         <!-- ================= مسار المرافق ================= -->
 
-        <!-- الشاشة 1: نظرة عامة للمرافق -->
+        <!-- الشاشة 1: نظرة عامة -->
         <section id="screen-comp-overview" class="screen">
             <div class="container content-container text-center">
                 <h2 class="section-title">دور المرافق والمساندة</h2>
@@ -153,7 +162,7 @@
             </div>
         </section>
 
-        <!-- الشاشة 2: المحتوى التثقيفي (الأكورديون) -->
+        <!-- الشاشة 2: دليل المرافق -->
         <section id="screen-comp-guide" class="screen">
             <div class="container content-container">
                 <h2 class="section-title">المحتوى التثقيفي: دليل المرافق</h2>
@@ -205,7 +214,7 @@
             </div>
         </section>
 
-        <!-- الشاشة 3: التدريب والمساعدة (المحادثة) -->
+        <!-- الشاشة 3: المحادثة -->
         <section id="screen-comp-chatbot" class="screen">
             <div class="container content-container">
                 <h2 class="section-title">التدريب والأدوات: المساعد التثقيفي KAMC</h2>
@@ -253,7 +262,7 @@
         </section>
     </main>
 
-    <!-- شريط التنقل السفلي الثابت (يظهر داخل المسارات فقط) -->
+    <!-- شريط التنقل السفلي الثابت -->
     <nav class="bottom-nav hidden" id="bottomNav">
         <div class="container nav-container">
             <button id="btnPrev" class="btn btn-outline">السابق</button>
