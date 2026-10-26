@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'use strict';
 
     // ==========================================
-    // 1. DATA (Original Content Retained)
+    // 1. DATA 
     // ==========================================
     const data = {
         journey: [
@@ -20,119 +20,112 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ==========================================
-    // 2. SPA ROUTING & NAVIGATION LOGIC
+    // 2. HASH-BASED ROUTING & NAVIGATION LOGIC
     // ==========================================
-    const patientFlow = [
-        { id: 'screen-patient-journey', title: 'نظرة عامة على التثقيف' },
-        { id: 'screen-patient-treatment', title: 'المحتوى التثقيفي' },
-        { id: 'screen-patient-breathing', title: 'التدريب والتطبيق' },
-        { id: 'screen-completion', title: 'المراجعة والإكمال' }
-    ];
+    const routes = {
+        '#home': { id: 'screen-home', title: 'الرئيسية', flow: null },
+        
+        // مسار المريض
+        '#patient-education': { id: 'screen-patient-journey', title: 'نظرة عامة على التثقيف', flow: 'patient', index: 0 },
+        '#patient-treatment': { id: 'screen-patient-treatment', title: 'المحتوى التثقيفي', flow: 'patient', index: 1 },
+        '#patient-dibh': { id: 'screen-patient-breathing', title: 'تدرّب (DIBH)', flow: 'patient', index: 2 },
+        '#patient-completion': { id: 'screen-completion', title: 'المراجعة والإكمال', flow: 'patient', index: 3 },
+        
+        // مسار المرافق
+        '#comp-overview': { id: 'screen-comp-overview', title: 'نظرة عامة', flow: 'companion', index: 0 },
+        '#comp-guide': { id: 'screen-comp-guide', title: 'المحتوى التثقيفي', flow: 'companion', index: 1 },
+        '#comp-chatbot': { id: 'screen-comp-chatbot', title: 'الأدوات المساعدة', flow: 'companion', index: 2 },
+        '#comp-completion': { id: 'screen-completion', title: 'المراجعة والإكمال', flow: 'companion', index: 3 }
+    };
 
-    const companionFlow = [
-        { id: 'screen-comp-overview', title: 'نظرة عامة' },
-        { id: 'screen-comp-guide', title: 'المحتوى التثقيفي' },
-        { id: 'screen-comp-chatbot', title: 'الأدوات المساعدة' },
-        { id: 'screen-completion', title: 'المراجعة والإكمال' }
-    ];
-
-    let currentRole = null; // 'patient' or 'companion'
-    let currentStepIndex = 0;
-    let activeFlow = [];
+    const patientSequence = ['#patient-education', '#patient-treatment', '#patient-dibh', '#patient-completion'];
+    const compSequence = ['#comp-overview', '#comp-guide', '#comp-chatbot', '#comp-completion'];
 
     const screens = document.querySelectorAll('.screen');
     const header = document.getElementById('appHeader');
     const bottomNav = document.getElementById('bottomNav');
+    const topNav = document.getElementById('topNav');
+    const topNavLinks = document.querySelectorAll('.nav-link');
     
-    // Header Elements
-    const hUserType = document.getElementById('headerUserType');
-    const hStepName = document.getElementById('headerStepName');
-    const hProgressText = document.getElementById('headerProgressText');
-    const hProgressBar = document.getElementById('headerProgressBar');
-
-    // Navigation Buttons
-    const btnNext = document.getElementById('btnNext');
-    const btnPrev = document.getElementById('btnPrev');
-    const btnGoHome = document.getElementById('btnGoHome');
-    const btnRestart = document.getElementById('btnRestart');
-
-    function resetApp() {
-        currentRole = null;
-        currentStepIndex = 0;
-        activeFlow = [];
+    function handleRouteChange() {
+        const hash = window.location.hash || '#home';
+        const route = routes[hash];
         
-        // Hide UI elements
-        header.classList.add('hidden');
-        bottomNav.classList.add('hidden');
-        
-        // Show Home Screen
+        if (!route) {
+            window.location.hash = '#home';
+            return;
+        }
+
+        // تفريغ الشاشات وعرض المطلوبة
         screens.forEach(s => s.classList.remove('active'));
-        document.getElementById('screen-home').classList.add('active');
-        
-        // Reset Breathing Tool if active
-        if(typeof resetBreathing === 'function') resetBreathing();
-    }
+        document.getElementById(route.id).classList.add('active');
 
-    function startFlow(role) {
-        currentRole = role;
-        activeFlow = (role === 'patient') ? patientFlow : companionFlow;
-        currentStepIndex = 0;
-        
-        hUserType.textContent = (role === 'patient') ? 'المريض' : 'المرافق';
-        
+        // حالة الصفحة الرئيسية
+        if (hash === '#home') {
+            header.classList.add('hidden');
+            bottomNav.classList.add('hidden');
+            if(typeof resetBreathing === 'function') resetBreathing();
+            return;
+        }
+
+        // عرض العناصر للمسارات الداخلية
         header.classList.remove('hidden');
         bottomNav.classList.remove('hidden');
         
-        renderCurrentScreen();
-    }
+        const sequence = route.flow === 'patient' ? patientSequence : compSequence;
+        const totalNum = sequence.length;
+        const currentNum = route.index + 1;
 
-    function renderCurrentScreen() {
-        // Update Screens Visibility
-        screens.forEach(s => s.classList.remove('active'));
-        const currentScreenData = activeFlow[currentStepIndex];
-        document.getElementById(currentScreenData.id).classList.add('active');
+        // إخفاء/إظهار الروابط العلوية حسب المسار
+        topNav.style.display = route.flow === 'patient' ? 'flex' : 'none';
         
-        // Update Header Data
-        hStepName.textContent = currentScreenData.title;
-        const currentNum = currentStepIndex + 1;
-        const totalNum = activeFlow.length;
-        hProgressText.textContent = `الصفحة ${currentNum} من ${totalNum}`;
-        hProgressBar.style.width = `${(currentNum / totalNum) * 100}%`;
+        document.getElementById('headerUserType').textContent = (route.flow === 'patient') ? 'المريض' : 'المرافق';
+        document.getElementById('headerStepName').textContent = route.title;
+        document.getElementById('headerProgressText').textContent = `الصفحة ${currentNum} من ${totalNum}`;
+        document.getElementById('headerProgressBar').style.width = `${(currentNum / totalNum) * 100}%`;
+
+        // تحديث حالة أزرار التالي/السابق بناءً على المصفوفة
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
         
-        // Update Bottom Nav Buttons
-        btnPrev.style.visibility = (currentStepIndex === 0) ? 'hidden' : 'visible';
+        btnPrev.style.visibility = (route.index === 0) ? 'hidden' : 'visible';
+        btnPrev.onclick = () => { window.location.hash = sequence[route.index - 1]; };
         
-        if (currentStepIndex === totalNum - 1) {
-            btnNext.classList.add('hidden'); // Hide next on last screen
+        if (route.index === totalNum - 1) {
+            btnNext.classList.add('hidden');
         } else {
             btnNext.classList.remove('hidden');
+            btnNext.onclick = () => { window.location.hash = sequence[route.index + 1]; };
         }
 
-        // Auto-scroll to top when changing screens
+        // تمييز الرابط النشط في الشريط العلوي
+        topNavLinks.forEach(link => {
+            if (link.getAttribute('href') === hash) {
+                link.style.fontWeight = 'bold';
+                link.style.color = 'var(--rose)';
+                link.style.backgroundColor = 'var(--bg-soft)';
+            } else {
+                link.style.fontWeight = '500';
+                link.style.color = 'var(--teal)';
+                link.style.backgroundColor = 'transparent';
+            }
+        });
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Event Listeners for Routing
+    // ربط أحداث التوجيه (Routing)
+    window.addEventListener('hashchange', handleRouteChange);
+    window.addEventListener('load', handleRouteChange);
+
     document.querySelectorAll('.role-card').forEach(card => {
-        card.addEventListener('click', () => startFlow(card.dataset.role));
+        card.addEventListener('click', () => {
+            window.location.hash = card.dataset.role === 'patient' ? '#patient-education' : '#comp-overview';
+        });
     });
 
-    btnNext.addEventListener('click', () => {
-        if (currentStepIndex < activeFlow.length - 1) {
-            currentStepIndex++;
-            renderCurrentScreen();
-        }
-    });
-
-    btnPrev.addEventListener('click', () => {
-        if (currentStepIndex > 0) {
-            currentStepIndex--;
-            renderCurrentScreen();
-        }
-    });
-
-    btnGoHome.addEventListener('click', resetApp);
-    btnRestart.addEventListener('click', resetApp);
+    document.getElementById('btnGoHome').addEventListener('click', () => window.location.hash = '#home');
+    document.getElementById('btnRestart').addEventListener('click', () => window.location.hash = '#home');
 
 
     // ==========================================
@@ -167,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     tPanel.innerHTML = data.treatment['radio']; // Init
 
-    // C. Breathing Tool
+    // C. Breathing Tool (مع إصلاح التداخل)
     const breathCircle = document.getElementById('breathCircle');
     const breathPhase = document.getElementById('breathPhase');
     const breathTime = document.getElementById('breathTime');
@@ -184,8 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${Math.floor(s / 60).toString().padStart(2, '0')}:${(s % 60).toString().padStart(2, '0')}`;
     }
 
-    function resetBreathing() {
-        clearInterval(bTimer); clearInterval(bInterval);
+    // جعل هذه الدالة متاحة خارجياً للتصفير عند العودة للرئيسية
+    window.resetBreathing = function() {
+        clearInterval(bTimer); 
+        clearInterval(bInterval);
         bActive = false; bPaused = false;
         breathCircle.className = 'breath-circle';
         breathPhase.textContent = 'جاهز؟';
@@ -194,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnBPause.classList.add('hidden'); btnBStop.classList.add('hidden');
         breathSetup.style.display = 'block';
         btnBPause.textContent = 'إيقاف مؤقت';
-    }
+    };
 
     function execPhase() {
         if (!bActive || bPaused) return;
@@ -211,12 +206,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     btnBStart.addEventListener('click', () => {
+        // تفريغ المؤقتات القديمة فوراً لمنع التداخل السريع
+        clearInterval(bTimer); 
+        clearInterval(bInterval);
+
         bSecLeft = parseInt(selectDuration.value);
         breathTime.textContent = fTime(bSecLeft);
         bActive = true; bPaused = false; pStr = 'ready';
+        
         btnBStart.classList.add('hidden');
-        btnBPause.classList.remove('hidden'); btnBStop.classList.remove('hidden');
+        btnBPause.classList.remove('hidden'); 
+        btnBStop.classList.remove('hidden');
         breathSetup.style.display = 'none';
+        
         execPhase();
         bTimer = setInterval(() => {
             if(bPaused) return;
@@ -231,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(bPaused) breathCircle.style.animationPlayState = 'paused';
         else { breathCircle.style.animationPlayState = 'running'; breathCircle.className = `breath-circle ${pStr}`; }
     });
+    
     btnBStop.addEventListener('click', resetBreathing);
 
     // D. Accordion Caregiver
@@ -249,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // E. Chatbot Logic
+    // E. Chatbot Logic (مع إصلاح الإدخال الفارغ)
     const cInput = document.getElementById('chatInput');
     const cSend = document.getElementById('chatSend');
     const cBody = document.getElementById('chatBody');
@@ -264,9 +267,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function doChat() {
         const txt = cInput.value.trim();
+        // التحقق من صحة المدخلات (تجاهل الإرسال الفارغ)
         if(!txt) return;
+        
         addMsg(txt, true);
         cInput.value = '';
+        
         setTimeout(() => {
             let rep = "بصفتي مساعداً تثقيفياً، لا يمكنني تقديم نصائح طبية محددة. يرجى تدوين هذا السؤال ومناقشته مع الفريق الطبي.";
             if(txt.includes('استعد') || txt.includes('تحضير')) rep = "تأكد من إحضار هويتك الطبية، وارتداء ملابس مريحة.";
@@ -277,7 +283,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     cSend.addEventListener('click', doChat);
     cInput.addEventListener('keypress', e => { if(e.key === 'Enter') doChat(); });
-    document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => { cInput.value = c.textContent; doChat(); }));
+    document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => { 
+        cInput.value = c.textContent; 
+        doChat(); 
+    }));
     document.getElementById('clearChat').addEventListener('click', () => {
         cBody.innerHTML = `<div class="message assistant"><div class="bubble"><p>مرحباً بك. أنا مساعدك الرقمي. <strong>أنا أداة آلية ولا يمكنني تقديم استشارة طبية.</strong> كيف يمكنني مساعدتك اليوم؟</p></div></div>`;
     });
