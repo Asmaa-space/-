@@ -1,19 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
 
 :root {
-    /* التصميم الطبي السريري (Teal/Navy) */
-    --primary: #004b5c;      /* أزرق داكن */
-    --primary-light: #e0f0f5; 
-    --secondary: #007b8c;    /* أزرق مخضر */
+    /* ألوان مستوحاة من الصورة */
+    --primary: #003c58;      /* أزرق داكن (Navy/Dark Teal) للعناوين */
+    --primary-light: #e6f0f5; 
+    --secondary: #157388;    /* أزرق مخضر للأزرار والتفاصيل */
     
-    --bg-main: #f8f9fa;      /* خلفية رمادية فاتحة جداً */
+    --bg-main: #f8f9fa;      /* رمادي فاتح جداً للخلفية */
     --bg-white: #ffffff;
     
     --text-main: #2d3748;
-    --text-muted: #718096;
+    --text-muted: #6b7280;
     --border-color: #e2e8f0;
     
-    --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 10px 25px rgba(0, 60, 88, 0.08);
     --radius: 12px;
 }
 
@@ -40,89 +41,114 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
 }
 .header-container {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 70px;
+    height: 75px;
 }
 
-.brand, .brand-large { color: var(--primary); font-weight: 800; font-size: 1.4rem; }
-.brand-large { font-size: 2.5rem; text-align: center; }
-.brand strong, .brand-large strong { color: var(--text-main); }
+.brand { color: var(--primary); font-weight: 800; font-size: 1.4rem; }
+.brand strong { color: var(--secondary); }
 
-.top-nav {
-    display: flex;
-    gap: 10px;
-}
+.top-nav { display: flex; gap: 5px; }
 .nav-link {
     background: transparent;
     border: none;
     color: var(--text-muted);
     font-weight: 600;
-    font-size: 1rem;
-    padding: 8px 16px;
-    border-radius: 8px;
+    font-size: 1.05rem;
+    padding: 8px 18px;
+    border-radius: 50px; /* أزرار دائرية مثل الصورة */
     cursor: pointer;
     font-family: inherit;
     transition: 0.3s;
 }
 .nav-link:hover { color: var(--primary); background: var(--primary-light); }
-.nav-link.active { color: var(--bg-white); background: var(--primary); font-weight: 700; }
+.nav-link.active { color: var(--bg-white); background: var(--secondary); font-weight: 700; }
 
-.header-actions { display: flex; align-items: center; gap: 15px; }
-.user-badge { background: var(--secondary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; }
-
-.btn-home { background: transparent; border: 1px solid var(--border-color); padding: 6px 15px; border-radius: 6px; cursor: pointer; font-family: inherit; font-weight: 600; color: var(--text-muted); transition: 0.3s; }
-.btn-home:hover { background: #fee2e2; color: #dc2626; border-color: #dc2626; }
+.btn-outline-pill {
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    padding: 8px 25px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-outline-pill:hover { background: var(--primary); color: white; }
 
 .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.8rem; color: var(--primary); cursor: pointer; }
 
 /* ==========================================
    Layout & Views
    ========================================== */
-.content-area { flex: 1; display: flex; justify-content: center; align-items: flex-start; padding: 40px 20px; }
+.content-area { flex: 1; display: flex; justify-content: center; align-items: flex-start; padding: 50px 20px; }
 
 .step-view {
     display: none; 
     width: 100%;
-    max-width: 900px;
+    max-width: 1000px;
     animation: fadeIn 0.4s ease-in-out;
 }
 .step-view.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ==========================================
-   Home Page Selection
+   Home Page Selection (البطاقات المربعة)
    ========================================== */
-.role-selection { margin-top: 40px; }
-.academic-title { font-size: 2.2rem; color: var(--primary); font-weight: 800; margin-bottom: 10px; }
-.academic-subtitle { color: var(--text-muted); font-size: 1.2rem; margin-bottom: 30px; }
+.role-selection { margin-top: 20px; }
+.date-text { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 10px; }
+.academic-title { font-size: 2.8rem; color: var(--primary); font-weight: 800; margin-bottom: 10px; line-height: 1.2; }
+.academic-subtitle { color: var(--text-muted); font-size: 1.2rem; }
 
 .role-cards { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; }
-.role-card { flex: 1; min-width: 280px; max-width: 350px; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 40px 20px; text-align: center; cursor: pointer; transition: 0.3s; box-shadow: var(--shadow); font-family: inherit; }
-.role-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,75,92,0.1); }
-.role-icon { font-size: 3.5rem; margin-bottom: 15px; }
-.role-card h3 { font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; font-weight: 700; }
-.role-card p { color: var(--text-muted); font-size: 1rem; }
+.square-card {
+    flex: 1;
+    min-width: 250px;
+    max-width: 320px;
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: var(--shadow-sm);
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1; /* لجعلها مربعة مثل الصورة */
+}
+.square-card:hover { border-color: var(--secondary); transform: translateY(-5px); box-shadow: var(--shadow-md); }
+.card-icon { font-size: 3rem; margin-bottom: 15px; }
+.square-card h3 { font-size: 1.4rem; color: var(--primary); margin-bottom: 10px; font-weight: 700; }
+.square-card p { color: var(--text-muted); font-size: 1rem; }
 
 /* ==========================================
    Content Components
    ========================================== */
-.step-heading { font-size: 2rem; color: var(--primary); margin-bottom: 15px; font-weight: 800; }
+.step-heading { font-size: 2.2rem; color: var(--primary); margin-bottom: 15px; font-weight: 800; }
 .sub-heading { font-size: 1.4rem; color: var(--secondary); margin-bottom: 15px; font-weight: 700; }
 .step-text { font-size: 1.15rem; color: var(--text-main); }
 .text-primary { color: var(--primary); }
 .text-center { text-align: center; }
-.mt-4 { margin-top: 24px; } .mt-5 { margin-top: 40px; } .mb-4 { margin-bottom: 24px; } .mb-0 { margin-bottom: 0 !important; }
+.text-right { text-align: right; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mt-4 { margin-top: 24px; } .mt-5 { margin-top: 40px; } .mb-3 { margin-bottom: 16px; } .mb-4 { margin-bottom: 24px; }
 .w-100 { width: 100%; } .hidden { display: none !important; }
 
-/* Cards */
-.clinical-card { background: var(--bg-white); padding: 30px; border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: var(--shadow); }
+/* Cards & Layout */
+.clinical-card { background: var(--bg-white); padding: 35px; border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); }
+.border-top-primary { border-top: 4px solid var(--secondary); }
+.grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: stretch; }
 
 /* Lists & Roadmaps */
 .academic-list { padding-right: 25px; font-size: 1.1rem; }
@@ -130,62 +156,57 @@ body {
 .academic-list.numbered { list-style-type: decimal; }
 
 .roadmap { display: flex; flex-direction: column; gap: 15px; }
-.roadmap-item { display: flex; align-items: center; gap: 15px; background: var(--bg-white); padding: 20px; border-radius: var(--radius); font-weight: 600; font-size: 1.1rem; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
+.roadmap-item { display: flex; align-items: center; gap: 15px; background: var(--bg-main); padding: 15px 20px; border-radius: 50px; font-weight: 600; font-size: 1.1rem; border: 1px solid var(--border-color); }
 .roadmap-item span { background: var(--primary); color: white; min-width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; }
 
-/* Grids & Boxes */
-.grid-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; align-items: stretch; }
-.qna-box { background: var(--bg-white); border-right: 4px solid var(--secondary); padding: 25px; margin-bottom: 15px; border-radius: var(--radius); box-shadow: var(--shadow); }
+/* Boxes */
+.qna-box { background: var(--bg-white); border-right: 4px solid var(--secondary); padding: 25px; margin-bottom: 20px; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
 .qna-box h4 { color: var(--primary); margin-bottom: 10px; font-size: 1.2rem; font-weight: 700; }
 .summary-box { background: var(--primary-light); padding: 30px; border-radius: var(--radius); }
 .summary-box h4 { color: var(--primary); margin-bottom: 15px; font-size: 1.3rem; font-weight: 700; }
 .alert-box { background: #fffbeb; color: #92400e; padding: 15px; border-radius: 8px; border-left: 4px solid #f59e0b; font-weight: 600; }
 
 /* ==========================================
-   Breathing App
+   Breathing App & Buttons
    ========================================== */
-.breathing-app { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
-.breath-circle { width: 200px; height: 200px; border-radius: 50%; border: 6px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center; background: white; transition: all 0.5s linear; margin: 0 auto; box-shadow: var(--shadow); }
-.breath-circle.inhale { transform: scale(1.3); border-color: var(--primary); background: var(--primary-light); transition-duration: 4s; }
-.breath-circle.hold { transform: scale(1.3); border-color: var(--secondary); background: #e2e8f0; transition-duration: 0s; }
-.breath-circle.exhale { transform: scale(0.9); border-color: var(--primary-light); background: var(--bg-white); transition-duration: 6s; }
+.flex-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.breathing-app { width: 100%; max-width: 300px; margin: 0 auto; }
+.breath-circle { width: 220px; height: 220px; border-radius: 50%; border: 6px solid var(--border-color); display: flex; flex-direction: column; align-items: center; justify-content: center; background: white; transition: all 0.5s linear; margin: 0 auto; box-shadow: var(--shadow-sm); }
+.breath-circle.inhale { transform: scale(1.2); border-color: var(--secondary); background: var(--primary-light); transition-duration: 4s; }
+.breath-circle.hold { transform: scale(1.2); border-color: var(--primary); background: #e2e8f0; transition-duration: 0s; }
+.breath-circle.exhale { transform: scale(0.9); border-color: var(--border-color); background: var(--bg-white); transition-duration: 6s; }
 #breath-inst { font-weight: bold; color: var(--primary); font-size: 1.2rem; margin-bottom: 5px; }
-#breath-timer { font-family: monospace; font-size: 1.5rem; color: var(--text-muted); font-weight: bold; }
+#breath-timer { font-family: monospace; font-size: 1.8rem; color: var(--text-muted); font-weight: bold; }
 
-/* Buttons */
-.btn-primary-large { background: var(--primary); color: white; border: none; padding: 12px 35px; border-radius: 50px; font-weight: 700; font-size: 1.1rem; cursor: pointer; font-family: inherit; transition: 0.3s; width: 100%; max-width: 250px; }
-.btn-primary-large:hover { background: var(--secondary); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,75,92,0.2); }
-.btn-outline-danger { background: transparent; border: 2px solid #dc2626; color: #dc2626; padding: 10px 30px; border-radius: 50px; font-weight: 700; font-size: 1.1rem; cursor: pointer; font-family: inherit; width: 100%; max-width: 250px; }
+.btn-solid-pill { background: var(--secondary); color: white; border: none; padding: 12px 30px; border-radius: 50px; font-weight: 700; font-size: 1.1rem; cursor: pointer; font-family: inherit; transition: 0.3s; }
+.btn-solid-pill:hover { background: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.btn-outline-danger-pill { background: transparent; border: 2px solid #dc2626; color: #dc2626; padding: 10px 30px; border-radius: 50px; font-weight: 700; font-size: 1.1rem; cursor: pointer; font-family: inherit; }
 
 /* ==========================================
-   Responsive (الجوال والأجهزة اللوحية)
+   Responsive (الجوال)
    ========================================== */
 @media (max-width: 992px) {
     .grid-layout { grid-template-columns: 1fr; }
 }
-
 @media (max-width: 768px) {
     .mobile-menu-btn { display: block; }
-    
     .top-nav {
         display: none; 
         position: absolute; 
-        top: 70px; 
+        top: 75px; 
         left: 0; 
         width: 100%; 
         background: var(--bg-white); 
         flex-direction: column; 
         padding: 15px 20px; 
         border-bottom: 1px solid var(--border-color); 
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        box-shadow: var(--shadow-sm);
     }
     .top-nav.show { display: flex; }
-    .nav-link { text-align: right; padding: 12px 15px; }
+    .nav-link { text-align: right; border-radius: 8px; margin-bottom: 5px; }
     
-    .header-actions { margin-right: auto; }
-    .content-area { padding: 20px 15px; }
-    .academic-title { font-size: 1.8rem; }
-    .step-heading { font-size: 1.6rem; }
-    .clinical-card { padding: 20px; }
-    .breath-circle { width: 160px; height: 160px; }
+    .academic-title { font-size: 2rem; }
+    .step-heading { font-size: 1.8rem; }
+    .square-card { aspect-ratio: auto; min-height: 200px; }
+    .breath-circle { width: 180px; height: 180px; }
 }
