@@ -1,50 +1,71 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    let currentTrack = null; 
-    let currentStepIndex = 0;
-    let trackViews = []; 
-
     const UI = {
         homeView: document.getElementById('view-home'),
         mainHeader: document.getElementById('mainHeader'),
         userBadge: document.getElementById('userTypeBadge'),
-        stepTitle: document.getElementById('headerStepTitle'),
         btnHome: document.getElementById('btnHome'),
-        bottomNav: document.getElementById('bottomNav'),
-        btnNext: document.getElementById('btnNext'),
-        btnPrev: document.getElementById('btnPrev'),
-        progress: document.getElementById('progressIndicator')
+        topNavLinks: document.getElementById('topNavLinks'),
+        mobileMenuBtn: document.getElementById('mobileMenuBtn')
     };
 
-    const patientViews = ['view-p-1', 'view-p-2', 'view-p-3', 'view-p-4'];
-    const companionViews = ['view-c-1', 'view-c-2', 'view-c-3'];
-
-    window.startJourney = function(role) {
-        currentTrack = role;
-        currentStepIndex = 0;
-        trackViews = role === 'patient' ? patientViews : companionViews;
-
-        UI.userBadge.textContent = role === 'patient' ? 'مسار المريض' : 'مسار المرافق';
-        UI.mainHeader.style.display = 'block'; 
-        UI.bottomNav.style.display = 'flex';   
-
-        renderView();
+    // تعريف مسارات الصفحات وعناوينها للشريط العلوي
+    const tracks = {
+        patient: [
+            { id: 'view-p-1', label: 'خريطة المسار' },
+            { id: 'view-p-2', label: 'المحتوى التثقيفي' },
+            { id: 'view-p-3', label: 'التدريب العملي' },
+            { id: 'view-p-4', label: 'المراجعة' }
+        ],
+        companion: [
+            { id: 'view-c-1', label: 'خريطة المسار' },
+            { id: 'view-c-2', label: 'فهم التقنية' },
+            { id: 'view-c-3', label: 'المساعدة' }
+        ]
     };
 
-    window.goHome = function() {
-        trackViews.forEach(id => {
-            const el = document.getElementById(id);
-            if(el) el.classList.remove('active');
+    let currentTrack = [];
+
+    // --- إظهار القائمة في الجوال ---
+    if(UI.mobileMenuBtn) {
+        UI.mobileMenuBtn.addEventListener('click', () => {
+            UI.topNavLinks.classList.toggle('show');
         });
-        
-        currentTrack = null;
-        currentStepIndex = 0;
-        trackViews = [];
+    }
 
+    // --- بدء الرحلة ---
+    window.startJourney = function(role) {
+        currentTrack = tracks[role];
+        
+        UI.userBadge.textContent = role === 'patient' ? 'مريض' : 'مرافق';
+        UI.mainHeader.style.display = 'block'; 
+
+        // بناء أزرار الشريط العلوي ديناميكياً
+        UI.topNavLinks.innerHTML = '';
+        currentTrack.forEach((step, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'nav-link';
+            btn.textContent = step.label;
+            btn.onclick = () => renderView(step.id, btn);
+            UI.topNavLinks.appendChild(btn);
+        });
+
+        // فتح أول صفحة تلقائياً
+        if(currentTrack.length > 0) {
+            renderView(currentTrack[0].id, UI.topNavLinks.firstChild);
+        }
+    };
+
+    // --- العودة للرئيسية ---
+    window.goHome = function() {
+        // إخفاء جميع الصفحات
+        document.querySelectorAll('.step-view').forEach(el => el.classList.remove('active'));
+        
         UI.homeView.classList.add('active');
         UI.mainHeader.style.display = 'none';
-        UI.bottomNav.style.display = 'none';
+        UI.topNavLinks.classList.remove('show');
         
+        // إيقاف أداة التنفس إذا كانت تعمل
         if(document.getElementById('stopTrainBtn')) {
             document.getElementById('stopTrainBtn').click();
         }
@@ -52,47 +73,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(UI.btnHome) UI.btnHome.addEventListener('click', goHome);
 
-    if(UI.btnNext) {
-        UI.btnNext.addEventListener('click', () => {
-            if (currentStepIndex < trackViews.length - 1) {
-                currentStepIndex++;
-                renderView();
-            }
-        });
-    }
-
-    if(UI.btnPrev) {
-        UI.btnPrev.addEventListener('click', () => {
-            if (currentStepIndex > 0) {
-                currentStepIndex--;
-                renderView();
-            }
-        });
-    }
-
-    function renderView() {
+    // --- التنقل بين الصفحات ---
+    function renderView(viewId, clickedBtn) {
+        // إخفاء الرئيسية وجميع الصفحات
         UI.homeView.classList.remove('active');
+        document.querySelectorAll('.step-view').forEach(el => el.classList.remove('active'));
 
-        trackViews.forEach(id => {
-            const el = document.getElementById(id);
-            if(el) el.classList.remove('active');
-        });
+        // إظهار الصفحة المحددة
+        const currentViewEl = document.getElementById(viewId);
+        if(currentViewEl) currentViewEl.classList.add('active');
 
-        const currentViewId = trackViews[currentStepIndex];
-        const currentViewEl = document.getElementById(currentViewId);
-        
-        if(currentViewEl) {
-            currentViewEl.classList.add('active');
-            UI.stepTitle.textContent = currentViewEl.getAttribute('data-title');
+        // تحديث شكل الزر النشط في الشريط العلوي
+        document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+        if(clickedBtn) clickedBtn.classList.add('active');
+
+        // إغلاق قائمة الجوال بعد الاختيار
+        UI.topNavLinks.classList.remove('show');
+
+        // إيقاف التنفس إذا خرج المستخدم من صفحة التدريب
+        if(viewId !== 'view-p-3' && document.getElementById('stopTrainBtn')) {
+            document.getElementById('stopTrainBtn').click();
         }
-
-        UI.progress.textContent = `الصفحة ${currentStepIndex + 1} من ${trackViews.length}`;
-        UI.btnPrev.disabled = currentStepIndex === 0;
-        UI.btnNext.disabled = currentStepIndex === trackViews.length - 1;
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     
+    // --- برمجة أداة التنفس التفاعلية ---
     let breathTimerInt, phaseTimeout;
     let bPhase = 'ready', bTime = 0;
     
@@ -125,8 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(breathUI.btnStart && breathUI.btnStop) {
         breathUI.btnStart.addEventListener('click', () => {
-            breathUI.btnStart.style.display = 'none';
-            breathUI.btnStop.style.display = 'inline-block';
+            breathUI.btnStart.classList.add('hidden');
+            breathUI.btnStop.classList.remove('hidden');
             bPhase = 'ready'; bTime = 0;
             
             startCycle();
@@ -145,8 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
             breathUI.circle.className = 'breath-circle';
             breathUI.inst.textContent = "جاهز؟";
             breathUI.timer.textContent = "00:00";
-            breathUI.btnStart.style.display = 'inline-block';
-            breathUI.btnStop.style.display = 'none';
+            breathUI.btnStart.classList.remove('hidden');
+            breathUI.btnStop.classList.add('hidden');
         });
     }
 });
