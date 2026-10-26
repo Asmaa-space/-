@@ -2,165 +2,112 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="KAMC Oncology Digital Companion - منصة رقمية تثقيفية وتفاعلية لمساعدة مرضى الأورام ومرافقيهم.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KAMC Oncology Digital Companion</title>
-    <!-- خطوط عربية احترافية ومريحة للقراءة -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Accessibility: Skip Link -->
-    <a href="#main-content" class="sr-only skip-link">تخطي إلى المحتوى الرئيسي</a>
-
-    <header class="main-header" role="banner">
-        <div class="container header-container">
-            <div class="brand" aria-label="KAMC Oncology Logo">
-                <svg width="36" height="36" viewBox="0 0 100 100" class="brand-logo" aria-hidden="true">
+    <!-- الشريط العلوي الثابت -->
+    <header class="app-header hidden" id="appHeader">
+        <div class="header-container">
+            <div class="brand">
+                <svg width="24" height="24" viewBox="0 0 100 100">
                     <circle cx="50" cy="50" r="42" fill="none" stroke="var(--teal)" stroke-width="8"/>
                     <circle cx="50" cy="50" r="22" fill="var(--rose)"/>
                 </svg>
-                <span class="brand-text">KAMC Oncology</span>
+                <span>KAMC Oncology</span>
             </div>
-            
-            <button class="menu-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="القائمة الرئيسية">
-                <span class="hamburger" aria-hidden="true"></span>
-            </button>
-
-            <nav id="primary-nav" class="main-nav" role="navigation">
-                <ul class="nav-list">
-                    <li><a href="#main-content" class="scroll-link" data-i18n="nav.home">الرئيسية</a></li>
-                    <li><a href="#journey" class="scroll-link" data-i18n="nav.journey">رحلة العلاج</a></li>
-                    <li><a href="#treatment" class="scroll-link" data-i18n="nav.treatment">الأنواع</a></li>
-                    <li><a href="#caregiver" class="scroll-link" data-i18n="nav.caregiver">المرافق</a></li>
-                    <li><a href="#breathing" class="scroll-link" data-i18n="nav.breathe">الاسترخاء</a></li>
-                    <li><a href="#education" class="scroll-link" data-i18n="nav.education">المكتبة</a></li>
-                </ul>
-                <div class="nav-actions">
-                    <button id="langSwitcher" class="btn btn-outline btn-sm" aria-label="Switch language">English</button>
-                    <button id="loginBtn" class="btn btn-primary btn-sm" data-i18n="nav.login">بوابة المريض</button>
-                </div>
-            </nav>
+            <div class="header-info">
+                <span id="headerUserType" class="badge"></span>
+                <span id="headerStepName" class="step-name"></span>
+            </div>
+            <div class="header-actions">
+                <span id="headerProgressText" class="progress-text"></span>
+                <button id="btnGoHome" class="btn btn-outline btn-sm">الرئيسية</button>
+            </div>
+        </div>
+        <div class="progress-bar-container">
+            <div id="headerProgressBar" class="progress-bar-fill"></div>
         </div>
     </header>
 
-    <main id="main-content" role="main">
-        <!-- 1. Hero Section (Redesigned Grid) -->
-        <section class="hero-section" aria-labelledby="hero-title">
-            <div class="container hero-grid">
-                <div class="hero-text-content">
-                    <span class="medical-badge" data-i18n="badge.review">
-                        <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/></svg>
-                        محتوى مُراجع طبياً
-                    </span>
-                    <h1 id="hero-title" class="hero-title" data-i18n="hero.title">ما الذي تحتاج معرفته اليوم؟</h1>
-                    <p class="hero-desc" data-i18n="hero.desc">نحن هنا لنساندك أنت ومرافقيك في كل خطوة. منصة رقمية توفر لك المعلومات الطبية الموثوقة لتكون شريكاً فاعلاً في خطتك العلاجية.</p>
+    <main id="appMain">
+        <!-- ================= الشاشة 0: الصفحة الرئيسية (اختيار المستخدم) ================= -->
+        <section id="screen-home" class="screen active">
+            <div class="home-container">
+                <div class="text-center mb-4">
+                    <h1 class="hero-title">مرحباً بك في المنصة التثقيفية التفاعلية</h1>
+                    <p class="hero-desc">نحن هنا لنساندك في كل خطوة. يرجى اختيار مسارك للبدء:</p>
                 </div>
-                
-                <div class="hero-cards path-grid" role="navigation" aria-label="مسارات الوصول السريع">
-                    <button class="path-card" data-target="#journey">
+                <div class="role-selection">
+                    <button class="role-card" data-role="patient">
                         <div class="icon-wrapper">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 9h-2V7h-2v5H6v2h2v5h2v-5h2v-2z"/></svg>
                         </div>
-                        <div class="card-text">
-                            <h2 data-i18n="path.new.title">تم تشخيصي حديثاً</h2>
-                            <p data-i18n="path.new.desc">الخطوات الأولى والمفاهيم الأساسية</p>
-                        </div>
+                        <h2>أنا المريض</h2>
+                        <p>الدليل الإرشادي، أنواع العلاج، والتدريب على الاسترخاء.</p>
                     </button>
-                    <button class="path-card" data-target="#treatment">
-                        <div class="icon-wrapper">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-                        </div>
-                        <div class="card-text">
-                            <h2 data-i18n="path.session.title">لدي جلسة علاج</h2>
-                            <p data-i18n="path.session.desc">الاستعداد، الإجراءات، والمتابعة</p>
-                        </div>
-                    </button>
-                    <button class="path-card" data-target="#caregiver">
+                    <button class="role-card" data-role="companion">
                         <div class="icon-wrapper">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
                         </div>
-                        <div class="card-text">
-                            <h2 data-i18n="path.caregiver.title">أنا مرافق لمريض</h2>
-                            <p data-i18n="path.caregiver.desc">دعم نفسي وعملي متكامل</p>
-                        </div>
-                    </button>
-                    <button class="path-card" data-target="#guide">
-                        <div class="icon-wrapper">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
-                        </div>
-                        <div class="card-text">
-                            <h2 data-i18n="path.guide.title">التحدث للمساعد</h2>
-                            <p data-i18n="path.guide.desc">إجابات سريعة من المكتبة</p>
-                        </div>
+                        <h2>أنا المرافق</h2>
+                        <p>دليل الدعم النفسي، التعليمات، والمساعد التثقيفي.</p>
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- 2. Patient Journey Stepper -->
-        <section id="journey" class="journey-section bg-soft" aria-labelledby="journey-heading">
-            <div class="container">
-                <header class="section-header text-center">
-                    <h2 id="journey-heading" class="section-title" data-i18n="journey.title">الدليل الإرشادي لرحلة العلاج</h2>
-                    <p class="section-subtitle" data-i18n="journey.disclaimer">هذه المراحل توضيحية لتبسيط المسار. خطتك الدقيقة سيناقشها معك طبيبك المعالج.</p>
-                </header>
+        <!-- ================= مسار المريض ================= -->
+        
+        <!-- الشاشة 1: نظرة عامة (خريطة الرحلة) -->
+        <section id="screen-patient-journey" class="screen">
+            <div class="container content-container">
+                <h2 class="section-title">نظرة عامة على التثقيف: رحلة العلاج</h2>
+                <p class="section-subtitle">هذه المراحل توضيحية لتبسيط المسار. خطتك الدقيقة سيناقشها معك طبيبك المعالج.</p>
                 
-                <div class="stepper-container" role="region" aria-label="مراحل العلاج">
-                    <div class="stepper-track" aria-hidden="true"><div class="stepper-progress" id="stepperProgress"></div></div>
-                    <div class="stepper-steps" role="tablist">
-                        <button class="step-btn active" role="tab" aria-selected="true" data-step="0"><span class="step-num">1</span><span class="step-lbl" data-i18n="journey.s1.lbl">التشخيص</span></button>
-                        <button class="step-btn" role="tab" aria-selected="false" data-step="1"><span class="step-num">2</span><span class="step-lbl" data-i18n="journey.s2.lbl">الخطة</span></button>
-                        <button class="step-btn" role="tab" aria-selected="false" data-step="2"><span class="step-num">3</span><span class="step-lbl" data-i18n="journey.s3.lbl">الاستعداد</span></button>
-                        <button class="step-btn" role="tab" aria-selected="false" data-step="3"><span class="step-num">4</span><span class="step-lbl" data-i18n="journey.s4.lbl">الجلسات</span></button>
-                        <button class="step-btn" role="tab" aria-selected="false" data-step="4"><span class="step-num">5</span><span class="step-lbl" data-i18n="journey.s5.lbl">المتابعة</span></button>
+                <div class="stepper-container mt-4">
+                    <div class="stepper-track"><div class="stepper-progress" id="stepperProgress"></div></div>
+                    <div class="stepper-steps">
+                        <button class="step-btn active" data-step="0"><span class="step-num">1</span><span class="step-lbl">التشخيص</span></button>
+                        <button class="step-btn" data-step="1"><span class="step-num">2</span><span class="step-lbl">الخطة</span></button>
+                        <button class="step-btn" data-step="2"><span class="step-num">3</span><span class="step-lbl">الاستعداد</span></button>
+                        <button class="step-btn" data-step="3"><span class="step-num">4</span><span class="step-lbl">الجلسات</span></button>
+                        <button class="step-btn" data-step="4"><span class="step-num">5</span><span class="step-lbl">المتابعة</span></button>
                     </div>
                 </div>
+                <div class="journey-content card-elevated" id="journeyContent"></div>
+            </div>
+        </section>
 
-                <div class="journey-content card-elevated" id="journeyContent" aria-live="polite">
-                    <!-- Dynamic Content Injected via JS -->
-                </div>
-                <div class="step-controls text-center mt-4">
-                    <button id="prevStep" class="btn btn-outline" disabled data-i18n="journey.prev">السابق</button>
-                    <button id="nextStep" class="btn btn-primary" data-i18n="journey.next">التالي</button>
+        <!-- الشاشة 2: المحتوى التثقيفي (أنواع العلاج) -->
+        <section id="screen-patient-treatment" class="screen">
+            <div class="container content-container">
+                <h2 class="section-title">المحتوى التثقيفي: استكشاف أنواع العلاج</h2>
+                <p class="section-subtitle">تعرف على المفاهيم الأساسية للطرق العلاجية المعتمدة.</p>
+                
+                <div class="split-layout mt-4">
+                    <div class="treatment-tabs">
+                        <button class="tab-btn active" data-tab="radio">العلاج الإشعاعي</button>
+                        <button class="tab-btn" data-tab="chemo">العلاج الكيميائي</button>
+                        <button class="tab-btn" data-tab="nuclear">الطب النووي</button>
+                    </div>
+                    <div id="treatment-panel" class="treatment-details card-elevated"></div>
                 </div>
             </div>
         </section>
 
-        <!-- 3. Treatment Explorer (Fixed Empty Space) -->
-        <section id="treatment" class="treatment-section" aria-labelledby="treatment-heading">
-            <div class="container">
-                <header class="section-header">
-                    <h2 id="treatment-heading" class="section-title" data-i18n="treatment.title">استكشاف أنواع العلاج</h2>
-                    <p class="section-subtitle">تعرف على المفاهيم الأساسية للطرق العلاجية المعتمدة.</p>
-                </header>
-                
-                <div class="split-layout">
-                    <div class="treatment-tabs" role="tablist" aria-orientation="vertical">
-                        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="radio">العلاج الإشعاعي</button>
-                        <button class="tab-btn" role="tab" aria-selected="false" data-tab="chemo">العلاج الكيميائي</button>
-                        <button class="tab-btn" role="tab" aria-selected="false" data-tab="nuclear">الطب النووي</button>
-                    </div>
-                    
-                    <div id="treatment-panel" class="treatment-details card-elevated" role="tabpanel" tabindex="0">
-                        <!-- Content Injected via JS immediately on load -->
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- الشاشة 3: التدريب (الاسترخاء الذهني) -->
+        <section id="screen-patient-breathing" class="screen bg-dark">
+            <div class="container content-container text-center text-light">
+                <h2 class="section-title title-light">التدريب والتطبيق: أداة الاسترخاء الذهني</h2>
+                <p class="section-subtitle text-light-muted">تمرين تنفس هادئ للمساعدة على التخفيف من التوتر. <br><small class="text-warning">ملاحظة: هذا التمرين للاسترخاء العام ولا يغني عن تقنيات حبس النفس الطبية.</small></p>
 
-        <!-- 4. Breathing Exercise (Restored & Enhanced) -->
-        <section id="breathing" class="breathing-section bg-dark text-light" aria-labelledby="breath-heading">
-            <div class="container text-center">
-                <header class="section-header">
-                    <h2 id="breath-heading" class="section-title title-light" data-i18n="breath.title">أداة الاسترخاء الذهني</h2>
-                    <p class="section-subtitle text-light-muted" data-i18n="breath.desc">تمرين تنفس هادئ للمساعدة على التخفيف من التوتر. تنفس بإيقاع مريح وتوقف فوراً إذا شعرت بالدوار.<br><small class="text-warning">ملاحظة: هذا التمرين للاسترخاء العام ولا يغني عن تقنيات حبس النفس الطبية المخصصة للأشعة.</small></p>
-                </header>
-
-                <div class="breath-setup" id="breathSetup">
-                    <label for="breathDuration" data-i18n="breath.select">اختر مدة التمرين:</label>
+                <div class="breath-setup mt-4" id="breathSetup">
+                    <label for="breathDuration">اختر مدة التمرين:</label>
                     <select id="breathDuration" class="custom-select">
                         <option value="60">دقيقة واحدة</option>
                         <option value="180">3 دقائق</option>
@@ -168,40 +115,55 @@
                     </select>
                 </div>
 
-                <div class="breath-ui">
+                <div class="breath-ui mt-4">
                     <div class="breath-circle-container">
                         <div class="breath-circle-bg"></div>
                         <div class="breath-circle" id="breathCircle"></div>
                         <div class="breath-text">
-                            <span id="breathPhase" class="phase-text" data-i18n="breath.ready">جاهز؟</span>
+                            <span id="breathPhase" class="phase-text">جاهز؟</span>
                             <span id="breathTime" class="time-text">00:00</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="breath-controls">
-                    <button id="btnBreathStart" class="btn btn-primary btn-lg" data-i18n="breath.start">بدء التمرين</button>
-                    <button id="btnBreathPause" class="btn btn-outline outline-light hidden" data-i18n="breath.pause">إيقاف مؤقت</button>
-                    <button id="btnBreathStop" class="btn btn-secondary hidden" data-i18n="breath.stop">إنهاء</button>
+                <div class="breath-controls mt-4">
+                    <button id="btnBreathStart" class="btn btn-primary btn-lg">بدء التمرين</button>
+                    <button id="btnBreathPause" class="btn btn-outline outline-light hidden">إيقاف مؤقت</button>
+                    <button id="btnBreathStop" class="btn btn-secondary hidden">إنهاء</button>
                 </div>
             </div>
         </section>
 
-        <!-- 5. Caregiver Guide (Expanded) -->
-        <section id="caregiver" class="caregiver-section bg-soft" aria-labelledby="caregiver-heading">
-            <div class="container">
-                <header class="section-header text-center">
-                    <h2 id="caregiver-heading" class="section-title" data-i18n="caregiver.title">دليل المرافق والمساندة</h2>
-                    <p class="section-subtitle">دورك جوهري في رحلة التعافي. إليك دليلاً عملياً لمساندة المريض مع الحفاظ على توازنك النفسي.</p>
-                </header>
+        <!-- ================= مسار المرافق ================= -->
 
-                <div class="accordion-group">
+        <!-- الشاشة 1: نظرة عامة للمرافق -->
+        <section id="screen-comp-overview" class="screen">
+            <div class="container content-container text-center">
+                <h2 class="section-title">دور المرافق والمساندة</h2>
+                <p class="section-subtitle">دورك جوهري في رحلة التعافي. في الصفحات التالية، سنستعرض دليلاً عملياً لمساندة المريض مع الحفاظ على توازنك النفسي.</p>
+                <div class="card-elevated mt-4" style="padding: 2rem;">
+                    <h3 style="color: var(--teal); margin-bottom: 1rem;">ماذا ستتعلم في هذا المسار؟</h3>
+                    <ul class="bullet-list text-start">
+                        <li>كيفية التحضير للمواعيد الطبية بفعالية.</li>
+                        <li>أساليب الدعم النفسي الفعال للمريض.</li>
+                        <li>الحالات الطارئة التي تستدعي تدخلاً طبياً.</li>
+                        <li>استخدام المساعد التثقيفي للوصول السريع للمعلومات.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- الشاشة 2: المحتوى التثقيفي (الأكورديون) -->
+        <section id="screen-comp-guide" class="screen">
+            <div class="container content-container">
+                <h2 class="section-title">المحتوى التثقيفي: دليل المرافق</h2>
+                <div class="accordion-group mt-4">
                     <div class="accordion-item card-elevated">
-                        <button class="accordion-trigger" aria-expanded="false" aria-controls="faq1">
+                        <button class="accordion-trigger" aria-expanded="false">
                             <span class="acc-title">التحضير للمواعيد الطبية</span>
                             <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                         </button>
-                        <div id="faq1" class="accordion-content">
+                        <div class="accordion-content">
                             <div class="content-inner">
                                 <ul class="bullet-list">
                                     <li>قم بتدوين كافة أسئلة المريض والمخاوف قبل الزيارة.</li>
@@ -212,22 +174,22 @@
                         </div>
                     </div>
                     <div class="accordion-item card-elevated">
-                        <button class="accordion-trigger" aria-expanded="false" aria-controls="faq2">
+                        <button class="accordion-trigger" aria-expanded="false">
                             <span class="acc-title">الدعم النفسي الفعال</span>
                             <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                         </button>
-                        <div id="faq2" class="accordion-content">
+                        <div class="accordion-content">
                             <div class="content-inner">
                                 <p>استمع بتعاطف دون محاولة "إصلاح" كل شعور. تجنب النصائح الطبية غير المتخصصة. قدّم المساعدة في المهام اليومية (كوجبات الطعام والمواصلات) لتقليل العبء المعرفي عن المريض.</p>
                             </div>
                         </div>
                     </div>
                     <div class="accordion-item card-elevated">
-                        <button class="accordion-trigger" aria-expanded="false" aria-controls="faq3">
+                        <button class="accordion-trigger" aria-expanded="false">
                             <span class="acc-title text-danger">متى يجب طلب المساعدة الطبية العاجلة؟</span>
                             <svg class="chevron" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
                         </button>
-                        <div id="faq3" class="accordion-content">
+                        <div class="accordion-content">
                             <div class="content-inner border-danger-left">
                                 <p>اتصل بالفريق الطبي أو توجه للطوارئ فوراً في حال حدوث:</p>
                                 <ul class="bullet-list">
@@ -243,100 +205,61 @@
             </div>
         </section>
 
-        <!-- 6. Video Library (Professional Thumbnails) -->
-        <section id="education" class="education-section" aria-labelledby="edu-heading">
-            <div class="container">
-                <header class="section-header">
-                    <h2 id="edu-heading" class="section-title" data-i18n="edu.title">المكتبة التثقيفية المرئية</h2>
-                    <p class="section-subtitle">شروحات مرئية قصيرة ومعتمدة لمساعدتك على فهم الخيارات العلاجية.</p>
-                </header>
+        <!-- الشاشة 3: التدريب والمساعدة (المحادثة) -->
+        <section id="screen-comp-chatbot" class="screen">
+            <div class="container content-container">
+                <h2 class="section-title">التدريب والأدوات: المساعد التثقيفي KAMC</h2>
+                <p class="section-subtitle">أداة للبحث السريع في المكتبة التثقيفية للإجابة على استفساراتك كمرافق.</p>
                 
-                <div class="video-grid">
-                    <article class="video-card" tabindex="0" role="button" aria-label="تشغيل فيديو: العلاج الإشعاعي" data-vid="radio_demo">
-                        <div class="vid-thumb" style="background-color: var(--teal-light);">
-                            <div class="vid-overlay"></div>
-                            <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            <span class="vid-duration">03:45</span>
-                        </div>
-                        <div class="vid-info">
-                            <h3 data-i18n="vid.1.title">ما هو العلاج الإشعاعي؟</h3>
-                            <p data-i18n="vid.1.desc">شرح مبسط لكيفية عمل الجلسات، وما يمكن توقعه داخل الغرفة.</p>
-                        </div>
-                    </article>
-                    
-                    <article class="video-card" tabindex="0" role="button" aria-label="تشغيل فيديو: التغذية" data-vid="nutri_demo">
-                        <div class="vid-thumb" style="background-color: var(--rose-light);">
-                            <div class="vid-overlay"></div>
-                            <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            <span class="vid-duration">05:20</span>
-                        </div>
-                        <div class="vid-info">
-                            <h3 data-i18n="vid.2.title">التغذية أثناء رحلة العلاج</h3>
-                            <p data-i18n="vid.2.desc">نصائح معتمدة للحفاظ على طاقتك والتعامل مع الغثيان.</p>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- 7. Educational Guide (Chatbot Refined) -->
-        <section id="guide" class="guide-section bg-soft" aria-labelledby="guide-heading">
-            <div class="container">
-                <div class="chat-wrapper card-elevated">
+                <div class="chat-wrapper card-elevated mt-4">
                     <div class="chat-header">
                         <div class="chat-title-area">
                             <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                            <h2 id="guide-heading" class="chat-title" data-i18n="chat.title">المساعد التثقيفي KAMC</h2>
+                            <h3 class="chat-title" style="margin:0; font-size: 1rem;">المساعد التثقيفي</h3>
                         </div>
-                        <button id="clearChat" class="btn-text btn-sm" data-i18n="chat.clear" aria-label="مسح المحادثة">مسح</button>
+                        <button id="clearChat" class="btn-text btn-sm text-light">مسح</button>
                     </div>
-                    
-                    <div class="chat-body" id="chatBody" aria-live="polite">
+                    <div class="chat-body" id="chatBody">
                         <div class="message assistant">
                             <div class="bubble">
-                                <p data-i18n="chat.welcome">مرحباً بك. أنا مساعدك الرقمي للبحث في المكتبة التثقيفية. <strong>يرجى العلم أنني أداة آلية ولا يمكنني تقديم تشخيص أو استشارة طبية.</strong> كيف يمكنني مساعدتك بمعلومات عامة اليوم؟</p>
+                                <p>مرحباً بك. أنا مساعدك الرقمي. <strong>أنا أداة آلية ولا يمكنني تقديم استشارة طبية.</strong> كيف يمكنني مساعدتك اليوم؟</p>
                             </div>
                         </div>
                     </div>
-                    
                     <div class="chat-footer">
                         <div class="suggestions" id="chatSuggestions">
                             <button class="chip">الاستعداد للجلسة</button>
                             <button class="chip">الأعراض الجانبية</button>
                         </div>
                         <div class="input-group">
-                            <label for="chatInput" class="sr-only">سؤالك</label>
-                            <input type="text" id="chatInput" placeholder="اسأل عن العلاج، التغذية، أو المواعيد..." autocomplete="off">
-                            <button id="chatSend" class="btn btn-primary" aria-label="إرسال">إرسال</button>
+                            <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." autocomplete="off">
+                            <button id="chatSend" class="btn btn-primary">إرسال</button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- ================= شاشة الختام المشتركة ================= -->
+        <section id="screen-completion" class="screen">
+            <div class="container content-container text-center">
+                <svg viewBox="0 0 24 24" fill="var(--teal)" width="80" height="80" class="mb-4"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                <h2 class="section-title">المراجعة والإكمال</h2>
+                <p class="section-subtitle">لقد أتممت بنجاح هذا المسار التثقيفي. نأمل أن تكون المعلومات المقدمة قد ساعدتك على فهم الخطة بشكل أفضل.</p>
+                <div class="mt-4">
+                    <button id="btnRestart" class="btn btn-outline">العودة للصفحة الرئيسية</button>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="main-footer" role="contentinfo">
-        <div class="container text-center">
-            <p class="mb-2"><strong>KAMC Oncology Digital Companion</strong></p>
-            <p class="text-sm text-muted mb-4">هذه المنصة مخصصة للتثقيف الصحي العام، ولا تعتبر بديلاً بأي حال عن الاستشارة الطبية المتخصصة من طبيبك المعالج.</p>
-            <p class="text-xs opacity-50">نسخة محسنة تجريبية - جميع الحقوق محفوظة &copy; 2026</p>
+    <!-- شريط التنقل السفلي الثابت (يظهر داخل المسارات فقط) -->
+    <nav class="bottom-nav hidden" id="bottomNav">
+        <div class="container nav-container">
+            <button id="btnPrev" class="btn btn-outline">السابق</button>
+            <button id="btnNext" class="btn btn-primary">التالي</button>
         </div>
-    </footer>
-
-    <!-- Video Modal -->
-    <dialog id="videoModal" class="custom-modal video-modal" aria-labelledby="modal-title">
-        <div class="modal-content">
-            <button class="close-btn" aria-label="إغلاق" data-close="videoModal">&times;</button>
-            <div id="videoContainer" class="video-player-placeholder">
-                <p id="modal-title" class="text-light">جاري تحميل مشغل الفيديو...</p>
-                <p class="text-sm text-light-muted">هذا الإطار سيحتوي المشغل الآمن الخاص بالمستشفى عند توفر الروابط.</p>
-            </div>
-        </div>
-    </dialog>
-
-    <!-- Toast Notifications -->
-    <div id="toastContainer" class="toast-container" aria-live="assertive"></div>
+    </nav>
 
     <script src="app.js"></script>
 </body>
