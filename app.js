@@ -1,96 +1,100 @@
 document.addEventListener('DOMContentLoaded', () => {
     
+    // عناصر الواجهة
     const UI = {
         homeView: document.getElementById('view-home'),
-        mainHeader: document.getElementById('mainHeader'),
-        userBadge: document.getElementById('userTypeBadge'),
+        btnRolePatient: document.getElementById('btnRolePatient'),
+        btnRoleCompanion: document.getElementById('btnRoleCompanion'),
         btnHome: document.getElementById('btnHome'),
         topNavLinks: document.getElementById('topNavLinks'),
-        mobileMenuBtn: document.getElementById('mobileMenuBtn')
+        mobileMenuBtn: document.getElementById('mobileMenuBtn'),
+        views: document.querySelectorAll('.step-view')
     };
 
-    // تعريف مسارات الصفحات وعناوينها للشريط العلوي
+    // تعريف مسارات الصفحات وعناوينها
     const tracks = {
         patient: [
-            { id: 'view-p-1', label: 'خريطة المسار' },
-            { id: 'view-p-2', label: 'المحتوى التثقيفي' },
-            { id: 'view-p-3', label: 'التدريب العملي' },
-            { id: 'view-p-4', label: 'المراجعة' }
+            { id: 'view-p-1', label: 'الدليل الإرشادي' },
+            { id: 'view-p-2', label: 'الاستكشاف' },
+            { id: 'view-p-3', label: 'التدريب' },
+            { id: 'view-p-4', label: 'المكتبة والأسئلة' }
         ],
         companion: [
-            { id: 'view-c-1', label: 'خريطة المسار' },
+            { id: 'view-c-1', label: 'دليل المرافق' },
             { id: 'view-c-2', label: 'فهم التقنية' },
             { id: 'view-c-3', label: 'المساعدة' }
         ]
     };
 
-    let currentTrack = [];
-
-    // --- إظهار القائمة في الجوال ---
+    // إظهار/إخفاء قائمة الجوال
     if(UI.mobileMenuBtn) {
         UI.mobileMenuBtn.addEventListener('click', () => {
             UI.topNavLinks.classList.toggle('show');
         });
     }
 
-    // --- بدء الرحلة ---
-    window.startJourney = function(role) {
-        currentTrack = tracks[role];
+    // --- دالة بدء الرحلة ---
+    function startJourney(role) {
+        const currentTrack = tracks[role];
         
-        UI.userBadge.textContent = role === 'patient' ? 'مريض' : 'مرافق';
-        UI.mainHeader.style.display = 'block'; 
+        // إظهار زر الرئيسية
+        UI.btnHome.classList.remove('hidden');
 
-        // بناء أزرار الشريط العلوي ديناميكياً
+        // بناء الشريط العلوي
         UI.topNavLinks.innerHTML = '';
-        currentTrack.forEach((step, index) => {
+        currentTrack.forEach((step) => {
             const btn = document.createElement('button');
             btn.className = 'nav-link';
             btn.textContent = step.label;
-            btn.onclick = () => renderView(step.id, btn);
+            btn.addEventListener('click', () => renderView(step.id, btn));
             UI.topNavLinks.appendChild(btn);
         });
 
-        // فتح أول صفحة تلقائياً
+        // فتح أول صفحة
         if(currentTrack.length > 0) {
             renderView(currentTrack[0].id, UI.topNavLinks.firstChild);
         }
-    };
+    }
+
+    // ربط أزرار البداية (هذا هو الإصلاح للمشكلة)
+    if(UI.btnRolePatient) {
+        UI.btnRolePatient.addEventListener('click', () => startJourney('patient'));
+    }
+    if(UI.btnRoleCompanion) {
+        UI.btnRoleCompanion.addEventListener('click', () => startJourney('companion'));
+    }
 
     // --- العودة للرئيسية ---
-    window.goHome = function() {
-        // إخفاء جميع الصفحات
-        document.querySelectorAll('.step-view').forEach(el => el.classList.remove('active'));
-        
+    function goHome() {
+        UI.views.forEach(el => el.classList.remove('active'));
         UI.homeView.classList.add('active');
-        UI.mainHeader.style.display = 'none';
+        
+        UI.topNavLinks.innerHTML = '';
+        UI.btnHome.classList.add('hidden');
         UI.topNavLinks.classList.remove('show');
         
-        // إيقاف أداة التنفس إذا كانت تعمل
         if(document.getElementById('stopTrainBtn')) {
             document.getElementById('stopTrainBtn').click();
         }
-    };
+    }
 
-    if(UI.btnHome) UI.btnHome.addEventListener('click', goHome);
+    if(UI.btnHome) {
+        UI.btnHome.addEventListener('click', goHome);
+    }
 
     // --- التنقل بين الصفحات ---
     function renderView(viewId, clickedBtn) {
-        // إخفاء الرئيسية وجميع الصفحات
-        UI.homeView.classList.remove('active');
-        document.querySelectorAll('.step-view').forEach(el => el.classList.remove('active'));
+        UI.views.forEach(el => el.classList.remove('active'));
 
-        // إظهار الصفحة المحددة
         const currentViewEl = document.getElementById(viewId);
         if(currentViewEl) currentViewEl.classList.add('active');
 
-        // تحديث شكل الزر النشط في الشريط العلوي
         document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
         if(clickedBtn) clickedBtn.classList.add('active');
 
-        // إغلاق قائمة الجوال بعد الاختيار
         UI.topNavLinks.classList.remove('show');
 
-        // إيقاف التنفس إذا خرج المستخدم من صفحة التدريب
+        // إيقاف التنفس إذا خرج المستخدم
         if(viewId !== 'view-p-3' && document.getElementById('stopTrainBtn')) {
             document.getElementById('stopTrainBtn').click();
         }
@@ -98,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     
-    // --- برمجة أداة التنفس التفاعلية ---
+    // --- برمجة أداة التنفس ---
     let breathTimerInt, phaseTimeout;
     let bPhase = 'ready', bTime = 0;
     
