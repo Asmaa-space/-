@@ -1,89 +1,93 @@
-// --- ضمان تحميل كل العناصر قبل تشغيل الأكواد (حماية من الأعطال) ---
-document.addEventListener('DOMContentLoaded', () => {
+/**
+ * KAMC Oncology Digital Companion - Main Application Logic
+ * Refactored for Production: Modular, Accessible, Error-Prevented, Performance Optimized.
+ */
 
-    // --- 1. TRANSLATION DICTIONARY ---
+document.addEventListener('DOMContentLoaded', () => {
+    'use strict';
+
+    // ==========================================
+    // 1. STATE & TRANSLATION DICTIONARY
+    // ==========================================
     const translations = {
         ar: {
-            "nav.home": "الرئيسية", "nav.journey": "رحلة المريض", "nav.treatment": "العلاج",
-            "nav.caregiver": "المرافق", "nav.education": "التثقيف", "nav.breathing": "التنفس",
-            "nav.guide": "المساعد", "nav.login": "تسجيل الدخول",
-            "hero.title": "رحلتك مع علاج الأورام تبدأ بالمعرفة والدعم",
-            "hero.desc": "منصة رقمية تساعد مرضى الأورام والمرافقين على فهم رحلة العلاج والاستعداد لكل خطوة بسهولة وثقة.",
-            "hero.ctaPrimary": "ابدأ رحلة المريض", "hero.ctaSecondary": "اسأل KAMC Guide",
-            "path.title": "كيف يمكننا مساعدتك؟", "path.patient": "المريض", "path.caregiver": "المرافق", "path.education": "التثقيف",
-            "journey.title": "رحلتك العلاجية خطوة بخطوة", "journey.prev": "السابق", "journey.next": "التالي",
-            "treatment.title": "اكتشف أنواع العلاج", "treatment.radio": "العلاج الإشعاعي", "treatment.chemo": "العلاج الكيميائي", "treatment.nuclear": "الطب النووي",
-            "treatment.radioTitle": "العلاج الإشعاعي", "treatment.radioDesc": "استخدام أشعة عالية الطاقة لتدمير الخلايا السرطانية وتقليص الأورام بدقة عالية.",
-            "treatment.radioL1": "جلسات يومية قصيرة", "treatment.radioL2": "بدون ألم أثناء الجلسة", "treatment.radioL3": "قد يسبب إرهاق مؤقت",
-            "treatment.chemoTitle": "العلاج الكيميائي", "treatment.chemoDesc": "علاج يعتمد على أدوية قوية لقتل الخلايا سريعة النمو في الجسم.",
-            "treatment.chemoL1": "يعطى عادة عن طريق الوريد", "treatment.chemoL2": "يتم على شكل دورات", "treatment.chemoL3": "الآثار الجانبية تختلف حسب الدواء",
-            "treatment.nuclearTitle": "الطب النووي", "treatment.nuclearDesc": "استخدام كميات صغيرة من المواد المشعة لتشخيص وعلاج الأمراض.",
-            "treatment.nuclearL1": "تصوير دقيق للوظائف الحيوية", "treatment.nuclearL2": "علاج موجه لأورام محددة", "treatment.nuclearL3": "آمن تحت إشراف طبي متخصص",
-            "caregiver.title": "لأن الدعم جزء من رحلة العلاج",
-            "caregiver.q1": "الدعم النفسي والعملي", "caregiver.a1": "كن مستمعاً جيداً، وقدم المساعدة في المهام اليومية البسيطة لتخفيف العبء.",
-            "caregiver.q2": "الاستعداد للمواعيد", "caregiver.a2": "قم بتدوين الأسئلة قبل الزيارة، واحتفظ بسجل للأعراض والأدوية.",
-            "caregiver.q3": "العناية الذاتية للمرافق", "caregiver.a3": "لا تنسَ أخذ فترات راحة. صحتك الجسدية والنفسية ضرورية لتتمكن من تقديم الدعم.",
-            "education.title": "المعرفة تمنحك ثقة أكبر",
-            "video.v1": "فهم العلاج الإشعاعي", "video.v2": "الاستعداد للعلاج الكيميائي", "video.v3": "أهمية الدعم النفسي",
-            "breath.title": "محاكي تمارين التنفس", "breath.desc": "تمرين 4-2-6 للمساعدة على الاسترخاء. هذا للتثقيف العام وليس بروتوكول طبي.",
-            "breath.ready": "مستعد؟", "breath.inhale": "شهيق", "breath.hold": "احتفاظ", "breath.exhale": "زفير",
-            "breath.start": "بدء", "breath.pause": "إيقاف مؤقت", "breath.resume": "متابعة", "breath.stop": "إنهاء",
-            "guide.title": "KAMC Guide", "guide.clear": "مسح المحادثة", "guide.welcome": "مرحباً بك. أنا المساعد الرقمي للتثقيف. كيف يمكنني مساعدتك اليوم؟",
-            "guide.s1": "ما هو العلاج الإشعاعي؟", "guide.s2": "كيف أستعد للجلسة؟", "guide.input": "اكتب سؤالك هنا...", "guide.send": "إرسال",
-            "guide.disclaimer": "هذه الخدمة للتثقيف العام ولا تغني عن استشارة الفريق الطبي.",
-            "footer.title": "KAMC Oncology Digital Companion", "footer.desc": "تجربة تثقيفية صحية مبتكرة لدعم المرضى والمرافقين.",
-            "footer.disclaimer": "جميع المعلومات المقدمة هنا هي لأغراض تثقيفية وتوضيحية فقط. يُرجى دائماً استشارة طبيبك المعالج للحصول على قرارات طبية مخصصة.",
-            "journey.s1.t": "التشخيص", "journey.s1.d": "مرحلة الفهم والتقييم المبدئي لتحديد الخطة المناسبة.",
-            "journey.s2.t": "فهم العلاج", "journey.s2.d": "مناقشة الخيارات العلاجية مع الفريق الطبي وفهم الأهداف.",
-            "journey.s3.t": "الاستعداد للعلاج", "journey.s3.d": "التحضير الجسدي والنفسي قبل بدء الجلسات.",
-            "journey.s4.t": "جلسة العلاج", "journey.s4.d": "تلقي الرعاية في المركز حسب الجدول الزمني المحدد.",
-            "journey.s5.t": "المتابعة", "journey.s5.d": "الرعاية المستمرة وتقييم النتائج بعد انتهاء فترة العلاج.",
-            "toast.lang": "تم تحديث لغة العرض بنجاح", "toast.path": "يتم توجيهك الآن...", "toast.login": "تم تسجيل الدخول بنجاح!",
-            "login.title": "بوابة المرضى", "login.desc": "قم بتسجيل الدخول للوصول لملفك الطبي",
-            "login.user": "رقم الملف الطبي", "login.pass": "كلمة المرور", "login.submit": "تسجيل الدخول", "login.cancel": "إلغاء", "login.loading": "جاري التحميل..."
+            "nav.home": "الرئيسية", "nav.journey": "رحلة المريض", "nav.treatment": "العلاج", "nav.caregiver": "المرافق", "nav.education": "التثقيف", "nav.login": "بوابة المريض (تجريبي)",
+            "badge.review": "مُراجع طبياً | أكتوبر 2026",
+            "hero.title": "ما الذي تحتاج معرفته اليوم؟", "hero.desc": "نحن هنا لدعمك ومرافقيك بالمعلومات الموثوقة خطوة بخطوة.",
+            "path.new": "تم تشخيصي حديثاً", "path.session": "لدي جلسة علاج", "path.caregiver": "أنا مرافق لمريض", "path.guide": "التحدث للمساعد",
+            "journey.title": "الدليل الإرشادي لرحلة العلاج", "journey.disclaimer": "هذه المراحل إرشادية عامة، وخطة علاجك الدقيقة يحددها فريقك الطبي.",
+            "journey.prev": "الخطوة السابقة", "journey.next": "الخطوة التالية",
+            "treatment.title": "استكشاف أنواع العلاج", "treatment.radio": "العلاج الإشعاعي", "treatment.chemo": "العلاج الكيميائي", "treatment.nuclear": "الطب النووي",
+            "treatment.radioTitle": "العلاج الإشعاعي", "treatment.radioDesc": "استخدام أشعة موجهة وعالية الطاقة لتدمير الخلايا السرطانية أو إبطاء نموها في منطقة محددة.",
+            "treatment.radioL1": "جلسات قصيرة تستغرق دقائق", "treatment.radioL2": "الإجراء نفسه لا يسبب ألماً", "treatment.radioL3": "الهدف: القضاء على الورم موضعياً",
+            "treatment.chemoTitle": "العلاج الكيميائي", "treatment.chemoDesc": "أدوية منهجية تنتقل عبر الجسم لقتل الخلايا سريعة النمو.",
+            "treatment.chemoL1": "يعطى عادة عن طريق الوريد أو الفم", "treatment.chemoL2": "يُقسم إلى دورات تتخللها فترات راحة", "treatment.chemoL3": "الهدف: السيطرة على انتشار الخلايا",
+            "treatment.nuclearTitle": "الطب النووي", "treatment.nuclearDesc": "استخدام كميات ضئيلة من النظائر المشعة للتشخيص الدقيق أو العلاج الموجه.",
+            "treatment.nuclearL1": "يستخدم لتصوير وظائف الأعضاء بدقة", "treatment.nuclearL2": "آمن تماماً تحت الإشراف الطبي", "treatment.nuclearL3": "يساعد في تقييم الاستجابة للعلاج",
+            "caregiver.title": "دليل المرافق والمساندة",
+            "caregiver.q1": "المساندة النفسية والتواصل الفعال", "caregiver.a1": "كن مستمعاً جيداً بدون إصدار أحكام. المريض غالباً يحتاج لمن يسمعه أكثر من حاجته للنصائح. ساعد في المهام اليومية لتقليل العبء المعرفي.",
+            "caregiver.q2": "الاستعداد للمواعيد الطبية", "caregiver.a2": "قم بتدوين الأسئلة مسبقاً، واحتفظ بملف منظم يحتوي على تقارير الأشعة وتاريخ الأدوية. كن الموثّق الهادئ أثناء جلوس المريض مع الطبيب.",
+            "caregiver.q3": "متى يجب الاتصال بالفريق الطبي؟", "caregiver.a3": "في حالات ارتفاع الحرارة المفاجئ، أو النزيف، أو صعوبة التنفس الشديدة. لا تتردد في طلب التوجيه الطبي المباشر.",
+            "education.title": "المكتبة التثقيفية المرئية",
+            "video.v1": "فهم العلاج الإشعاعي الدقيق", "video.d1": "شرح مبسط لكيفية عمل الجلسات الإشعاعية.",
+            "video.v2": "التغذية أثناء رحلة العلاج", "video.d2": "نصائح غذائية معتمدة للحفاظ على الطاقة.",
+            "guide.title": "المساعد التثقيفي", "guide.status": "ردود آلية سريعة", "guide.clear": "مسح",
+            "guide.welcome": "مرحباً. أنا المساعد الرقمي المُبرمج لتقديم إجابات سريعة من مكتبة التثقيف. لا أستطيع تشخيص حالتك. كيف يمكنني إرشادك اليوم؟",
+            "guide.s1": "كيف أستعد لأول جلسة؟", "guide.s2": "نصائح للمرافقين", "guide.input": "اكتب سؤالك (مثال: الاستعداد للعلاج)...", "guide.send": "إرسال",
+            "guide.disclaimer": "تنبيه أمني وطبي: هذا المساعد للتثقيف العام فقط. يرجى عدم إدخال أي أرقام هوية أو معلومات طبية حساسة. لأي قرار طبي، راجع طبيبك.",
+            "breath.title": "أداة الاسترخاء (تمرين التنفس)", "breath.desc": "تمرين عام للمساعدة على خفض التوتر. توقف فوراً إذا شعرت بدوار أو عدم ارتياح.",
+            "breath.ready": "جاهز؟", "breath.inhale": "شهيق", "breath.hold": "احتفاظ", "breath.exhale": "زفير", "breath.start": "بدء التمرين", "breath.pause": "إيقاف مؤقت", "breath.stop": "إنهاء",
+            "footer.title": "KAMC Oncology Digital Companion", "footer.desc": "منصة التثقيف والمساندة المخصصة لمرضى الأورام ومرافقيهم.",
+            "footer.privacy": "سياسة الخصوصية (نموذج)", "footer.terms": "شروط الاستخدام", "footer.disclaimer": "المعلومات المقدمة هي للتثقيف العام ولا تعتبر بأي حال بديلاً عن الاستشارة الطبية المتخصصة، أو التشخيص، أو العلاج.",
+            "login.title": "بوابة المرضى (نموذج عرض)", "login.desc": "هذه نافذة تجريبية لأغراض عرض واجهة المستخدم. يرجى عدم إدخال بيانات حقيقية.",
+            "login.user": "رقم الملف الطبي", "login.pass": "كلمة المرور", "login.submit": "دخول وهمي", "login.loading": "جاري التحقق...",
+            "toast.lang": "تم تحديث اللغة", "toast.path": "يتم توجيهك الآن...", "toast.login": "تم تسجيل الدخول بنجاح للمنصة التجريبية",
+            "journey.s1.t": "التشخيص ومناقشة الخطة", "journey.s1.d": "مرحلة الفهم والتقييم المبدئي لتحديد الخطة المناسبة بالتشاور مع طبيبك المعالج.",
+            "journey.s2.t": "الاستعداد للعلاج", "journey.s2.d": "إجراء الفحوصات الطبية اللازمة، وتجهيز الجسم والنفسية لبدء الجلسات.",
+            "journey.s3.t": "فترة الجلسات", "journey.s3.d": "تلقي العلاج الموصوف وفق الجدول الزمني المحدد من قبل المركز.",
+            "journey.s4.t": "التعامل مع الأعراض", "journey.s4.d": "مراقبة وإدارة أي آثار جانبية محتملة بالتواصل المستمر مع فريق الرعاية.",
+            "journey.s5.t": "المتابعة الدورية", "journey.s5.d": "استكمال الخطة والبدء بزيارات المتابعة لضمان استقرار الحالة الصحية."
         },
         en: {
-            "nav.home": "Home", "nav.journey": "Journey", "nav.treatment": "Treatment",
-            "nav.caregiver": "Caregiver", "nav.education": "Education", "nav.breathing": "Breathing",
-            "nav.guide": "Guide", "nav.login": "Login",
-            "hero.title": "Your Oncology Journey Begins with Knowledge",
-            "hero.desc": "A digital platform helping oncology patients and caregivers understand the treatment journey with confidence.",
-            "hero.ctaPrimary": "Start Journey", "hero.ctaSecondary": "Ask KAMC Guide",
-            "path.title": "How can we help you?", "path.patient": "Patient", "path.caregiver": "Caregiver", "path.education": "Education",
-            "journey.title": "Treatment Journey", "journey.prev": "Previous", "journey.next": "Next",
-            "treatment.title": "Explore Treatments", "treatment.radio": "Radiotherapy", "treatment.chemo": "Chemotherapy", "treatment.nuclear": "Nuclear",
-            "treatment.radioTitle": "Radiotherapy", "treatment.radioDesc": "Using high-energy rays to destroy cancer cells.",
-            "treatment.radioL1": "Short daily sessions", "treatment.radioL2": "Painless during session", "treatment.radioL3": "Temporary fatigue",
-            "treatment.chemoTitle": "Chemotherapy", "treatment.chemoDesc": "Treatment relying on strong drugs to kill fast-growing cells.",
-            "treatment.chemoL1": "Usually given intravenously", "treatment.chemoL2": "Delivered in cycles", "treatment.chemoL3": "Side effects vary",
-            "treatment.nuclearTitle": "Nuclear Medicine", "treatment.nuclearDesc": "Using small amounts of radioactive materials.",
-            "treatment.nuclearL1": "Precise imaging", "treatment.nuclearL2": "Targeted therapy", "treatment.nuclearL3": "Safe under supervision",
-            "caregiver.title": "Because Support is Healing",
-            "caregiver.q1": "Emotional Support", "caregiver.a1": "Be a good listener and help with simple daily tasks.",
-            "caregiver.q2": "Preparing for Appointments", "caregiver.a2": "Write down questions before the visit.",
-            "caregiver.q3": "Caregiver Self-Care", "caregiver.a3": "Don't forget to take breaks. Your health is essential.",
-            "education.title": "Knowledge Gives Confidence",
-            "video.v1": "Understanding Radiotherapy", "video.v2": "Preparing for Chemotherapy", "video.v3": "Emotional Support",
-            "breath.title": "Breathing Simulator", "breath.desc": "4-2-6 exercise to help you relax. For general education.",
-            "breath.ready": "Ready?", "breath.inhale": "Inhale", "breath.hold": "Hold", "breath.exhale": "Exhale",
-            "breath.start": "Start", "breath.pause": "Pause", "breath.resume": "Resume", "breath.stop": "Stop",
-            "guide.title": "KAMC Guide", "guide.clear": "Clear Chat", "guide.welcome": "Hello. How can I assist you today?",
-            "guide.s1": "What is Radiotherapy?", "guide.s2": "How do I prepare?", "guide.input": "Type here...", "guide.send": "Send",
-            "guide.disclaimer": "This service does not replace medical consultation.",
-            "footer.title": "KAMC Oncology Digital Companion", "footer.desc": "Innovative health education.",
-            "footer.disclaimer": "All info is for illustrative purposes only. Consult your physician.",
-            "journey.s1.t": "Diagnosis", "journey.s1.d": "Understanding and initial evaluation.",
-            "journey.s2.t": "Understanding Treatment", "journey.s2.d": "Discussing treatment options with the medical team.",
-            "journey.s3.t": "Preparation", "journey.s3.d": "Physical and psychological preparation.",
-            "journey.s4.t": "Treatment", "journey.s4.d": "Receiving care at the center.",
-            "journey.s5.t": "Follow-up", "journey.s5.d": "Continuous care and evaluation.",
-            "toast.lang": "Language updated", "toast.path": "Redirecting...", "toast.login": "Logged in successfully!",
-            "login.title": "Patient Portal", "login.desc": "Login to access your medical file",
-            "login.user": "Medical ID", "login.pass": "Password", "login.submit": "Login", "login.cancel": "Cancel", "login.loading": "Loading..."
+            "nav.home": "Home", "nav.journey": "Journey", "nav.treatment": "Treatment", "nav.caregiver": "Caregiver", "nav.education": "Education", "nav.login": "Patient Portal (Demo)",
+            "badge.review": "Medically Reviewed | Oct 2026",
+            "hero.title": "What do you need to know today?", "hero.desc": "We are here to support you and your caregivers with reliable information, step by step.",
+            "path.new": "Newly Diagnosed", "path.session": "Upcoming Session", "path.caregiver": "I'm a Caregiver", "path.guide": "Talk to Guide",
+            "journey.title": "Treatment Journey Guide", "journey.disclaimer": "These are general phases. Your specific plan is determined by your medical team.",
+            "journey.prev": "Previous", "journey.next": "Next",
+            "treatment.title": "Explore Treatments", "treatment.radio": "Radiotherapy", "treatment.chemo": "Chemotherapy", "treatment.nuclear": "Nuclear Med",
+            "treatment.radioTitle": "Radiotherapy", "treatment.radioDesc": "Using targeted, high-energy rays to destroy cancer cells or slow their growth.",
+            "treatment.radioL1": "Short sessions lasting minutes", "treatment.radioL2": "The procedure itself is painless", "treatment.radioL3": "Goal: Localized tumor control",
+            "treatment.chemoTitle": "Chemotherapy", "treatment.chemoDesc": "Systemic drugs that travel through the body to kill fast-growing cells.",
+            "treatment.chemoL1": "Usually given IV or orally", "treatment.chemoL2": "Delivered in cycles with rest periods", "treatment.chemoL3": "Goal: Control cell spread",
+            "treatment.nuclearTitle": "Nuclear Medicine", "treatment.nuclearDesc": "Using small amounts of radioisotopes for precise diagnosis or targeted therapy.",
+            "treatment.nuclearL1": "Precise imaging of organ functions", "treatment.nuclearL2": "Safe under medical supervision", "treatment.nuclearL3": "Helps evaluate treatment response",
+            "caregiver.title": "Caregiver Support Guide",
+            "caregiver.q1": "Emotional Support & Communication", "caregiver.a1": "Be a good listener without judging. Help with daily tasks to reduce cognitive load.",
+            "caregiver.q2": "Preparing for Appointments", "caregiver.a2": "Write down questions in advance, keep medical files organized. Be the calm documenter.",
+            "caregiver.q3": "When to call the medical team?", "caregiver.a3": "In cases of sudden fever, bleeding, or severe shortness of breath. Do not hesitate to seek guidance.",
+            "education.title": "Video Education Library",
+            "video.v1": "Understanding Radiotherapy", "video.d1": "A simple explanation of how radiation sessions work.",
+            "video.v2": "Nutrition During Treatment", "video.d2": "Approved nutritional tips to maintain energy.",
+            "guide.title": "Educational Guide", "guide.status": "Automated Responses", "guide.clear": "Clear",
+            "guide.welcome": "Hello. I am a digital guide programmed to provide quick answers from the library. I cannot diagnose your condition. How can I help?",
+            "guide.s1": "How to prepare for my first session?", "guide.s2": "Tips for caregivers", "guide.input": "Type your question...", "guide.send": "Send",
+            "guide.disclaimer": "Security & Medical Alert: This guide is for general education only. Do not enter IDs or sensitive medical info. Consult your doctor for medical decisions.",
+            "breath.title": "Relaxation Tool (Breathing)", "breath.desc": "General exercise to help reduce stress. Stop immediately if you feel dizzy or uncomfortable.",
+            "breath.ready": "Ready?", "breath.inhale": "Inhale", "breath.hold": "Hold", "breath.exhale": "Exhale", "breath.start": "Start Exercise", "breath.pause": "Pause", "breath.stop": "Stop",
+            "footer.title": "KAMC Oncology Digital Companion", "footer.desc": "Education and support platform dedicated to oncology patients and caregivers.",
+            "footer.privacy": "Privacy Policy (Demo)", "footer.terms": "Terms of Use", "footer.disclaimer": "Information provided is for general education and is never a substitute for professional medical advice, diagnosis, or treatment.",
+            "login.title": "Patient Portal (Demo)", "login.desc": "This is a demo window for UI display purposes. Please do not enter real data.",
+            "login.user": "Medical ID", "login.pass": "Password", "login.submit": "Mock Login", "login.loading": "Verifying...",
+            "toast.lang": "Language updated", "toast.path": "Redirecting...", "toast.login": "Successfully logged into the demo platform",
+            "journey.s1.t": "Diagnosis & Plan Discussion", "journey.s1.d": "Initial understanding and evaluation phase to determine the plan with your doctor.",
+            "journey.s2.t": "Preparing for Treatment", "journey.s2.d": "Performing necessary medical tests and preparing physically and mentally.",
+            "journey.s3.t": "Treatment Sessions", "journey.s3.d": "Receiving prescribed care according to the center's schedule.",
+            "journey.s4.t": "Managing Symptoms", "journey.s4.d": "Monitoring and managing potential side effects with the care team.",
+            "journey.s5.t": "Routine Follow-up", "journey.s5.d": "Completing the plan and starting follow-up visits to ensure stability."
         }
     };
 
-    // --- 2. STATE & LANGUAGE ---
     let currentLang = localStorage.getItem('kamcLang') || 'ar';
     const langSwitcher = document.getElementById('langSwitcher');
 
@@ -113,7 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('toast.lang');
     });
 
-    // --- 3. TOAST SYSTEM ---
+    // ==========================================
+    // 2. ACCESSIBILITY & TOAST SYSTEM
+    // ==========================================
     const toastContainer = document.getElementById('toastContainer');
     function showToast(messageKey) {
         const msg = translations[currentLang][messageKey] || messageKey;
@@ -127,7 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    // --- 4. NAVIGATION & MOBILE MENU ---
+    // ==========================================
+    // 3. NAVIGATION & ROUTING
+    // ==========================================
     const menuToggle = document.querySelector('.menu-toggle');
     const mainNav = document.querySelector('.main-nav');
 
@@ -137,12 +145,20 @@ document.addEventListener('DOMContentLoaded', () => {
         mainNav.classList.toggle('active');
     });
 
-    // Smooth scroll and close menu
-    document.querySelectorAll('.scroll-link').forEach(link => {
+    // Smooth scroll and focus management
+    document.querySelectorAll('.scroll-link, .path-card').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            const targetId = link.getAttribute('href');
-            document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+            const targetId = link.getAttribute('href') || link.getAttribute('data-target');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+                // Accessibility: Move focus to the section
+                targetElement.setAttribute('tabindex', '-1');
+                targetElement.focus();
+                
+                if (link.classList.contains('path-card')) showToast('toast.path');
+            }
             if (mainNav.classList.contains('active')) {
                 mainNav.classList.remove('active');
                 menuToggle.setAttribute('aria-expanded', 'false');
@@ -150,25 +166,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 5. PATH SELECTION ---
-    document.querySelectorAll('.path-card').forEach(card => {
-        card.addEventListener('click', () => {
-            showToast('toast.path');
-            const target = card.getAttribute('data-target');
-            setTimeout(() => {
-                document.querySelector(target).scrollIntoView({ behavior: 'smooth' });
-            }, 600);
-        });
-    });
-
-    // --- 6. PATIENT JOURNEY ---
+    // ==========================================
+    // 4. PATIENT JOURNEY COMPONENT
+    // ==========================================
     let currentStep = 0;
     const stepBtns = document.querySelectorAll('.step-btn');
     const btnPrev = document.getElementById('prevStep');
     const btnNext = document.getElementById('nextStep');
     const stepTitle = document.getElementById('stepTitle');
     const stepDesc = document.getElementById('stepDesc');
-    const journeyWrapper = document.getElementById('journeyContentWrapper');
+    const journeyPanel = document.getElementById('step-panel');
 
     function triggerFade(element) {
         element.classList.remove('fade-content');
@@ -177,8 +184,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateJourneyUI() {
-        stepBtns.forEach((btn, index) => btn.classList.toggle('active', index === currentStep));
-        triggerFade(journeyWrapper);
+        stepBtns.forEach((btn, index) => {
+            const isSelected = index === currentStep;
+            btn.classList.toggle('active', isSelected);
+            btn.setAttribute('aria-selected', isSelected);
+        });
+        triggerFade(journeyPanel);
         stepTitle.textContent = translations[currentLang][`journey.s${currentStep + 1}.t`];
         stepDesc.textContent = translations[currentLang][`journey.s${currentStep + 1}.d`];
         btnPrev.disabled = currentStep === 0;
@@ -187,19 +198,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnPrev.addEventListener('click', () => { if (currentStep > 0) { currentStep--; updateJourneyUI(); } });
     btnNext.addEventListener('click', () => { if (currentStep < 4) { currentStep++; updateJourneyUI(); } });
-    stepBtns.forEach((btn, index) => btn.addEventListener('click', () => { currentStep = index; updateJourneyUI(); }));
+    
+    // Keyboard navigation for Tabs (WCAG)
+    stepBtns.forEach((btn, index) => {
+        btn.addEventListener('click', () => { currentStep = index; updateJourneyUI(); });
+        btn.addEventListener('keydown', (e) => {
+            let newIndex = currentStep;
+            if (e.key === 'ArrowRight') newIndex = currentLang === 'ar' ? currentStep - 1 : currentStep + 1;
+            else if (e.key === 'ArrowLeft') newIndex = currentLang === 'ar' ? currentStep + 1 : currentStep - 1;
+            
+            if (newIndex >= 0 && newIndex <= 4 && newIndex !== currentStep) {
+                stepBtns[newIndex].focus();
+                currentStep = newIndex;
+                updateJourneyUI();
+            }
+        });
+    });
 
-    // --- 7. TREATMENT EXPLORER ---
+    // ==========================================
+    // 5. TREATMENT EXPLORER
+    // ==========================================
     const tabBtns = document.querySelectorAll('.tab-btn');
-    const treatmentContent = document.getElementById('treatmentContent');
+    const treatmentContent = document.getElementById('treatment-panel');
 
     function updateTreatmentUI(tabId) {
-        tabBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabId));
+        tabBtns.forEach(btn => {
+            const isSelected = btn.dataset.tab === tabId;
+            btn.classList.toggle('active', isSelected);
+            btn.setAttribute('aria-selected', isSelected);
+        });
         triggerFade(treatmentContent);
         treatmentContent.innerHTML = `
             <h3>${translations[currentLang][`treatment.${tabId}Title`]}</h3>
             <p>${translations[currentLang][`treatment.${tabId}Desc`]}</p>
-            <ul class="feature-list">
+            <ul class="feature-list" aria-label="أهم النقاط">
                 <li>${translations[currentLang][`treatment.${tabId}L1`]}</li>
                 <li>${translations[currentLang][`treatment.${tabId}L2`]}</li>
                 <li>${translations[currentLang][`treatment.${tabId}L3`]}</li>
@@ -207,9 +239,25 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    tabBtns.forEach(btn => btn.addEventListener('click', (e) => updateTreatmentUI(e.target.dataset.tab)));
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => updateTreatmentUI(e.target.dataset.tab));
+        // Keyboard arrow navigation for vertical tabs
+        btn.addEventListener('keydown', (e) => {
+            const index = Array.from(tabBtns).indexOf(btn);
+            let nextIndex = index;
+            if (e.key === 'ArrowDown') nextIndex = (index + 1) % tabBtns.length;
+            if (e.key === 'ArrowUp') nextIndex = (index - 1 + tabBtns.length) % tabBtns.length;
+            
+            if (nextIndex !== index) {
+                tabBtns[nextIndex].focus();
+                updateTreatmentUI(tabBtns[nextIndex].dataset.tab);
+            }
+        });
+    });
 
-    // --- 8. CAREGIVER ACCORDION ---
+    // ==========================================
+    // 6. CAREGIVER ACCORDION
+    // ==========================================
     document.querySelectorAll('.accordion-trigger').forEach(trigger => {
         trigger.addEventListener('click', () => {
             const expanded = trigger.getAttribute('aria-expanded') === 'true';
@@ -217,26 +265,32 @@ document.addEventListener('DOMContentLoaded', () => {
             const content = trigger.nextElementSibling;
             if (!expanded) {
                 content.style.maxHeight = content.scrollHeight + "px";
-                trigger.querySelector('.icon-plus').textContent = "-";
             } else {
                 content.style.maxHeight = null;
-                trigger.querySelector('.icon-plus').textContent = "+";
             }
         });
     });
 
-    // --- 9. BREATHING SIMULATOR ---
+    // ==========================================
+    // 7. BREATHING SIMULATOR
+    // ==========================================
     let breathTimer, breathTimeLeft = 0, breathPhase = 'ready', isBreathing = false, isPaused = false;
     const circle = document.getElementById('breathCircle'), instEl = document.getElementById('breathInstruction'), timeEl = document.getElementById('breathTimer');
     const btnStart = document.getElementById('btnBreathStart'), btnPause = document.getElementById('btnBreathPause'), btnStop = document.getElementById('btnBreathStop');
+    
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function updateBreathUI(phase, time) {
         instEl.textContent = phase !== 'ready' ? translations[currentLang][`breath.${phase}`] : translations[currentLang]['breath.ready'];
         timeEl.textContent = time;
-        if (phase === 'inhale') { circle.style.transform = 'scale(1)'; circle.style.transitionDuration = '4s'; }
-        else if (phase === 'hold') circle.style.transitionDuration = '0s';
-        else if (phase === 'exhale') { circle.style.transform = 'scale(0.5)'; circle.style.transitionDuration = '6s'; }
-        else if (phase === 'ready') { circle.style.transform = 'scale(0.5)'; circle.style.transitionDuration = '1s'; }
+        
+        if (!prefersReducedMotion) {
+            if (phase === 'inhale') { circle.style.transform = 'scale(1)'; circle.style.transitionDuration = '4s'; }
+            else if (phase === 'hold') circle.style.transitionDuration = '0s';
+            else if (phase === 'exhale') { circle.style.transform = 'scale(0.5)'; circle.style.transitionDuration = '6s'; }
+            else if (phase === 'ready') { circle.style.transform = 'scale(0.5)'; circle.style.transitionDuration = '1s'; }
+        }
     }
 
     function runBreathCycle() {
@@ -257,12 +311,15 @@ document.addEventListener('DOMContentLoaded', () => {
         updateBreathUI(breathPhase, breathTimeLeft);
         btnStart.classList.add('hidden'); btnPause.classList.remove('hidden'); btnStop.classList.remove('hidden');
         clearInterval(breathTimer); breathTimer = setInterval(runBreathCycle, 1000);
+        
+        // Announce start to screen readers via aria-live on the section
+        instEl.setAttribute('aria-live', 'assertive');
     });
 
     btnPause.addEventListener('click', () => {
         isPaused = !isPaused;
         btnPause.textContent = isPaused ? translations[currentLang]['breath.resume'] : translations[currentLang]['breath.pause'];
-        if (isPaused) circle.style.transitionDuration = '0s';
+        if (isPaused && !prefersReducedMotion) circle.style.transitionDuration = '0s';
         else updateBreathUI(breathPhase, breathTimeLeft);
     });
 
@@ -271,9 +328,12 @@ document.addEventListener('DOMContentLoaded', () => {
         updateBreathUI('ready', '--');
         btnStart.classList.remove('hidden'); btnPause.classList.add('hidden'); btnStop.classList.add('hidden');
         btnPause.textContent = translations[currentLang]['breath.pause'];
+        instEl.removeAttribute('aria-live');
     });
 
-    // --- 10. KAMC GUIDE (CHAT) ---
+    // ==========================================
+    // 8. KAMC GUIDE (RULE-BASED CHAT)
+    // ==========================================
     const chatInput = document.getElementById('chatInput');
     const chatInputWrapper = document.getElementById('chatInputWrapper');
     const chatSend = document.getElementById('chatSend');
@@ -290,21 +350,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getBotResponse(input) {
         const text = input.toLowerCase();
-        let reply = currentLang === 'ar' ? "شكراً لسؤالك. سيقوم الفريق الطبي بالتواصل معك قريباً." : "Thank you. The medical team will contact you soon.";
+        let reply = currentLang === 'ar' 
+            ? "عفواً، بصفتي مساعد تثقيفي آلي، لا يمكنني تقديم نصائح طبية مخصصة لحالتك. يرجى توجيه هذا السؤال لفريقك الطبي لتوجيهك بشكل صحيح." 
+            : "Sorry, as an automated educational guide, I cannot provide personalized medical advice. Please ask your medical team.";
         
+        // Very basic hardcoded rule-matching
         if (text.includes("إشعاع") || text.includes("radio")) reply = translations[currentLang]["treatment.radioDesc"];
         if (text.includes("استعد") || text.includes("prep")) reply = translations[currentLang]["caregiver.a2"];
         if (text.includes("مرافق") || text.includes("caregiver")) reply = translations[currentLang]["caregiver.a1"];
+        if (text.includes("أكل") || text.includes("طعام") || text.includes("food")) reply = currentLang === 'ar' ? "التغذية مهمة جداً. يمكنك مشاهدة الفيديو التثقيفي الخاص بالتغذية في قسم المكتبة المرئية." : "Nutrition is vital. Watch the nutrition video in the Education section.";
         
-        setTimeout(() => addMessage(reply, 'assistant'), 600);
+        // Typing simulation
+        setTimeout(() => addMessage(reply, 'assistant'), 800);
     }
 
     function handleChatSend() {
         const val = chatInput.value.trim();
         if (!val) {
-            // Error Prevention: Shake Animation
             chatInputWrapper.classList.remove('shake-error');
-            void chatInputWrapper.offsetWidth; // trigger reflow
+            void chatInputWrapper.offsetWidth; // Reflow
             chatInputWrapper.classList.add('shake-error');
             return;
         }
@@ -328,59 +392,75 @@ document.addEventListener('DOMContentLoaded', () => {
         chatBody.innerHTML = `<div class="chat-message assistant"><p>${translations[currentLang]['guide.welcome']}</p></div>`;
     });
 
-    // --- 11. LOGIN MODAL FLOW ---
+    // ==========================================
+    // 9. NATIVE DIALOG MODALS MANAGEMENT
+    // ==========================================
     const loginModal = document.getElementById('loginModal');
-    const loginBtn = document.getElementById('loginBtn');
-    const closeLoginModal = document.getElementById('closeLoginModal');
-    const submitLoginBtn = document.getElementById('submitLoginBtn');
-
-    loginBtn.addEventListener('click', () => {
+    const videoModal = document.getElementById('videoModal');
+    const videoContainer = document.getElementById('videoContainer');
+    
+    // Open Dialogs
+    document.getElementById('loginBtn').addEventListener('click', () => {
         loginModal.showModal();
         document.getElementById('loginUsername').value = '';
         document.getElementById('loginPassword').value = '';
     });
 
-    closeLoginModal.addEventListener('click', () => loginModal.close());
-
-    submitLoginBtn.addEventListener('click', () => {
-        const user = document.getElementById('loginUsername').value;
-        const pass = document.getElementById('loginPassword').value;
-        if(user && pass) {
-            submitLoginBtn.textContent = translations[currentLang]['login.loading'];
-            setTimeout(() => {
-                loginModal.close();
-                showToast('toast.login');
-                submitLoginBtn.textContent = translations[currentLang]['login.submit'];
-            }, 1500);
-        }
-    });
-
-    // --- 12. VIDEO PLAYER MODAL ---
-    const videoModal = document.getElementById('videoModal');
-    const closeVideoModal = document.getElementById('closeVideoModal');
-    const videoIframe = document.getElementById('videoIframe');
-
     document.querySelectorAll('.video-card').forEach(card => {
         card.addEventListener('click', () => {
-            const videoUrl = card.getAttribute('data-video');
-            videoIframe.src = videoUrl;
+            const videoId = card.getAttribute('data-video');
+            // Since this is a demo, we simulate video load without actual external requests unless provided
+            videoContainer.innerHTML = `
+                <div class="video-placeholder">
+                    <p style="color:white; text-align:center;">
+                        <strong>نموذج تشغيل فيديو</strong><br>
+                        معرف الفيديو: ${videoId}<br>
+                        (الفيديو الفعلي يتطلب روابط المؤسسة المعتمدة)
+                    </p>
+                </div>
+            `;
             videoModal.showModal();
         });
-    });
-
-    closeVideoModal.addEventListener('click', () => {
-        videoIframe.src = ""; // Stop video playback
-        videoModal.close();
-    });
-
-    // إغلاق أي نافذة عند النقر خارجها
-    [loginModal, videoModal].forEach(modal => {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                if (modal === videoModal) videoIframe.src = "";
-                modal.close();
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                card.click();
             }
         });
+    });
+
+    // Close Dialogs (Clicking close buttons or outside)
+    document.querySelectorAll('[data-close]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modalId = btn.getAttribute('data-close');
+            document.getElementById(modalId).close();
+            if(modalId === 'videoModal') videoContainer.innerHTML = '';
+        });
+    });
+
+    [loginModal, videoModal].forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            // Close if clicked on the backdrop
+            if (e.target === modal) {
+                modal.close();
+                if (modal === videoModal) videoContainer.innerHTML = '';
+            }
+        });
+    });
+
+    // Login Form Submit (Mock)
+    document.getElementById('loginForm').addEventListener('submit', () => {
+        const btn = document.getElementById('submitLoginBtn');
+        const origText = btn.textContent;
+        btn.textContent = translations[currentLang]['login.loading'];
+        btn.disabled = true;
+        
+        setTimeout(() => {
+            loginModal.close();
+            showToast('toast.login');
+            btn.textContent = origText;
+            btn.disabled = false;
+        }, 1200);
     });
 
     // --- INITIALIZATION ---
