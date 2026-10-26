@@ -1,12 +1,8 @@
-/**
- * KAMC Oncology - Core Interaction Logic
- * Features: Journey Stepper, Tabs, Breathing Tool (Timer & Animation), Chatbot UI.
- */
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
 
     // ==========================================
-    // 1. DATA & TRANSLATIONS
+    // 1. DATA (Original Content Retained)
     // ==========================================
     const data = {
         journey: [
@@ -24,91 +20,154 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ==========================================
-    // 2. NAVIGATION & SMOOTH SCROLL
+    // 2. SPA ROUTING & NAVIGATION LOGIC
     // ==========================================
-    const menuToggle = document.querySelector('.menu-toggle');
-    const mainNav = document.querySelector('.main-nav');
+    const patientFlow = [
+        { id: 'screen-patient-journey', title: 'نظرة عامة على التثقيف' },
+        { id: 'screen-patient-treatment', title: 'المحتوى التثقيفي' },
+        { id: 'screen-patient-breathing', title: 'التدريب والتطبيق' },
+        { id: 'screen-completion', title: 'المراجعة والإكمال' }
+    ];
 
-    menuToggle.addEventListener('click', () => {
-        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-        menuToggle.setAttribute('aria-expanded', !isExpanded);
-        mainNav.classList.toggle('active');
-    });
+    const companionFlow = [
+        { id: 'screen-comp-overview', title: 'نظرة عامة' },
+        { id: 'screen-comp-guide', title: 'المحتوى التثقيفي' },
+        { id: 'screen-comp-chatbot', title: 'الأدوات المساعدة' },
+        { id: 'screen-completion', title: 'المراجعة والإكمال' }
+    ];
 
-    document.querySelectorAll('.scroll-link, .path-card').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetId = link.getAttribute('href') || link.getAttribute('data-target');
-            const target = document.querySelector(targetId);
-            if(target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-                target.setAttribute('tabindex', '-1');
-                target.focus({preventScroll: true});
-                mainNav.classList.remove('active');
-                menuToggle.setAttribute('aria-expanded', 'false');
-            }
-        });
-    });
+    let currentRole = null; // 'patient' or 'companion'
+    let currentStepIndex = 0;
+    let activeFlow = [];
 
-    // ==========================================
-    // 3. JOURNEY STEPPER
-    // ==========================================
-    let currentStep = 0;
-    const stepBtns = document.querySelectorAll('.step-btn');
-    const prevBtn = document.getElementById('prevStep');
-    const nextBtn = document.getElementById('nextStep');
-    const journeyContent = document.getElementById('journeyContent');
-    const progressBar = document.getElementById('stepperProgress');
-
-    function updateStepper() {
-        stepBtns.forEach((btn, idx) => {
-            btn.classList.toggle('active', idx === currentStep);
-            btn.setAttribute('aria-selected', idx === currentStep);
-        });
-        
-        // Update Content with animation reflow
-        journeyContent.classList.remove('fadeIn');
-        void journeyContent.offsetWidth; // trigger reflow
-        journeyContent.innerHTML = `<h3>المرحلة ${currentStep + 1}: ${data.journey[currentStep].t}</h3>${data.journey[currentStep].html}`;
-        journeyContent.classList.add('fadeIn');
-
-        // Update Progress Bar (RTL logic: 100% / 4 gaps)
-        progressBar.style.width = `${(currentStep / (stepBtns.length - 1)) * 100}%`;
-
-        prevBtn.disabled = currentStep === 0;
-        nextBtn.disabled = currentStep === stepBtns.length - 1;
-    }
-
-    prevBtn.addEventListener('click', () => { if(currentStep > 0) { currentStep--; updateStepper(); }});
-    nextBtn.addEventListener('click', () => { if(currentStep < 4) { currentStep++; updateStepper(); }});
-    stepBtns.forEach((btn, idx) => {
-        btn.addEventListener('click', () => { currentStep = idx; updateStepper(); });
-    });
-    updateStepper(); // Init
-
-    // ==========================================
-    // 4. TREATMENT TABS
-    // ==========================================
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const treatmentPanel = document.getElementById('treatment-panel');
-
-    function updateTreatment(tabId) {
-        tabBtns.forEach(btn => {
-            const isActive = btn.dataset.tab === tabId;
-            btn.classList.toggle('active', isActive);
-            btn.setAttribute('aria-selected', isActive);
-        });
-        treatmentPanel.innerHTML = data.treatment[tabId];
-    }
+    const screens = document.querySelectorAll('.screen');
+    const header = document.getElementById('appHeader');
+    const bottomNav = document.getElementById('bottomNav');
     
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => updateTreatment(e.target.dataset.tab));
+    // Header Elements
+    const hUserType = document.getElementById('headerUserType');
+    const hStepName = document.getElementById('headerStepName');
+    const hProgressText = document.getElementById('headerProgressText');
+    const hProgressBar = document.getElementById('headerProgressBar');
+
+    // Navigation Buttons
+    const btnNext = document.getElementById('btnNext');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnGoHome = document.getElementById('btnGoHome');
+    const btnRestart = document.getElementById('btnRestart');
+
+    function resetApp() {
+        currentRole = null;
+        currentStepIndex = 0;
+        activeFlow = [];
+        
+        // Hide UI elements
+        header.classList.add('hidden');
+        bottomNav.classList.add('hidden');
+        
+        // Show Home Screen
+        screens.forEach(s => s.classList.remove('active'));
+        document.getElementById('screen-home').classList.add('active');
+        
+        // Reset Breathing Tool if active
+        if(typeof resetBreathing === 'function') resetBreathing();
+    }
+
+    function startFlow(role) {
+        currentRole = role;
+        activeFlow = (role === 'patient') ? patientFlow : companionFlow;
+        currentStepIndex = 0;
+        
+        hUserType.textContent = (role === 'patient') ? 'المريض' : 'المرافق';
+        
+        header.classList.remove('hidden');
+        bottomNav.classList.remove('hidden');
+        
+        renderCurrentScreen();
+    }
+
+    function renderCurrentScreen() {
+        // Update Screens Visibility
+        screens.forEach(s => s.classList.remove('active'));
+        const currentScreenData = activeFlow[currentStepIndex];
+        document.getElementById(currentScreenData.id).classList.add('active');
+        
+        // Update Header Data
+        hStepName.textContent = currentScreenData.title;
+        const currentNum = currentStepIndex + 1;
+        const totalNum = activeFlow.length;
+        hProgressText.textContent = `الصفحة ${currentNum} من ${totalNum}`;
+        hProgressBar.style.width = `${(currentNum / totalNum) * 100}%`;
+        
+        // Update Bottom Nav Buttons
+        btnPrev.style.visibility = (currentStepIndex === 0) ? 'hidden' : 'visible';
+        
+        if (currentStepIndex === totalNum - 1) {
+            btnNext.classList.add('hidden'); // Hide next on last screen
+        } else {
+            btnNext.classList.remove('hidden');
+        }
+
+        // Auto-scroll to top when changing screens
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Event Listeners for Routing
+    document.querySelectorAll('.role-card').forEach(card => {
+        card.addEventListener('click', () => startFlow(card.dataset.role));
     });
-    updateTreatment('radio'); // Init Default
+
+    btnNext.addEventListener('click', () => {
+        if (currentStepIndex < activeFlow.length - 1) {
+            currentStepIndex++;
+            renderCurrentScreen();
+        }
+    });
+
+    btnPrev.addEventListener('click', () => {
+        if (currentStepIndex > 0) {
+            currentStepIndex--;
+            renderCurrentScreen();
+        }
+    });
+
+    btnGoHome.addEventListener('click', resetApp);
+    btnRestart.addEventListener('click', resetApp);
+
 
     // ==========================================
-    // 5. BREATHING EXERCISE (RESTORED FUNCTIONALITY)
+    // 3. ORIGINAL FUNCTIONALITY INTEGRATION
     // ==========================================
+
+    // A. Patient Journey Stepper
+    let jStep = 0;
+    const jBtns = document.querySelectorAll('.step-btn');
+    const jContent = document.getElementById('journeyContent');
+    const jProgress = document.getElementById('stepperProgress');
+
+    function updateJourney() {
+        jBtns.forEach((btn, idx) => btn.classList.toggle('active', idx === jStep));
+        jContent.innerHTML = `<h3>المرحلة ${jStep + 1}: ${data.journey[jStep].t}</h3>${data.journey[jStep].html}`;
+        jProgress.style.width = `${(jStep / (jBtns.length - 1)) * 100}%`;
+    }
+    jBtns.forEach((btn, idx) => {
+        btn.addEventListener('click', () => { jStep = idx; updateJourney(); });
+    });
+    updateJourney();
+
+    // B. Treatment Tabs
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tPanel = document.getElementById('treatment-panel');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            tPanel.innerHTML = data.treatment[e.target.dataset.tab];
+        });
+    });
+    tPanel.innerHTML = data.treatment['radio']; // Init
+
+    // C. Breathing Tool
     const breathCircle = document.getElementById('breathCircle');
     const breathPhase = document.getElementById('breathPhase');
     const breathTime = document.getElementById('breathTime');
@@ -118,122 +177,71 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectDuration = document.getElementById('breathDuration');
     const breathSetup = document.getElementById('breathSetup');
 
-    let breathTimer;
-    let breathInterval;
-    let secondsLeft = 0;
-    let isPaused = false;
-    let isBreathing = false;
-    let phaseSeconds = 0;
-    let currentPhaseStr = 'ready'; // ready, inhale, hold, exhale
+    let bTimer, bInterval, bSecLeft = 0, bPaused = false, bActive = false, pSec = 0, pStr = 'ready';
+    const pDurs = { inhale: 4, hold: 2, exhale: 6 };
 
-    // Timing (Seconds): 4 Inhale, 2 Hold, 6 Exhale
-    const phaseDurations = { inhale: 4, hold: 2, exhale: 6 };
-
-    function formatTime(s) {
-        const m = Math.floor(s / 60).toString().padStart(2, '0');
-        const sec = (s % 60).toString().padStart(2, '0');
-        return `${m}:${sec}`;
+    function fTime(s) {
+        return `${Math.floor(s / 60).toString().padStart(2, '0')}:${(s % 60).toString().padStart(2, '0')}`;
     }
 
     function resetBreathing() {
-        clearInterval(breathTimer);
-        clearInterval(breathInterval);
-        isBreathing = false;
-        isPaused = false;
-        breathCircle.className = 'breath-circle'; // Remove animation classes
+        clearInterval(bTimer); clearInterval(bInterval);
+        bActive = false; bPaused = false;
+        breathCircle.className = 'breath-circle';
         breathPhase.textContent = 'جاهز؟';
         breathTime.textContent = '00:00';
-        
         btnBStart.classList.remove('hidden');
-        btnBPause.classList.add('hidden');
-        btnBStop.classList.add('hidden');
+        btnBPause.classList.add('hidden'); btnBStop.classList.add('hidden');
         breathSetup.style.display = 'block';
         btnBPause.textContent = 'إيقاف مؤقت';
     }
 
-    function executePhase() {
-        if (!isBreathing || isPaused) return;
-
-        if (currentPhaseStr === 'ready' || currentPhaseStr === 'exhale') {
-            currentPhaseStr = 'inhale';
-            phaseSeconds = phaseDurations.inhale;
-            breathPhase.textContent = 'شــهـيــق ...';
-            breathCircle.className = 'breath-circle inhale';
-        } 
-        else if (currentPhaseStr === 'inhale') {
-            currentPhaseStr = 'hold';
-            phaseSeconds = phaseDurations.hold;
-            breathPhase.textContent = 'احتفظ بالهواء';
-            breathCircle.className = 'breath-circle hold';
+    function execPhase() {
+        if (!bActive || bPaused) return;
+        if (pStr === 'ready' || pStr === 'exhale') {
+            pStr = 'inhale'; pSec = pDurs.inhale; breathPhase.textContent = 'شــهـيــق ...';
+        } else if (pStr === 'inhale') {
+            pStr = 'hold'; pSec = pDurs.hold; breathPhase.textContent = 'احتفظ بالهواء';
+        } else if (pStr === 'hold') {
+            pStr = 'exhale'; pSec = pDurs.exhale; breathPhase.textContent = 'زفــيــــر ...';
         }
-        else if (currentPhaseStr === 'hold') {
-            currentPhaseStr = 'exhale';
-            phaseSeconds = phaseDurations.exhale;
-            breathPhase.textContent = 'زفــيــــر ...';
-            breathCircle.className = 'breath-circle exhale';
-        }
-
-        // Set interval for next phase
-        clearInterval(breathInterval);
-        breathInterval = setInterval(executePhase, phaseSeconds * 1000);
-    }
-
-    function tickTimer() {
-        if(isPaused) return;
-        secondsLeft--;
-        breathTime.textContent = formatTime(secondsLeft);
-        if(secondsLeft <= 0) {
-            resetBreathing();
-            breathPhase.textContent = 'أحسنت! انتهى التمرين.';
-        }
+        breathCircle.className = `breath-circle ${pStr}`;
+        clearInterval(bInterval);
+        bInterval = setInterval(execPhase, pSec * 1000);
     }
 
     btnBStart.addEventListener('click', () => {
-        secondsLeft = parseInt(selectDuration.value);
-        breathTime.textContent = formatTime(secondsLeft);
-        isBreathing = true;
-        isPaused = false;
-        currentPhaseStr = 'ready';
-        
+        bSecLeft = parseInt(selectDuration.value);
+        breathTime.textContent = fTime(bSecLeft);
+        bActive = true; bPaused = false; pStr = 'ready';
         btnBStart.classList.add('hidden');
-        btnBPause.classList.remove('hidden');
-        btnBStop.classList.remove('hidden');
+        btnBPause.classList.remove('hidden'); btnBStop.classList.remove('hidden');
         breathSetup.style.display = 'none';
-
-        executePhase(); // Start visual cycle
-        breathTimer = setInterval(tickTimer, 1000); // Start overall clock
+        execPhase();
+        bTimer = setInterval(() => {
+            if(bPaused) return;
+            bSecLeft--; breathTime.textContent = fTime(bSecLeft);
+            if(bSecLeft <= 0) { resetBreathing(); breathPhase.textContent = 'أحسنت! انتهى التمرين.'; }
+        }, 1000);
     });
 
     btnBPause.addEventListener('click', () => {
-        isPaused = !isPaused;
-        btnBPause.textContent = isPaused ? 'استئناف' : 'إيقاف مؤقت';
-        if(isPaused) {
-            breathCircle.style.animationPlayState = 'paused';
-            breathCircle.style.transitionDuration = '0s'; // Freeze scale
-        } else {
-            // Re-trigger current phase
-            const phaseMap = { inhale: 'inhale', hold: 'hold', exhale: 'exhale' };
-            breathCircle.className = `breath-circle ${phaseMap[currentPhaseStr]}`;
-        }
+        bPaused = !bPaused;
+        btnBPause.textContent = bPaused ? 'استئناف' : 'إيقاف مؤقت';
+        if(bPaused) breathCircle.style.animationPlayState = 'paused';
+        else { breathCircle.style.animationPlayState = 'running'; breathCircle.className = `breath-circle ${pStr}`; }
     });
-
     btnBStop.addEventListener('click', resetBreathing);
 
-    // ==========================================
-    // 6. CAREGIVER ACCORDION
-    // ==========================================
+    // D. Accordion Caregiver
     document.querySelectorAll('.accordion-trigger').forEach(trigger => {
         trigger.addEventListener('click', () => {
-            const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
-            
-            // Close all
+            const isExp = trigger.getAttribute('aria-expanded') === 'true';
             document.querySelectorAll('.accordion-trigger').forEach(t => {
                 t.setAttribute('aria-expanded', 'false');
                 t.nextElementSibling.style.maxHeight = null;
             });
-
-            // Open clicked
-            if (!isExpanded) {
+            if (!isExp) {
                 trigger.setAttribute('aria-expanded', 'true');
                 const content = trigger.nextElementSibling;
                 content.style.maxHeight = content.scrollHeight + "px";
@@ -241,86 +249,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ==========================================
-    // 7. EDUCATIONAL CHATBOT (UI Logic)
-    // ==========================================
-    const chatInput = document.getElementById('chatInput');
-    const chatSend = document.getElementById('chatSend');
-    const chatBody = document.getElementById('chatBody');
-    const clearChat = document.getElementById('clearChat');
-
-    function appendMessage(text, isUser) {
-        const msg = document.createElement('div');
-        msg.className = `message ${isUser ? 'user' : 'assistant'}`;
-        msg.innerHTML = `<div class="bubble"><p>${text}</p></div>`;
-        chatBody.appendChild(msg);
-        chatBody.scrollTop = chatBody.scrollHeight;
+    // E. Chatbot Logic
+    const cInput = document.getElementById('chatInput');
+    const cSend = document.getElementById('chatSend');
+    const cBody = document.getElementById('chatBody');
+    
+    function addMsg(txt, isUser) {
+        const div = document.createElement('div');
+        div.className = `message ${isUser ? 'user' : 'assistant'}`;
+        div.innerHTML = `<div class="bubble"><p>${txt}</p></div>`;
+        cBody.appendChild(div);
+        cBody.scrollTop = cBody.scrollHeight;
     }
 
-    function handleChat() {
-        const txt = chatInput.value.trim();
+    function doChat() {
+        const txt = cInput.value.trim();
         if(!txt) return;
-        
-        appendMessage(txt, true);
-        chatInput.value = '';
-
-        // Fake processing delay
+        addMsg(txt, true);
+        cInput.value = '';
         setTimeout(() => {
-            // Simple rule-based replies
-            let reply = "بصفتي مساعداً تثقيفياً، لا يمكنني تقديم نصائح طبية محددة. يرجى تدوين هذا السؤال ومناقشته مع فريقك الطبي في الزيارة القادمة.";
-            if(txt.includes('استعد') || txt.includes('تحضير')) reply = "للاستعداد، تأكد من إحضار هويتك الطبية، وارتداء ملابس مريحة، ولا تتردد في إحضار مرافق لدعمك.";
-            if(txt.includes('غثيان') || txt.includes('أكل')) reply = "الغثيان عرض شائع. يُنصح بتناول وجبات صغيرة متكررة، وتجنب الروائح القوية. راجع قسم (المكتبة المرئية) لفيديو التغذية.";
-            
-            appendMessage(reply, false);
+            let rep = "بصفتي مساعداً تثقيفياً، لا يمكنني تقديم نصائح طبية محددة. يرجى تدوين هذا السؤال ومناقشته مع الفريق الطبي.";
+            if(txt.includes('استعد') || txt.includes('تحضير')) rep = "تأكد من إحضار هويتك الطبية، وارتداء ملابس مريحة.";
+            if(txt.includes('غثيان')) rep = "يُنصح بتناول وجبات صغيرة متكررة، وتجنب الروائح القوية.";
+            addMsg(rep, false);
         }, 800);
     }
-
-    chatSend.addEventListener('click', handleChat);
-    chatInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleChat(); });
     
-    document.querySelectorAll('#chatSuggestions .chip').forEach(chip => {
-        chip.addEventListener('click', () => {
-            chatInput.value = chip.textContent;
-            handleChat();
-        });
-    });
-
-    clearChat.addEventListener('click', () => {
-        chatBody.innerHTML = `<div class="message assistant"><div class="bubble"><p>مرحباً بك. أنا مساعدك الرقمي للبحث في المكتبة التثقيفية. <strong>يرجى العلم أنني أداة آلية ولا يمكنني تقديم تشخيص أو استشارة طبية.</strong> كيف يمكنني مساعدتك بمعلومات عامة اليوم؟</p></div></div>`;
-    });
-
-    // ==========================================
-    // 8. MODALS & TOASTS
-    // ==========================================
-    const videoModal = document.getElementById('videoModal');
-    
-    document.querySelectorAll('.video-card').forEach(card => {
-        card.addEventListener('click', () => {
-            videoModal.showModal();
-        });
-        card.addEventListener('keydown', (e) => { if(e.key === 'Enter') videoModal.showModal(); });
-    });
-
-    document.querySelectorAll('[data-close]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.getElementById(btn.dataset.close).close();
-        });
-    });
-
-    // Close on backdrop click
-    videoModal.addEventListener('click', (e) => {
-        if(e.target === videoModal) videoModal.close();
-    });
-
-    function showToast(msg) {
-        const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.textContent = msg;
-        document.getElementById('toastContainer').appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
-    }
-
-    document.getElementById('loginBtn').addEventListener('click', () => {
-        showToast("هذه الميزة غير مفعلة في النسخة التثقيفية الحالية.");
+    cSend.addEventListener('click', doChat);
+    cInput.addEventListener('keypress', e => { if(e.key === 'Enter') doChat(); });
+    document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => { cInput.value = c.textContent; doChat(); }));
+    document.getElementById('clearChat').addEventListener('click', () => {
+        cBody.innerHTML = `<div class="message assistant"><div class="bubble"><p>مرحباً بك. أنا مساعدك الرقمي. <strong>أنا أداة آلية ولا يمكنني تقديم استشارة طبية.</strong> كيف يمكنني مساعدتك اليوم؟</p></div></div>`;
     });
 });
